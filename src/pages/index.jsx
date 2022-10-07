@@ -24,7 +24,7 @@ export default function Home() {
         <div className={styles.grid}>
           <div className={styles.card}>
             <h2>Incluir Nova Tarefa &rarr;</h2>
-            <Tarefa></Tarefa>
+            <Tarefa/>
           </div>
 
         </div>
