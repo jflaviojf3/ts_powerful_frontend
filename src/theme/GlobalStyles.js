@@ -1,58 +1,56 @@
-import { theme } from './theme';
+// @mui
+import { GlobalStyles as MUIGlobalStyles } from '@mui/material';
 
-export default function GlobalStyle() {
-    return (
-        <style global jsx>{`
-        * {
-          box-sizing: border-box;
-          padding: 0;
-          margin: 0;
-        }
-        a {
-          text-decoration: none;
-        }
-        body {
-          font-family: ${theme.typography.fontFamily}, sans-serif;
-        }
-        img, video {
-          max-width: 100%;
-          height: auto;
-        }
-        audio, canvas, embed, iframe, img, object, svg, video {
-          display: block;
-          vertical-align: middle;
-        }
-        .sr-only {
-          position: absolute;
-          width: 1px;
-          height: 1px;
-          padding: 0;
-          margin: -1px;
-          overflow: hidden;
-          clip: rect(0,0,0,0);
-          border: 0;
-        }
-        /* ================== */
-        /* NextJS */
-        /* ================== */
-        html {
-          height: 100%;
-        }
-        body,
-        #__next {
-          height: 100%;
-        }
-        #__next {
-          display: flex;
-          flex-direction: column;
-        }
-        #__next > * {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-start;
-          align-items: stretch;
-        }
-      `}</style>
-    )
+// ----------------------------------------------------------------------
+
+export default function GlobalStyles() {
+  const inputGlobalStyles = (
+    <MUIGlobalStyles
+      styles={{
+        '*': {
+          boxSizing: 'border-box',
+        },
+        html: {
+          margin: 0,
+          padding: 0,
+          width: '100%',
+          height: '100%',
+          WebkitOverflowScrolling: 'touch',
+        },
+        body: {
+          margin: 0,
+          padding: 0,
+          width: '100%',
+          height: '100%',
+        },
+        '#root': {
+          width: '100%',
+          height: '100%',
+        },
+        input: {
+          '&[type=number]': {
+            MozAppearance: 'textfield',
+            '&::-webkit-outer-spin-button': {
+              margin: 0,
+              WebkitAppearance: 'none',
+            },
+            '&::-webkit-inner-spin-button': {
+              margin: 0,
+              WebkitAppearance: 'none',
+            },
+          },
+        },
+        img: {
+          display: 'block',
+          maxWidth: '100%',
+        },
+        ul: {
+          margin: 0,
+          padding: 0,
+        },
+      }}
+    />
+  );
+
+  return inputGlobalStyles;
 }
