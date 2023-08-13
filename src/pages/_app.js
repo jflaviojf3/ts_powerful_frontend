@@ -1,10 +1,9 @@
+import LoginPage from "@/screens/loginHome/LoginPage"
 
-
-export default function App({ Component, pageProps }) {
+export default function App() {
   return (
     <>
-    <Component {...pageProps} />
-      <h1>_App</h1>
+      <LoginPage/>
     </>
   )
 }
