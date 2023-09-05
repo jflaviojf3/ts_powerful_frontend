@@ -8,7 +8,7 @@ import palette from './Palette';
 import shadows from './Shadows';
 import typography from './Typography';
 import GlobalStyles from './GlobalStyles';
-import customShadows from './CustomShadows';
+import customShadows from './CostumShadow';
 import componentsOverride from './Overrides';
 
 // ----------------------------------------------------------------------

@@ -14,17 +14,16 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClick = () => {
-   // navigate('/dashboard', { replace: true });
+    //navigate('/dashboard', { replace: true });
   };
 
   return (
     <>
       <Stack spacing={3}>
-        <TextField name="email" label="Email address" />
-
+        <TextField name="email" label="Email" />
         <TextField
           name="password"
-          label="Password"
+          label="Senha"
           type={showPassword ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
@@ -41,7 +40,7 @@ export default function LoginForm() {
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
         <Checkbox name="remember" label="Remember me" />
         <Link variant="subtitle2" underline="hover">
-          Forgot password?
+          Esqueceu a Senha?
         </Link>
       </Stack>
 

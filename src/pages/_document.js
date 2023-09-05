@@ -6,7 +6,6 @@ export default function Document() {
       <Head />
       <body>
         <Main />
-        <h1>Teste 3</h1>
         <NextScript />
       </body>
     </Html>
