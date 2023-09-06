@@ -1,13 +1,11 @@
 import { Head } from "next/document";
+import { useState } from 'react';
 // @mui
 import { styled } from "@mui/material/styles";
 import {
   Link,
   Container,
-  Typography,
-  Divider,
-  Stack,
-  Button,
+  Typography
 } from "@mui/material";
 // hooks
 import useResponsive from "../../hooks/useResponsive";
@@ -16,6 +14,7 @@ import Logo from "../../components/Logo";
 import Iconify from "../../components/Iconify";
 // sections
 import { LoginForm } from "../../sections/auth/login";
+import { CadastroForm } from "../../sections/auth/cadastro";
 
 // ----------------------------------------------------------------------
 
@@ -48,14 +47,19 @@ const StyledContent = styled("div")(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function LoginPage() {
+  const [formularioAtual, setFormularioAtual] = useState('LoginForm')
   const mdUp = useResponsive("up", "md");
+
+  const alternarFormulario = () => {
+    if (formularioAtual === 'LoginForm'){
+      setFormularioAtual('CadastroForm');
+    } else {
+      setFormularioAtual('LoginForm');
+    }
+  }
 
   return (
     <>
-      {/* <Head>
-        <title> Login </title>
-      </Head> */}
-
       <StyledRoot>
         {/* <Logo
           sx={{
@@ -77,32 +81,16 @@ export default function LoginPage() {
         <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h4" gutterBottom>
-              Acesso Ao Sistema
+            {formularioAtual === 'LoginForm' ? 'Acesso Ao Sistema' : 'Faça O Seu Cadastro'} 
             </Typography>
 
             <Typography variant="body2" sx={{ mb: 5 }}>
-              Primeiro Acesso? {""}
-              <Link variant="subtitle2">Comece aqui.</Link>
+            {formularioAtual === 'LoginForm' ? 'Primeiro Acesso?': 'Você Já Tem Cadastro?'}  {""}
+              <Link variant="subtitle2" onClick={alternarFormulario}> {formularioAtual === 'LoginForm' ? 'Comece aqui.' : 'Login' }  </Link>
             </Typography>
 
-            <Stack direction="row" spacing={2}>
-              <Button fullWidth size="large" color="inherit" variant="outlined">
-                <Iconify
-                  icon="eva:google-fill"
-                  color="#DF3E30"
-                  width={22}
-                  height={22}
-                />
-              </Button>
-            </Stack>
-
-            <Divider sx={{ my: 3 }}>
-              <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                OU
-              </Typography>
-            </Divider>
-
-            <LoginForm />
+            {formularioAtual === 'LoginForm' ? <LoginForm /> : <CadastroForm />}
+            
           </StyledContent>
         </Container>
       </StyledRoot>
