@@ -4,11 +4,11 @@ import Head from "next/head";
 import { styled } from "@mui/material/styles";
 import { Link, Container, Typography } from "@mui/material";
 // hooks
-import useResponsive from "../hooks/useResponsive";
+import useResponsive from "../src/hooks/useResponsive";
 
 // sections
-import { LoginForm } from "../sections/auth/login";
-import { CadastroForm } from "../sections/auth/cadastro";
+import { LoginForm } from "../src/sections/auth/login";
+import { CadastroForm } from "../src/sections/auth/cadastro";
 
 // ----------------------------------------------------------------------
 

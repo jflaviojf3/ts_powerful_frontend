@@ -1,9 +1,12 @@
-//
 import App from './Login';
 
 // ----------------------------------------------------------------------
-export default function Home() {
+function Index() {
   return (
+    <>
         <App />
+    </>
   )
 }
+
+export default Index

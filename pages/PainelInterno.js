@@ -1,28 +1,30 @@
 import { useRouter } from "next/router";
+
 import Head from "next/head";
 // @mui
 import { styled } from "@mui/material/styles";
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 // hooks
-import useResponsive from "../hooks/useResponsive";
+import useResponsive from "../src/hooks/useResponsive";
+import { useEffect } from "react";
 
 // ----------------------------------------------------------------------
 
 function Autenticacao() {
   const router = useRouter();
   const { token } = router.query;
-  console.log("painelInterno");
-  console.log(token);
-  // Verifica o estado de autenticação
-  const isAuthenticated = token; /* Sua lógica de autenticação aqui */
+  const isAuthenticated = token;
 
-//   useEffect(() => {
-//     // Se o usuário não estiver autenticado, redirecione-o para a página de login
-//     if (!isAuthenticated) {
-//       router.push("/");
-//     }
-//   }, [isAuthenticated]);
- }
+  useEffect(() => {
+    if (!isAuthenticated) {
+      console.log("1 - Autenticar");
+      router.push("/");
+    } else {
+      router.replace(router.pathname, undefined, { shallow: true });
+    }
+
+  }, []);
+}
 
 const StyledRoot = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
@@ -57,11 +59,18 @@ const PainelInterno = () => {
               Bem vindo a pagina interna!
             </Typography>
             <img src="/TS_.svg" alt="login" />
+            <Button
+              fullWidth
+              size="large"
+              type="submit"
+              variant="contained"
+              href="/"
+            >Voltar pro Login</Button>
           </StyledSection>
         )}
       </StyledRoot>
     </>
   );
-}
+};
 
 export default PainelInterno;

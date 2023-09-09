@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import LinkNext from 'next/link'
 // @mui
 import {
   Link,
@@ -12,42 +11,42 @@ import {
   Divider,
   Button,
   Typography,
-  CircularProgress,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 // components
 import Iconify from "../../../components/Iconify";
-import { login } from "../../../pages/api/autenticacao/auth";
+//api
+import { authService } from "../../../../pages/api/autenticacaoService/auth";
 
 // ----------------------------------------------------------------------
 
 const LoginForm = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const [response, setResponse] = useState(null);
-  const [tokenAuth, setTokenAuth] = useState('');
-  
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+  
+  const [tokenAuth, setTokenAuth] = useState(null);
+  useEffect(() => {
+    if (tokenAuth !== null) {
+      router.push(`/PainelInterno?token=${tokenAuth}`, undefined, { shallow: true });
+    }
+  }, [tokenAuth]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       if (!formData.email || !formData.password) {
         alert("Por favor, preencha ambos os campos.");
         return;
       }
-      const data = await login(formData.email, formData.password);
-      setResponse(data);
-      console.log("Login bem-sucedido");
-      setTokenAuth(response.token);
-      console.log(tokenAuth);
+      const data = await authService.login(formData.email, formData.password);
+      setTokenAuth(data.token);
     } catch (error) {
       alert(error);
       console.error("Erro na solicitação POST:", error);
@@ -111,12 +110,12 @@ const LoginForm = () => {
         sx={{ my: 2 }}
       >
         <Checkbox name="remember" label="Remember me" />
-        <Link variant="subtitle2" underline="hover">
+        {/* ATENÇÃO LINK COM O HREF PARA TESTES */}
+        <Link variant="subtitle2" underline="hover" href="/PainelInterno">
           Esqueceu a Senha?
         </Link>
       </Stack>
 
-      <LinkNext href={`/PainelInterno?token=${tokenAuth}`}>
       <LoadingButton
         fullWidth
         size="large"
@@ -126,9 +125,8 @@ const LoginForm = () => {
       >
         Login
       </LoadingButton>
-      </LinkNext>
     </>
   );
-}
+};
 
 export default LoginForm;
