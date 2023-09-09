@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  //baseURL: "https://api-ts-powerful.jamb-devs.tech/v1",
-  baseURL: "http://localhost:3000/v1",
+  baseURL: "https://api-ts-powerful.jamb-devs.tech/v1",
+//  baseURL: "http://localhost:3000/v1",
 });
 
 export const cadastroService = {

@@ -34,8 +34,9 @@ const LoginForm = () => {
   const [tokenAuth, setTokenAuth] = useState(null);
   useEffect(() => {
     if (tokenAuth !== null) {
-      router.push(`/PainelInterno?token=${tokenAuth}`, undefined, { shallow: true });
+      router.push(`/PainelInterno`, undefined, { shallow: true });
     }
+    //{*?token=${tokenAuth}*}
   }, [tokenAuth]);
 
   const handleSubmit = async (e) => {
