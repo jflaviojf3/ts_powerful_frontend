@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from 'next/router'
 // @mui
 import {
   Stack,
@@ -14,13 +15,11 @@ import Iconify from "../../../components/Iconify";
 
 // ----------------------------------------------------------------------
 
-export default function CadastroForm() {
-  //const navigate = useNavigate();
-
+const CadastroForm = (props) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClick = () => {
-    //navigate('/dashboard', { replace: true });
+    props.setFormularioAtual("LoginForm")
   };
 
   return (
@@ -66,3 +65,5 @@ export default function CadastroForm() {
     </>
   );
 }
+
+export default CadastroForm;

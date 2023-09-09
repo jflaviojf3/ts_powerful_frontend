@@ -1,5 +1,5 @@
 //
-import App from './_app';
+import App from './Login';
 
 // ----------------------------------------------------------------------
 export default function Home() {

@@ -1,12 +1,13 @@
-import LoginPage from "@/screens/loginHome/LoginPage";
-import ThemeProvider from "../theme";
+import ThemeProvider from "../theme/index.js";
 
-export default function App() {
+export default function App(props) {
+
+  const { Component, pageProps } = props;
   return (
     <>
-        <ThemeProvider>
-          <LoginPage />
-        </ThemeProvider>
+      <ThemeProvider>
+        <Component {...pageProps} />
+      </ThemeProvider>
     </>
   );
 }

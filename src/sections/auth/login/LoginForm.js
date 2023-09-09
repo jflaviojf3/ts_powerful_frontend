@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/router";
+import LinkNext from 'next/link'
 // @mui
 import {
   Link,
@@ -16,18 +17,18 @@ import {
 import { LoadingButton } from "@mui/lab";
 // components
 import Iconify from "../../../components/Iconify";
-import {login} from "../../../pages/api/autenticacao/auth"
+import { login } from "../../../pages/api/autenticacao/auth";
 
 // ----------------------------------------------------------------------
 
-export default function LoginForm() {
-
-
+const LoginForm = () => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   const [response, setResponse] = useState(null);
+  const [tokenAuth, setTokenAuth] = useState('');
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,23 +39,22 @@ export default function LoginForm() {
     e.preventDefault();
 
     try {
-        const data = await login(formData.email, formData.password);
-        setResponse(data);
-        console.log('Login bem-sucedido');
-        console.log(response);
-
+      if (!formData.email || !formData.password) {
+        alert("Por favor, preencha ambos os campos.");
+        return;
+      }
+      const data = await login(formData.email, formData.password);
+      setResponse(data);
+      console.log("Login bem-sucedido");
+      setTokenAuth(response.token);
+      console.log(tokenAuth);
     } catch (error) {
-      console.error('Erro na solicitação POST:', error);
+      alert(error);
+      console.error("Erro na solicitação POST:", error);
     }
-
   };
-
 
   const [showPassword, setShowPassword] = useState(false);
-
-  const handleClick = () => {
-    //navigate('/dashboard', { replace: true });
-  };
 
   return (
     <>
@@ -75,7 +75,12 @@ export default function LoginForm() {
         </Typography>
       </Divider>
       <Stack spacing={3}>
-        <TextField name="email" label="Email" value={formData.email} onChange={handleChange}/>
+        <TextField
+          name="email"
+          label="Email"
+          value={formData.email}
+          onChange={handleChange}
+        />
         <TextField
           name="password"
           label="Senha"
@@ -111,6 +116,7 @@ export default function LoginForm() {
         </Link>
       </Stack>
 
+      <LinkNext href={`/PainelInterno?token=${tokenAuth}`}>
       <LoadingButton
         fullWidth
         size="large"
@@ -120,6 +126,9 @@ export default function LoginForm() {
       >
         Login
       </LoadingButton>
+      </LinkNext>
     </>
   );
 }
+
+export default LoginForm;

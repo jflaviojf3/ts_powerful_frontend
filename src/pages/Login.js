@@ -1,20 +1,14 @@
-import { Head } from "next/document";
-import { useState } from 'react';
+import { useState } from "react";
+import Head from "next/head";
 // @mui
 import { styled } from "@mui/material/styles";
-import {
-  Link,
-  Container,
-  Typography
-} from "@mui/material";
+import { Link, Container, Typography } from "@mui/material";
 // hooks
-import useResponsive from "../../hooks/useResponsive";
-// components
-import Logo from "../../components/Logo";
-import Iconify from "../../components/Iconify";
+import useResponsive from "../hooks/useResponsive";
+
 // sections
-import { LoginForm } from "../../sections/auth/login";
-import { CadastroForm } from "../../sections/auth/cadastro";
+import { LoginForm } from "../sections/auth/login";
+import { CadastroForm } from "../sections/auth/cadastro";
 
 // ----------------------------------------------------------------------
 
@@ -46,29 +40,24 @@ const StyledContent = styled("div")(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function LoginPage() {
-  const [formularioAtual, setFormularioAtual] = useState('LoginForm')
+const Login = () => {
+  const [formularioAtual, setFormularioAtual] = useState("LoginForm");
   const mdUp = useResponsive("up", "md");
 
   const alternarFormulario = () => {
-    if (formularioAtual === 'LoginForm'){
-      setFormularioAtual('CadastroForm');
+    if (formularioAtual === "LoginForm") {
+      setFormularioAtual("CadastroForm");
     } else {
-      setFormularioAtual('LoginForm');
+      setFormularioAtual("LoginForm");
     }
-  }
+  };
 
   return (
     <>
+      <Head>
+        <title>Login | Cadastro</title>
+      </Head>
       <StyledRoot>
-        {/* <Logo
-          sx={{
-            position: "fixed",
-            top: { xs: 16, sm: 24, md: 40 },
-            left: { xs: 16, sm: 24, md: 40 },
-          }}
-        /> */}
-
         {mdUp && (
           <StyledSection>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
@@ -81,19 +70,34 @@ export default function LoginPage() {
         <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h4" gutterBottom>
-            {formularioAtual === 'LoginForm' ? 'Acesso Ao Sistema' : 'Faça O Seu Cadastro'} 
+              {formularioAtual === "LoginForm"
+                ? "Acesso Ao Sistema"
+                : "Faça O Seu Cadastro"}
             </Typography>
 
             <Typography variant="body2" sx={{ mb: 5 }}>
-            {formularioAtual === 'LoginForm' ? 'Primeiro Acesso?': 'Você Já Tem Cadastro?'}  {""}
-              <Link variant="subtitle2" onClick={alternarFormulario}> {formularioAtual === 'LoginForm' ? 'Comece aqui.' : 'Login' }  </Link>
+              {formularioAtual === "LoginForm"
+                ? "Primeiro Acesso?"
+                : "Você Já Tem Cadastro?"}{" "}
+              {""}
+              <Link variant="subtitle2" onClick={alternarFormulario}>
+                {" "}
+                {formularioAtual === "LoginForm"
+                  ? "Comece aqui."
+                  : "Login"}{" "}
+              </Link>
             </Typography>
 
-            {formularioAtual === 'LoginForm' ? <LoginForm /> : <CadastroForm />}
-            
+            {formularioAtual === "LoginForm" ? (
+              <LoginForm />
+            ) : (
+              <CadastroForm setFormularioAtual={setFormularioAtual} />
+            )}
           </StyledContent>
         </Container>
       </StyledRoot>
     </>
   );
 }
+
+export default Login;

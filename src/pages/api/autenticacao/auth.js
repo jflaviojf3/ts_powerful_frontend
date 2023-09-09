@@ -7,9 +7,8 @@ const api = axios.create({
 export const login = async (email, senha) => {
   try {
     const response = await api.post('/v1/auth', { email, senha });
-    console.log(response.data)
     return response.data;
   } catch (error) {
-    throw error;
+    throw error.response.data.message;
   }
 };
