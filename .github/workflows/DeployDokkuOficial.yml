@@ -1,0 +1,22 @@
+name: 'DeployOficialDokku'
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+
+jobs:
+  Deploy_API:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repositorio
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Envio Para Dokku
+        uses: dokku/github-action@v1.4.0
+        with:
+          git_remote_url: 'ssh://dokku@186.202.57.75:22/ts-powerful-web'
+          #ssh_host_key: ${{ secrets.SSH_HOST_KEY }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
