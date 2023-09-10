@@ -5,7 +5,6 @@ import { styled } from "@mui/material/styles";
 import { Link, Container, Typography } from "@mui/material";
 // hooks
 import useResponsive from "../src/hooks/useResponsive";
-
 // sections
 import { LoginForm } from "../src/sections/auth/login";
 import { CadastroForm } from "../src/sections/auth/cadastro";
@@ -67,7 +66,7 @@ const Login = () => {
           </StyledSection>
         )}
 
-        {/* <Container maxWidth="sm">
+        <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h4" gutterBottom>
               {formularioAtual === "LoginForm"
@@ -94,10 +93,10 @@ const Login = () => {
               <CadastroForm setFormularioAtual={setFormularioAtual} />
             )}
           </StyledContent>
-        </Container> */}
+        </Container>
       </StyledRoot>
     </>
   );
-}
+};
 
 export default Login;

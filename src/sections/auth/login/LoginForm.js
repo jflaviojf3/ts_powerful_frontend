@@ -30,7 +30,7 @@ const LoginForm = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-  
+
   const [tokenAuth, setTokenAuth] = useState(null);
   useEffect(() => {
     if (tokenAuth !== null) {
@@ -60,12 +60,12 @@ const LoginForm = () => {
     <>
       <Stack direction="row" spacing={2}>
         <Button fullWidth size="large" color="inherit" variant="outlined">
-          <Iconify
+          {/* <Iconify
             icon="eva:google-fill"
             color="#DF3E30"
             width={22}
             height={22}
-          />
+          /> */}
         </Button>
       </Stack>
 
@@ -74,6 +74,7 @@ const LoginForm = () => {
           OU
         </Typography>
       </Divider>
+
       <Stack spacing={3}>
         <TextField
           name="email"
@@ -94,9 +95,9 @@ const LoginForm = () => {
                   onClick={() => setShowPassword(!showPassword)}
                   edge="end"
                 >
-                  <Iconify
+                  {/* <Iconify
                     icon={showPassword ? "eva:eye-fill" : "eva:eye-off-fill"}
-                  />
+                  /> */}
                 </IconButton>
               </InputAdornment>
             ),
@@ -111,8 +112,8 @@ const LoginForm = () => {
         sx={{ my: 2 }}
       >
         <Checkbox name="remember" label="Remember me" />
-        {/* ATENÇÃO LINK COM O HREF PARA TESTES */}
-        <Link variant="subtitle2" underline="hover" href="/PainelInterno">
+
+        <Link variant="subtitle2" underline="hover">
           Esqueceu a Senha?
         </Link>
       </Stack>

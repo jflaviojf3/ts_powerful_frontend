@@ -23,6 +23,7 @@ const CadastroForm = (props) => {
     email: "",
     password: "",
   });
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -96,9 +97,9 @@ const CadastroForm = (props) => {
                   onClick={() => setShowPassword(!showPassword)}
                   edge="end"
                 >
-                  <Iconify
+                  {/* <Iconify
                     icon={showPassword ? "eva:eye-fill" : "eva:eye-off-fill"}
-                  />
+                  /> */}
                 </IconButton>
               </InputAdornment>
             ),
