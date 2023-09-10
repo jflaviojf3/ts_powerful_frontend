@@ -57,7 +57,7 @@ const Login = () => {
       <Head>
         <title>Login | Cadastro</title>
       </Head>
-      <StyledRoot>
+       <StyledRoot>
         {mdUp && (
           <StyledSection>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
@@ -67,7 +67,7 @@ const Login = () => {
           </StyledSection>
         )}
 
-        <Container maxWidth="sm">
+      {/*  <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h4" gutterBottom>
               {formularioAtual === "LoginForm"
@@ -94,8 +94,8 @@ const Login = () => {
               <CadastroForm setFormularioAtual={setFormularioAtual} />
             )}
           </StyledContent>
-        </Container>
-      </StyledRoot>
+        </Container>*/}
+      </StyledRoot> 
     </>
   );
 }
