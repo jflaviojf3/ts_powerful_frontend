@@ -67,7 +67,7 @@ const Login = () => {
           </StyledSection>
         )}
 
-        <Container maxWidth="sm">
+        {/* <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h4" gutterBottom>
               {formularioAtual === "LoginForm"
@@ -94,7 +94,7 @@ const Login = () => {
               <CadastroForm setFormularioAtual={setFormularioAtual} />
             )}
           </StyledContent>
-        </Container>
+        </Container> */}
       </StyledRoot>
     </>
   );
