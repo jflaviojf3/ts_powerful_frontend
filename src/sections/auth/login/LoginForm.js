@@ -37,7 +37,7 @@ const LoginForm = () => {
       router.push(`/PainelInterno`, undefined, { shallow: true });
     }
     //{*?token=${tokenAuth}*}
-  }, [tokenAuth]);
+  }, [tokenAuth, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,12 +60,12 @@ const LoginForm = () => {
     <>
       <Stack direction="row" spacing={2}>
         <Button fullWidth size="large" color="inherit" variant="outlined">
-          {/* <Iconify
+          <Iconify
             icon="eva:google-fill"
             color="#DF3E30"
             width={22}
             height={22}
-          /> */}
+          />
         </Button>
       </Stack>
 
@@ -95,9 +95,9 @@ const LoginForm = () => {
                   onClick={() => setShowPassword(!showPassword)}
                   edge="end"
                 >
-                  {/* <Iconify
+                  <Iconify
                     icon={showPassword ? "eva:eye-fill" : "eva:eye-off-fill"}
-                  /> */}
+                  />
                 </IconButton>
               </InputAdornment>
             ),

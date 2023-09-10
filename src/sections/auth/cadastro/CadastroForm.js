@@ -97,9 +97,9 @@ const CadastroForm = (props) => {
                   onClick={() => setShowPassword(!showPassword)}
                   edge="end"
                 >
-                  {/* <Iconify
+                  <Iconify
                     icon={showPassword ? "eva:eye-fill" : "eva:eye-off-fill"}
-                  /> */}
+                  />
                 </IconButton>
               </InputAdornment>
             ),

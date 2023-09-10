@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import Head from "next/head";
+import  Image  from 'next/image';
 import nookies from "nookies";
 // @mui
 import { styled } from "@mui/material/styles";
@@ -10,6 +11,8 @@ import { useEffect } from "react";
 import { tokenService } from "./api/autenticacaoService/tokenService";
 import { authService } from "./api/autenticacaoService/auth";
 import { usuarioService } from "./api/usuarioService/usuarioService";
+// componentes
+import  TS_imagem  from "./../public/TS_.png";
 
 // ----------------------------------------------------------------------
 
@@ -62,7 +65,7 @@ const PainelInterno = (props) => {
             <pre>
               {JSON.stringify(props, null, 2)}
             </pre>
-            <img src="/TS_.svg" alt="login" />
+            <Image src={TS_imagem} alt="Logo TS" />
             <Button
               fullWidth
               size="large"

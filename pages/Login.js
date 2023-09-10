@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Head from "next/head";
+import Image from "next/image";
 // @mui
 import { styled } from "@mui/material/styles";
 import { Link, Container, Typography } from "@mui/material";
@@ -8,7 +9,7 @@ import useResponsive from "../src/hooks/useResponsive";
 // sections
 import { LoginForm } from "../src/sections/auth/login";
 import { CadastroForm } from "../src/sections/auth/cadastro";
-
+import TS_imagem from "./../public/TS_.png";
 // ----------------------------------------------------------------------
 
 const StyledRoot = styled("div")(({ theme }) => ({
@@ -19,7 +20,7 @@ const StyledRoot = styled("div")(({ theme }) => ({
 
 const StyledSection = styled("div")(({ theme }) => ({
   width: "100%",
-  maxWidth: 480,
+  maxWidth: 400,
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
@@ -60,9 +61,9 @@ const Login = () => {
         {mdUp && (
           <StyledSection>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Olá, Bem vindo de volta
+              Bem vindo de volta
             </Typography>
-            <img src="/TS_.svg" alt="login" />
+            <Image src={TS_imagem} alt="Logo TS" />
           </StyledSection>
         )}
 
