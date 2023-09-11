@@ -6,7 +6,7 @@ on:
     branches: [ master ]
 
 jobs:
-  Deploy_API:
+  Build_Frontend:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repositorio

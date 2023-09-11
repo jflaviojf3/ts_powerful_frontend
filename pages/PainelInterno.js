@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import Head from "next/head";
 import  Image  from 'next/image';
 import nookies from "nookies";
@@ -7,29 +6,12 @@ import { styled } from "@mui/material/styles";
 import { Button, Typography } from "@mui/material";
 // hooks
 import useResponsive from "../src/hooks/useResponsive";
-import { useEffect } from "react";
-import { tokenService } from "./api/autenticacaoService/tokenService";
 import { authService } from "./api/autenticacaoService/auth";
 import { usuarioService } from "./api/usuarioService/usuarioService";
 // componentes
 import  TS_imagem  from "./../public/TS_.png";
 
 // ----------------------------------------------------------------------
-
-// function Autenticacao() {
-//   const router = useRouter();
-//   const { token } = router.query;
-//   const isAuthenticated = token;
-
-//   useEffect(() => {
-//     if (!isAuthenticated) {
-//       console.log("1 - Autenticar");
-//       router.push("/");
-//     } else {
-//       router.replace(router.pathname, undefined, { shallow: true });
-//     }
-//   }, []);
-// }
 
 const StyledRoot = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("md")]: {

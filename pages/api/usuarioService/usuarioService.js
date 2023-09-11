@@ -1,14 +1,13 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://api-ts-powerful.jamb-devs.tech/v1",
-  //baseURL: "http://localhost:3000/v1",
+  baseURL: process.env.DNS_BACKEND,
 });
 
 export const usuarioService = {
   async pegaUsuarioLogado(token, usuarioId) {
     return api
-      .get(`/usuarios/${usuarioId}`, {
+      .get(`/v1/usuarios/${usuarioId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {

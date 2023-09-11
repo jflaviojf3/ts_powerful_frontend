@@ -59,12 +59,11 @@ const LoginForm = () => {
   return (
     <>
       <Stack direction="row" spacing={2}>
-        <Button fullWidth size="large" color="inherit" variant="outlined">
+        <Button fullWidth size="large" color="inherit" variant="outlined" href={`${process.env.DNS_BACKEND}/v1/auth/google`} >
           <Iconify
-            icon="eva:google-fill"
-            color="#DF3E30"
-            width={22}
-            height={22}
+            icon="logos:google"
+            width={80}
+            height={80}
           />
         </Button>
       </Stack>

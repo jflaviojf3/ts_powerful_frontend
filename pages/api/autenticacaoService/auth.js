@@ -2,14 +2,13 @@ import axios from "axios";
 import { tokenService } from "./tokenService";
 
 const api = axios.create({
-  baseURL: "https://api-ts-powerful.jamb-devs.tech/v1",
-  //baseURL: "http://localhost:3000/v1",
+  baseURL: process.env.DNS_BACKEND,
 });
 
 export const authService = {
   async login(email, senha) {
     return api
-      .post("/auth", {
+      .post("/v1/auth", {
         email: email,
         senha: senha,
       })
@@ -24,7 +23,7 @@ export const authService = {
 
   async verificaToken(token) {
     return api
-      .post("/authToken", {
+      .post("/v1/authToken", {
         token: token,
       })
       .then(function (response) {

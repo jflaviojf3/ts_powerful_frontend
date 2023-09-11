@@ -5,11 +5,11 @@ import Image from "next/image";
 import { styled } from "@mui/material/styles";
 import { Link, Container, Typography } from "@mui/material";
 // hooks
-import useResponsive from "../src/hooks/useResponsive";
+import useResponsive from "../../src/hooks/useResponsive";
 // sections
-import { LoginForm } from "../src/sections/auth/login";
-import { CadastroForm } from "../src/sections/auth/cadastro";
-import TS_imagem from "./../public/TS_.png";
+import { LoginForm } from "../../src/sections/auth/login";
+import { CadastroForm } from "../../src/sections/auth/cadastro";
+import TS_imagem from "./../../public/TS_.png";
 // ----------------------------------------------------------------------
 
 const StyledRoot = styled("div")(({ theme }) => ({
@@ -51,7 +51,6 @@ const Login = () => {
       setFormularioAtual("LoginForm");
     }
   };
-
   return (
     <>
       <Head>
