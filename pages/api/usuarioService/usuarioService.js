@@ -1,7 +1,8 @@
 import axios from "axios";
 
+const baseUrl = 'https://api-ts-powerful.jamb-devs.tech'; //process.env.DNS_BACKEND;
 const api = axios.create({
-  baseURL: process.env.DNS_BACKEND,
+  baseURL: baseUrl,
 });
 
 export const usuarioService = {
@@ -11,6 +12,7 @@ export const usuarioService = {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
+        console.log(response.data)
         return response.data;
       })
       .catch(function (error) {

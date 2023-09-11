@@ -1,8 +1,9 @@
 import axios from "axios";
 import { tokenService } from "./tokenService";
 
+const baseUrl = 'https://api-ts-powerful.jamb-devs.tech';// process.env.DNS_BACKEND;
 const api = axios.create({
-  baseURL: process.env.DNS_BACKEND,
+  baseURL: baseUrl,
 });
 
 export const authService = {
