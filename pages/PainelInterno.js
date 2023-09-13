@@ -10,7 +10,7 @@ import { authService } from "./api/autenticacaoService/auth";
 import { usuarioService } from "./api/usuarioService/usuarioService";
 // componentes & layouts
 import TS_imagem from "./../public/TS_.png";
-import DashboardLayout from "./../src/layouts/dashboard";
+import DashboardLayout from "./../src/layouts/dashboardMui";
 
 // ----------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ const PainelInterno = (props) => {
         <Head>
           <title>Painel Interno</title>
         </Head>
-
+        <DashboardLayout dados={props}>
         <StyledRoot>
           {mdUp && (
             <StyledSection>
@@ -61,6 +61,7 @@ const PainelInterno = (props) => {
             </StyledSection>
           )}
         </StyledRoot>
+        </DashboardLayout>
     </>
   );
 };
@@ -75,6 +76,7 @@ export async function  account() {
       cookies.ACCESS_TOKEN,
       session.usuarioId
     );
+    console.log("passei qui")
     console.log(usuario)
     return {
         usuario

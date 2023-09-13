@@ -46,7 +46,7 @@ export default function Header({ onOpenNav }) {
   return (
     <StyledRoot>
       <StyledToolbar>
-        <IconButton
+        {/* <IconButton
           onClick={onOpenNav}
           sx={{
             mr: 1,
@@ -58,7 +58,7 @@ export default function Header({ onOpenNav }) {
         </IconButton>
 
         <Searchbar />
-        <Box sx={{ flexGrow: 1 }} />
+        <Box sx={{ flexGrow: 1 }} /> */}
 
         <Stack
           direction="row"
@@ -68,9 +68,7 @@ export default function Header({ onOpenNav }) {
             sm: 1,
           }}
         >
-          <LanguagePopover />
-          <NotificationsPopover />
-          <AccountPopover />
+          
         </Stack>
       </StyledToolbar>
     </StyledRoot>
