@@ -1,5 +1,10 @@
 import * as React from "react";
-import { styled, createTheme, ThemeProvider, alpha } from "@mui/material/styles";
+import {
+  styled,
+  createTheme,
+  ThemeProvider,
+  alpha,
+} from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
@@ -8,7 +13,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Avatar from "@mui/material/Avatar";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import Container from "@mui/material/Container";
@@ -18,19 +22,18 @@ import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { mainListItems, secondaryListItems } from "./listItems";
 import Chart from "./Chart";
 import Deposits from "./Deposits";
 import Orders from "./Orders";
+import MeusItems from './listItems.js';
 
-const StyledAccount = styled('div')(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    padding: theme.spacing(2, 2.5),
-    borderRadius: Number(theme.shape.borderRadius) * 1.5,
-    backgroundColor: alpha(theme.palette.grey[500], 0.12),
-  }));
-
+const StyledAccount = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  padding: theme.spacing(2, 2.5),
+  borderRadius: Number(theme.shape.borderRadius) * 1.5,
+  backgroundColor: alpha(theme.palette.grey[500], 0.12),
+}));
 
 function Copyright(props) {
   return (
@@ -40,11 +43,10 @@ function Copyright(props) {
       align="center"
       {...props}
     >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
+      {"Acesse a Api "}
+      <Link color="inherit" href="https://api-ts-powerful.jamb-devs.tech/v1/api-docs/">
+      Documentação Swagger
+      </Link>
       {"."}
     </Typography>
   );
@@ -106,13 +108,35 @@ export default function Dashboard(props) {
   };
 
   React.useEffect(() => {
-    console.log(props.dados.usuario.nome)
-    setNome(props.dados.usuario.nome)
-    setProvedor(props.dados.usuario.provedor)
-  }, []); 
+    
+    const cod_perfil = props.dados.usuario.cod_perfil;
+    if (cod_perfil == 4){
+      setPerfil('Adm. Sistema')
+    } else if(cod_perfil == 3){
+      setPerfil('Gerente')
+    } else if(cod_perfil == 2){
+      setPerfil('Funcionário')
+    } else{
+      setPerfil('Usuário')
+    }
+    setSobrenome(props.dados.usuario.sobrenome)
+    setNome(props.dados.usuario.nome);
+    const bufferData = props.dados.usuario.foto.data;
+    const fotoBase = Buffer.from(bufferData).toString('base64');
+    const fotoAvatar = atob(fotoBase);
+    fotoBase != null ? setFoto(fotoAvatar) : setFoto("/assets/images/avatars/avatar_default.jpg")
+  }, []);
 
-  const [nome, setNome] = React.useState('null')
-  const [provedor, setProvedor] = React.useState('null')
+  const [nome, setNome] = React.useState("null");
+  const [perfi, setPerfil] = React.useState("null");
+  const [sobrenome, setSobrenome] = React.useState("null");
+  const [foto, setFoto] = React.useState("null");
+
+  const [menuDescricao, setMenuDescricao] = React.useState("Tarefa");
+
+  const ClickItem = (itemText) => {
+    setMenuDescricao(itemText)
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -143,7 +167,7 @@ export default function Dashboard(props) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard Acessado via {provedor}
+              Dashboard: {menuDescricao}
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -161,25 +185,28 @@ export default function Dashboard(props) {
               px: [1],
             }}
           >
-            <Box sx={{ mb: 5, mx: 2.5 }}>
+            <Box >
               <Link underline="none">
                 <StyledAccount>
-                <Avatar
-                  src={"/assets/images/avatars/avatar_default.jpg"}
-                  alt="photoURL"
-                />
-                <Box sx={{ ml: 2 }}>
-                  <Typography
-                    variant="subtitle2"
-                    sx={{ color: "text.primary" }}
-                  >
-                    {nome}
-                  </Typography>
+                  <Avatar
+                    src={foto}
+                    alt="photoURL"
+                  />
+                  <Box sx={{ ml: 2 }}>
+                    <Typography
+                      variant="subtitle2"
+                      sx={{ color: "text.primary" }}
+                    >
+                      {nome} {sobrenome}
+                    </Typography>
 
-                  <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                    {"Admin Geral"}
-                  </Typography>
-                </Box>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: "text.secondary" }}
+                    >
+                      {perfi}
+                    </Typography>
+                  </Box>
                 </StyledAccount>
               </Link>
             </Box>
@@ -187,13 +214,11 @@ export default function Dashboard(props) {
               <ChevronLeftIcon />
             </IconButton>
           </Toolbar>
-          <Divider />
           <List component="nav">
-            {mainListItems}
-            <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
+          <MeusItems ClickItem={ClickItem}/>
           </List>
         </Drawer>
+            
         <Box
           component="main"
           sx={{
