@@ -21,16 +21,15 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MeusItems from "./listItems.js";
 import Tarefas from "../../sections/@dashboard/Tarefas";
-import Pontos from "../../sections/@dashboard/pontos.js";
+import Pontos from "../../sections/@dashboard/Pontos";
 import Cargos from "../../sections/@dashboard/Cargos";
 import Clientes from "../../sections/@dashboard/Clientes";
 import Equipes from "../../sections/@dashboard/Equipes";
-import ExportarDados from "../../sections/@dashboard/exportarDados.js";
+import ExportarDados from "../../sections/@dashboard/ExportarDados.js";
 import Projetos from "../../sections/@dashboard/Projetos";
 import VisualizarRelatorios from "../../sections/@dashboard/VisualizarRelatorios";
 import Configuracao from "../../sections/@dashboard/Configuracao";
 import Organizacao from "../../sections/@dashboard/Organizacao";
-
 
 const StyledAccount = styled("div")(({ theme }) => ({
   display: "flex",
@@ -114,8 +113,10 @@ export default function Dashboard(props) {
     setOpen(!open);
   };
 
-  React.useEffect(() => {
-    const cod_perfil = props.dados.usuario.cod_perfil;
+  const usuarios = props.dados.usuario;
+
+  const carregaDados = React.useCallback(() => {
+    const cod_perfil = usuarios.cod_perfil;
     if (cod_perfil == 4) {
       setPerfil("Adm. Sistema");
     } else if (cod_perfil == 3) {
@@ -125,21 +126,24 @@ export default function Dashboard(props) {
     } else {
       setPerfil("Usuário");
     }
-    setSobrenome(props.dados.usuario.sobrenome);
-    setNome(props.dados.usuario.nome);
-    const bufferData = props.dados.usuario.foto.data;
+    setSobrenome(usuarios.sobrenome);
+    setNome(usuarios.nome);
+    const bufferData = !usuarios.foto ? "0" : usuarios.foto.data;
     const fotoBase = Buffer.from(bufferData).toString("base64");
     const fotoAvatar = atob(fotoBase);
-    fotoBase != null
+    bufferData != "0"
       ? setFoto(fotoAvatar)
       : setFoto("/assets/images/avatars/avatar_default.jpg");
-  }, []);
+  }, [usuarios]);
+
+  React.useEffect(() => {
+    carregaDados();
+  }, [carregaDados]);
 
   const [nome, setNome] = React.useState("null");
   const [perfi, setPerfil] = React.useState("null");
   const [sobrenome, setSobrenome] = React.useState("null");
   const [foto, setFoto] = React.useState("null");
-
   const [menuDescricao, setMenuDescricao] = React.useState("Tarefa");
 
   const ClickItem = (itemText) => {
@@ -236,27 +240,27 @@ export default function Dashboard(props) {
             overflow: "auto",
           }}
         >
-          {
-                menuDescricao === 'Tarefa' ?
-                  (<Tarefas />) : 
-                menuDescricao === 'Cargos' ?
-                  (<Cargos />) :
-                menuDescricao === 'Clientes' ?
-                  (<Clientes />) :
-                menuDescricao === 'Configuração' ?
-                  (<Configuracao /> ) :
-                menuDescricao === 'Equipes' ?
-                  (<Equipes />) :
-                menuDescricao === 'Exportar Dados' ?
-                  (<ExportarDados />) :
-                menuDescricao === 'Organização' ?
-                  (<Organizacao />) :
-                menuDescricao === 'Projetos' ?
-                  (<Projetos /> ) :
-                menuDescricao === 'Visualizar Relatorios' ?
-                  ( <VisualizarRelatorios />) :
-                  (<Pontos />) 
-            }
+          {menuDescricao === "Tarefa" ? (
+            <Tarefas />
+          ) : menuDescricao === "Cargos" ? (
+            <Cargos />
+          ) : menuDescricao === "Clientes" ? (
+            <Clientes />
+          ) : menuDescricao === "Configuração" ? (
+            <Configuracao />
+          ) : menuDescricao === "Equipes" ? (
+            <Equipes />
+          ) : menuDescricao === "Exportar Dados" ? (
+            <ExportarDados />
+          ) : menuDescricao === "Organização" ? (
+            <Organizacao />
+          ) : menuDescricao === "Projetos" ? (
+            <Projetos />
+          ) : menuDescricao === "Visualizar Relatorios" ? (
+            <VisualizarRelatorios />
+          ) : (
+            <Pontos />
+          )}
           <Copyright sx={{ pt: 4 }} />
         </Box>
       </Box>

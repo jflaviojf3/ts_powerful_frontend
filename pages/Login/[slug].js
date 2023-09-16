@@ -10,7 +10,7 @@ function Autenticacao() {
         tokenService.save(isAuthenticated)
         router.push(`/PainelInterno`, undefined, { shallow: true });
       } 
-    }, [isAuthenticated]);
+    }, [isAuthenticated, router]);
   }
 
 export default function Page() {
