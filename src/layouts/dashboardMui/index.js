@@ -15,17 +15,22 @@ import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import Chart from "./Chart";
-import Deposits from "./Deposits";
-import Orders from "./Orders";
-import MeusItems from './listItems.js';
+import MeusItems from "./listItems.js";
+import Tarefas from "../../sections/@dashboard/Tarefas";
+import Pontos from "../../sections/@dashboard/pontos.js";
+import Cargos from "../../sections/@dashboard/Cargos";
+import Clientes from "../../sections/@dashboard/Clientes";
+import Equipes from "../../sections/@dashboard/Equipes";
+import ExportarDados from "../../sections/@dashboard/exportarDados.js";
+import Projetos from "../../sections/@dashboard/Projetos";
+import VisualizarRelatorios from "../../sections/@dashboard/VisualizarRelatorios";
+import Configuracao from "../../sections/@dashboard/Configuracao";
+import Organizacao from "../../sections/@dashboard/Organizacao";
+
 
 const StyledAccount = styled("div")(({ theme }) => ({
   display: "flex",
@@ -34,23 +39,6 @@ const StyledAccount = styled("div")(({ theme }) => ({
   borderRadius: Number(theme.shape.borderRadius) * 1.5,
   backgroundColor: alpha(theme.palette.grey[500], 0.12),
 }));
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Acesse a Api "}
-      <Link color="inherit" href="https://api-ts-powerful.jamb-devs.tech/v1/api-docs/">
-      Documentação Swagger
-      </Link>
-      {"."}
-    </Typography>
-  );
-}
 
 const drawerWidth = 240;
 
@@ -72,6 +60,25 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
+function Copyright(props) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Acesse a Api "}
+      <Link
+        color="inherit"
+        href="https://api-ts-powerful.jamb-devs.tech/v1/api-docs/"
+      >
+        Documentação Swagger
+      </Link>
+      {"."}
+    </Typography>
+  );
+}
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
@@ -108,23 +115,24 @@ export default function Dashboard(props) {
   };
 
   React.useEffect(() => {
-    
     const cod_perfil = props.dados.usuario.cod_perfil;
-    if (cod_perfil == 4){
-      setPerfil('Adm. Sistema')
-    } else if(cod_perfil == 3){
-      setPerfil('Gerente')
-    } else if(cod_perfil == 2){
-      setPerfil('Funcionário')
-    } else{
-      setPerfil('Usuário')
+    if (cod_perfil == 4) {
+      setPerfil("Adm. Sistema");
+    } else if (cod_perfil == 3) {
+      setPerfil("Gerente");
+    } else if (cod_perfil == 2) {
+      setPerfil("Funcionário");
+    } else {
+      setPerfil("Usuário");
     }
-    setSobrenome(props.dados.usuario.sobrenome)
+    setSobrenome(props.dados.usuario.sobrenome);
     setNome(props.dados.usuario.nome);
     const bufferData = props.dados.usuario.foto.data;
-    const fotoBase = Buffer.from(bufferData).toString('base64');
+    const fotoBase = Buffer.from(bufferData).toString("base64");
     const fotoAvatar = atob(fotoBase);
-    fotoBase != null ? setFoto(fotoAvatar) : setFoto("/assets/images/avatars/avatar_default.jpg")
+    fotoBase != null
+      ? setFoto(fotoAvatar)
+      : setFoto("/assets/images/avatars/avatar_default.jpg");
   }, []);
 
   const [nome, setNome] = React.useState("null");
@@ -135,7 +143,7 @@ export default function Dashboard(props) {
   const [menuDescricao, setMenuDescricao] = React.useState("Tarefa");
 
   const ClickItem = (itemText) => {
-    setMenuDescricao(itemText)
+    setMenuDescricao(itemText);
   };
 
   return (
@@ -185,13 +193,10 @@ export default function Dashboard(props) {
               px: [1],
             }}
           >
-            <Box >
+            <Box>
               <Link underline="none">
                 <StyledAccount>
-                  <Avatar
-                    src={foto}
-                    alt="photoURL"
-                  />
+                  <Avatar src={foto} alt="photoURL" />
                   <Box sx={{ ml: 2 }}>
                     <Typography
                       variant="subtitle2"
@@ -215,10 +220,10 @@ export default function Dashboard(props) {
             </IconButton>
           </Toolbar>
           <List component="nav">
-          <MeusItems ClickItem={ClickItem}/>
+            <MeusItems ClickItem={ClickItem} />
           </List>
         </Drawer>
-            
+
         <Box
           component="main"
           sx={{
@@ -231,44 +236,28 @@ export default function Dashboard(props) {
             overflow: "auto",
           }}
         >
-          <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Chart */}
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                    height: 240,
-                  }}
-                >
-                  <Chart />
-                </Paper>
-              </Grid>
-              {/* Recent Deposits */}
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                    height: 240,
-                  }}
-                >
-                  <Deposits />
-                </Paper>
-              </Grid>
-              {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                  <Orders />
-                </Paper>
-              </Grid>
-            </Grid>
-            <Copyright sx={{ pt: 4 }} />
-          </Container>
+          {
+                menuDescricao === 'Tarefa' ?
+                  (<Tarefas />) : 
+                menuDescricao === 'Cargos' ?
+                  (<Cargos />) :
+                menuDescricao === 'Clientes' ?
+                  (<Clientes />) :
+                menuDescricao === 'Configuração' ?
+                  (<Configuracao /> ) :
+                menuDescricao === 'Equipes' ?
+                  (<Equipes />) :
+                menuDescricao === 'Exportar Dados' ?
+                  (<ExportarDados />) :
+                menuDescricao === 'Organização' ?
+                  (<Organizacao />) :
+                menuDescricao === 'Projetos' ?
+                  (<Projetos /> ) :
+                menuDescricao === 'Visualizar Relatorios' ?
+                  ( <VisualizarRelatorios />) :
+                  (<Pontos />) 
+            }
+          <Copyright sx={{ pt: 4 }} />
         </Box>
       </Box>
     </ThemeProvider>
