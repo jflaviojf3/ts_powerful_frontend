@@ -19,13 +19,14 @@ import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+//MeusComponentes
 import MeusItems from "./listItems.js";
-import Tarefas from "../../sections/@dashboard/Tarefas";
+import Tarefas from "../../sections/@dashboard/Tarefas"
 import Pontos from "../../sections/@dashboard/Pontos";
 import Cargos from "../../sections/@dashboard/Cargos";
 import Clientes from "../../sections/@dashboard/Clientes";
 import Equipes from "../../sections/@dashboard/Equipes";
-import ExportarDados from "../../sections/@dashboard/ExportarDados.js";
+import ExportarDados from "../../sections/@dashboard/ExportarDados";
 import Projetos from "../../sections/@dashboard/Projetos";
 import VisualizarRelatorios from "../../sections/@dashboard/VisualizarRelatorios";
 import Configuracao from "../../sections/@dashboard/Configuracao";

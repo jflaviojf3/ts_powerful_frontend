@@ -5,11 +5,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import Chart from "../../layouts/dashboardMui/Chart";
-import Deposits from "../../layouts/dashboardMui/Deposits";
-import Orders from "../../layouts/dashboardMui/Orders";
 
-const Projetos = () => {
+const Tarefas = () => {
   return (
     <>
       <Box
@@ -37,36 +34,17 @@ const Projetos = () => {
                   height: 240,
                 }}
               >
-                <Chart />
-              </Paper>
               <Typography variant="body2" color="text.secondary" align="center">
-                {" "}TELA DE PROJETOS{" "}
+                {" "}TELA DE TAREFAS{" "}
               </Typography>
-            </Grid>
-            {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper
-                sx={{
-                  p: 2,
-                  display: "flex",
-                  flexDirection: "column",
-                  height: 240,
-                }}
-              >
-                <Deposits />
-              </Paper>
-            </Grid>
-            {/* Recent Orders */}
-            <Grid item xs={12}>
-              <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                <Orders />
               </Paper>
             </Grid>
           </Grid>
+          
         </Container>
       </Box>
     </>
   );
 };
 
-export default Projetos;
+export default Tarefas;

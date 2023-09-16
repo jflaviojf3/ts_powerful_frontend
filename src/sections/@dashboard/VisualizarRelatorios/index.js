@@ -5,11 +5,11 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import Chart from "../../layouts/dashboardMui/Chart";
-import Deposits from "../../layouts/dashboardMui/Deposits";
-import Orders from "../../layouts/dashboardMui/Orders";
+import Chart from "./Chart";
+import Deposits from "./Deposits";
+import Orders from "./Orders";
 
-const Equipes = () => {
+const VisualizarRelatorios = () => {
   return (
     <>
       <Box
@@ -40,7 +40,7 @@ const Equipes = () => {
                 <Chart />
               </Paper>
               <Typography variant="body2" color="text.secondary" align="center">
-                {" "}TELA DE EQUIPS{" "}
+                {" "}TELA DE VISUALIZAR RELATORIOS{" "}
               </Typography>
             </Grid>
             {/* Recent Deposits */}
@@ -69,4 +69,4 @@ const Equipes = () => {
   );
 };
 
-export default Equipes;
+export default VisualizarRelatorios;
