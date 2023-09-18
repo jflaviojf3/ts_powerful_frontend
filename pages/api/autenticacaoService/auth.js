@@ -1,7 +1,7 @@
 import axios from "axios";
 import { tokenService } from "./tokenService";
 
-const baseUrl = 'https://api-ts-powerful.jamb-devs.tech';// process.env.DNS_BACKEND;
+const baseUrl = process.env.NEXT_PUBLIC_DNS_BACKEND;
 const api = axios.create({
   baseURL: baseUrl,
 });
@@ -14,10 +14,12 @@ export const authService = {
         senha: senha,
       })
       .then(function (response) {
+        console.log(baseUrl)
         tokenService.save(response.data.token);
         return response.data;
       })
       .catch(function (error) {
+        console.log(baseUrl)
         throw error.response.data.message;
       });
   },

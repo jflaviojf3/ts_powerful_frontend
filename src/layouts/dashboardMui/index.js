@@ -22,6 +22,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 //MeusComponentes
 import MeusItems from "./listItems.js";
 import Tarefas from "../../sections/@dashboard/Tarefas"
+import AppBarTarefas from "../../sections/@dashboard/Tarefas/AppBarTarefas.js"
 import Pontos from "../../sections/@dashboard/Pontos";
 import Cargos from "../../sections/@dashboard/Cargos";
 import Clientes from "../../sections/@dashboard/Clientes";
@@ -109,13 +110,20 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 export default function Dashboard(props) {
+  
+  const [nome, setNome] = React.useState("null");
+  const [perfi, setPerfil] = React.useState("null");
+  const [sobrenome, setSobrenome] = React.useState("null");
+  const [foto, setFoto] = React.useState("null");
+  const [idUsuario, setIdUsuario] = React.useState(props.dados.usuario.id_usuarios);
+  const [menuDescricao, setMenuDescricao] = React.useState("Tarefa");
+  
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
   const usuarios = props.dados.usuario;
-
   const carregaDados = React.useCallback(() => {
     const cod_perfil = usuarios.cod_perfil;
     if (cod_perfil == 4) {
@@ -129,23 +137,19 @@ export default function Dashboard(props) {
     }
     setSobrenome(usuarios.sobrenome);
     setNome(usuarios.nome);
+    setIdUsuario(usuarios.id_usuarios)
+    setMenuDescricao("Tarefa");
     const bufferData = !usuarios.foto ? "0" : usuarios.foto.data;
     const fotoBase = Buffer.from(bufferData).toString("base64");
     const fotoAvatar = atob(fotoBase);
     bufferData != "0"
       ? setFoto(fotoAvatar)
       : setFoto("/assets/images/avatars/avatar_default.jpg");
-  }, [usuarios]);
+  }, [props.dados.usuario]);
 
   React.useEffect(() => {
     carregaDados();
   }, [carregaDados]);
-
-  const [nome, setNome] = React.useState("null");
-  const [perfi, setPerfil] = React.useState("null");
-  const [sobrenome, setSobrenome] = React.useState("null");
-  const [foto, setFoto] = React.useState("null");
-  const [menuDescricao, setMenuDescricao] = React.useState("Tarefa");
 
   const ClickItem = (itemText) => {
     setMenuDescricao(itemText);
@@ -155,10 +159,10 @@ export default function Dashboard(props) {
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}>
+        <AppBar position="absolute" open={open}  sx={{ backgroundColor: '#3F51B5', padding: '2px' }}>
           <Toolbar
             sx={{
-              pr: "24px", // keep right padding when drawer closed
+              pr: "24px",
             }}
           >
             <IconButton
@@ -180,7 +184,8 @@ export default function Dashboard(props) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard: {menuDescricao}
+              <AppBarTarefas /> 
+              
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -209,7 +214,6 @@ export default function Dashboard(props) {
                     >
                       {nome} {sobrenome}
                     </Typography>
-
                     <Typography
                       variant="body2"
                       sx={{ color: "text.secondary" }}
@@ -242,7 +246,7 @@ export default function Dashboard(props) {
           }}
         >
           {menuDescricao === "Tarefa" ? (
-            <Tarefas />
+            <Tarefas idUsuario={idUsuario}/>
           ) : menuDescricao === "Cargos" ? (
             <Cargos />
           ) : menuDescricao === "Clientes" ? (

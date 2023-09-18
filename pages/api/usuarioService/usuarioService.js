@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = 'https://api-ts-powerful.jamb-devs.tech'; //process.env.DNS_BACKEND;
+const baseUrl = process.env.NEXT_PUBLIC_DNS_BACKEND;
 const api = axios.create({
   baseURL: baseUrl,
 });

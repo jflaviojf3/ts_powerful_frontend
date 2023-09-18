@@ -59,7 +59,7 @@ const LoginForm = () => {
   return (
     <>
       <Stack direction="row" spacing={2}>
-        <Button fullWidth size="large" color="inherit" variant="outlined" href={`https://api-ts-powerful.jamb-devs.tech/v1/auth/google`} >
+        <Button fullWidth size="large" color="inherit" variant="outlined" href={`${process.env.NEXT_PUBLIC_DNS_BACKEND}/v1/auth/google`} >
           <Iconify
             icon="logos:google"
             width={80}
