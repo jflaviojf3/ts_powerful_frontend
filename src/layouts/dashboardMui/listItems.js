@@ -13,6 +13,7 @@ import Groups2Icon from "@mui/icons-material/Groups2";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 import SettingsIcon from "@mui/icons-material/Settings";
+import LogoutIcon from '@mui/icons-material/Logout';
 import Divider from "@mui/material/Divider";
 
 const meusItems = ({ ClickItem }) => {
@@ -87,7 +88,7 @@ const meusItems = ({ ClickItem }) => {
           <ListItemText secondary="Cargos" />
         </ListItemButton>
       </React.Fragment>
-      <Divider sx={{ mt: 6 }} />
+      <Divider sx={{ mt: 1 }} />
       <React.Fragment>
         <ListItemButton onClick={() => ClickItem("Organização")}>
           <ListItemIcon>
@@ -100,6 +101,12 @@ const meusItems = ({ ClickItem }) => {
             <SettingsIcon />
           </ListItemIcon>
           <ListItemText secondary="Configuração" />
+        </ListItemButton>
+        <ListItemButton onClick={() => ClickItem("Logout")}>
+          <ListItemIcon>
+            <LogoutIcon />
+          </ListItemIcon>
+          <ListItemText secondary="Logout" />
         </ListItemButton>
       </React.Fragment>
     </React.Fragment>

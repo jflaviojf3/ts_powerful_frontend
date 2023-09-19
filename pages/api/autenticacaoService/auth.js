@@ -1,5 +1,7 @@
 import axios from "axios";
 import { tokenService } from "./tokenService";
+import { useRouter } from 'next/router'
+
 
 const baseUrl = process.env.NEXT_PUBLIC_DNS_BACKEND;
 const api = axios.create({
@@ -35,5 +37,12 @@ export const authService = {
       .catch(function (error) {
         throw error.response.data.message;
       });
+  },
+
+  logout() {
+    tokenService.delete();
+    const router = useRouter()
+    router.push('/')
   }
+
 };

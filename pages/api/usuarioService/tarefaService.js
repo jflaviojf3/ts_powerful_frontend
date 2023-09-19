@@ -44,4 +44,17 @@ export const tarefaService = {
         throw error.data;
       });
   },
+
+  async insereTarefaUsuario(token, usuarioId, body) {
+    return api
+      .post(`/v1/usuarios/${usuarioId}/tarefa`, body, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(function (response) {
+        return response.data;
+      })
+      .catch(function (error) {
+        throw error.data;
+      });
+  },
 };

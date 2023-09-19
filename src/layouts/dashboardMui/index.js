@@ -33,6 +33,8 @@ import VisualizarRelatorios from "../../sections/@dashboard/VisualizarRelatorios
 import Configuracao from "../../sections/@dashboard/Configuracao";
 import Organizacao from "../../sections/@dashboard/Organizacao";
 
+import { authService } from "../../../pages/api/autenticacaoService/auth.js";
+
 const StyledAccount = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -184,7 +186,7 @@ export default function Dashboard(props) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              <AppBarTarefas /> 
+              <AppBarTarefas idUsuario={idUsuario} setMenuDescricao={setMenuDescricao}/> 
               
             </Typography>
             <IconButton color="inherit">
@@ -263,8 +265,10 @@ export default function Dashboard(props) {
             <Projetos />
           ) : menuDescricao === "Visualizar Relatorios" ? (
             <VisualizarRelatorios />
-          ) : (
+          ) : menuDescricao === "Ponto" ? (
             <Pontos />
+          ) : (
+            authService.logout()
           )}
           <Copyright sx={{ pt: 4 }} />
         </Box>
