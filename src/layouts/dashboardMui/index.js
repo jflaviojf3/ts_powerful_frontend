@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useRouter } from 'next/router';
 import {
   styled,
   createTheme,
@@ -112,7 +113,7 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 export default function Dashboard(props) {
-  
+  const router = useRouter();
   const [nome, setNome] = React.useState("null");
   const [perfi, setPerfil] = React.useState("null");
   const [sobrenome, setSobrenome] = React.useState("null");
@@ -268,7 +269,8 @@ export default function Dashboard(props) {
           ) : menuDescricao === "Ponto" ? (
             <Pontos />
           ) : (
-            authService.logout()
+            authService.logout(),
+            router.push('/')
           )}
           <Copyright sx={{ pt: 4 }} />
         </Box>
