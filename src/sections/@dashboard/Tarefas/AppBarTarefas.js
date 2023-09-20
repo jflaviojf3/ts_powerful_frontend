@@ -36,7 +36,7 @@ export default function AppBarTarefas({ idUsuario, setRecarrega, recarrega }) {
           idUsuario,
           body
           ).then(function(response){
-            setRecarrega(recarrega+1)
+            //setRecarrega(recarrega+1)
             setTrocaIcone(!trocaIcone);
           })
         } catch (error) {

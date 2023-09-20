@@ -120,7 +120,7 @@ export default function Dashboard(props) {
   const [sobrenome, setSobrenome] = React.useState("null");
   const [foto, setFoto] = React.useState("null");
   const [idUsuario, setIdUsuario] = React.useState(props.dados.usuario.id_usuarios);
-  const [recarrega, setRecarrega] = React.useState(null);
+  //const [recarrega, setRecarrega] = React.useState(null);
   const [menuDescricao, setMenuDescricao] = React.useState("Tarefa");
   const [descricaoTarefa, setDescricaoTarefa] = React.useState("");
   
@@ -135,6 +135,7 @@ export default function Dashboard(props) {
 
   const usuarios = props.dados.usuario;
   const carregaDados = React.useCallback(() => {
+
     const cod_perfil = usuarios.cod_perfil;
     if (cod_perfil == 4) {
       setPerfil("Adm. Sistema");
@@ -194,9 +195,9 @@ export default function Dashboard(props) {
               color="inherit"
               noWrap
               sx={{ flexGrow: 1 }}
-            >
-              <AppBarTarefas idUsuario={idUsuario} setDescricaoTarefa={setDescricaoTarefa} descricaoTarefa={descricaoTarefa}/> 
-              
+            > 
+              <AppBarTarefas idUsuario={idUsuario} /> 
+              {/* setDescricaoTarefa={setDescricaoTarefa} descricaoTarefa={descricaoTarefa} */}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -238,7 +239,6 @@ export default function Dashboard(props) {
             <MeusItems ClickItem={ClickItem} />
           </List>
         </Drawer>
-
         <Box
           component="main"
           sx={{
@@ -252,7 +252,8 @@ export default function Dashboard(props) {
           }}
         >
           {menuDescricao === "Tarefa" ? (
-            <Tarefas idUsuario={idUsuario} setDescricaoTarefa={setDescricaoTarefa}/>
+            <Tarefas idUsuario={idUsuario}/>
+            //  setDescricaoTarefa={setDescricaoTarefa}
           ) : menuDescricao === "Cargos" ? (
             <Cargos />
           ) : menuDescricao === "Clientes" ? (
