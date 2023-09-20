@@ -33,6 +33,7 @@ import Projetos from "../../sections/@dashboard/Projetos";
 import VisualizarRelatorios from "../../sections/@dashboard/VisualizarRelatorios";
 import Configuracao from "../../sections/@dashboard/Configuracao";
 import Organizacao from "../../sections/@dashboard/Organizacao";
+import Carregando from "../../sections/@dashboard/Carregando";
 
 import { authService } from "../../../pages/api/autenticacaoService/auth.js";
 
@@ -119,12 +120,18 @@ export default function Dashboard(props) {
   const [sobrenome, setSobrenome] = React.useState("null");
   const [foto, setFoto] = React.useState("null");
   const [idUsuario, setIdUsuario] = React.useState(props.dados.usuario.id_usuarios);
+  const [recarrega, setRecarrega] = React.useState(null);
   const [menuDescricao, setMenuDescricao] = React.useState("Tarefa");
+  const [descricaoTarefa, setDescricaoTarefa] = React.useState("");
   
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  // React.useEffect(() => {
+  //   ClickItem("Tarefa")
+  // }, [recarrega]);
 
   const usuarios = props.dados.usuario;
   const carregaDados = React.useCallback(() => {
@@ -155,7 +162,8 @@ export default function Dashboard(props) {
   }, [carregaDados]);
 
   const ClickItem = (itemText) => {
-    setMenuDescricao(itemText);
+    //setRecarrega(recarrega +1)
+    setMenuDescricao(itemText)
   };
 
   return (
@@ -187,14 +195,9 @@ export default function Dashboard(props) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              <AppBarTarefas idUsuario={idUsuario} setMenuDescricao={setMenuDescricao}/> 
+              <AppBarTarefas idUsuario={idUsuario} setDescricaoTarefa={setDescricaoTarefa} descricaoTarefa={descricaoTarefa}/> 
               
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -249,7 +252,7 @@ export default function Dashboard(props) {
           }}
         >
           {menuDescricao === "Tarefa" ? (
-            <Tarefas idUsuario={idUsuario}/>
+            <Tarefas idUsuario={idUsuario} setDescricaoTarefa={setDescricaoTarefa}/>
           ) : menuDescricao === "Cargos" ? (
             <Cargos />
           ) : menuDescricao === "Clientes" ? (
@@ -268,6 +271,8 @@ export default function Dashboard(props) {
             <VisualizarRelatorios />
           ) : menuDescricao === "Ponto" ? (
             <Pontos />
+          ) : menuDescricao === "Carregando" ? (
+            <Carregando />
           ) : (
             authService.logout(),
             router.push('/')

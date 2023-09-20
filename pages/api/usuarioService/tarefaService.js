@@ -57,4 +57,30 @@ export const tarefaService = {
         throw error.data;
       });
   },
+
+  async atualizaTarefaUsuario(token, usuarioId, idtarefa, entrada, body) {
+    return api
+      .put(`/v1/usuarios/${usuarioId}/tarefa/${idtarefa}/entrada/${entrada}`, body, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(function (response) {
+        return response.data;
+      })
+      .catch(function (error) {
+        throw error.data;
+      });
+  },
+
+  async deletaTarefaUsuario(token, usuarioId, idtarefa) {
+    return api
+      .delete(`/v1/usuarios/${usuarioId}/tarefa/${idtarefa}/entrada/1`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(function (response) {
+        return response.data;
+      })
+      .catch(function (error) {
+        throw error.data;
+      });
+  },
 };

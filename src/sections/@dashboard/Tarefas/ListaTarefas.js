@@ -13,7 +13,8 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-export default function ListaTarefas({ idUsuario }) {
+export default function ListaTarefas({ idUsuario, setDescricaoTarefa }) {
+
   const [listaDia, setListaDia] = React.useState([]);
   async function retornaListaDias() {
     const cookies = nookies.get();
@@ -38,16 +39,16 @@ export default function ListaTarefas({ idUsuario }) {
           <>
           <Stack direction="row" spacing={2} key={dia} sx={{ mt: 3 }}>
             <Table size="small">
-              <GrupoTarefa idUsuario={idUsuario} dia={dia} />
+              <GrupoTarefa idUsuario={idUsuario} dia={dia} setDescricaoTarefa={setDescricaoTarefa} />
             </Table>
           </Stack>
             {/* <Divider sx={{ mt: 4 }} color='secondary' /> */}
             </>
         ))}
 
-      <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
+      {/* <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
         Carregar Mais...
-      </Link>
+      </Link> */}
     </React.Fragment>
   );
 }

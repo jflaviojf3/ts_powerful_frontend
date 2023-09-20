@@ -5,10 +5,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import { Stack, Divider } from "@mui/material";
 
-const Pontos = () => {
+const Carregando = () => {
   return (
     <>
       <Box
@@ -37,13 +35,8 @@ const Pontos = () => {
                 }}
               >
               <Typography variant="body2" color="text.secondary" align="center">
-                {" "}TELA DE PONTOS{" "}
+                {" "}Carregando...{" "}
               </Typography>
-              <Stack direction="row" spacing={2} key={dia} sx={{ mt: 3 }}>
-            <Table size="small">
-              
-            </Table>
-          </Stack>
               </Paper>
             </Grid>
           </Grid>
@@ -53,4 +46,4 @@ const Pontos = () => {
   );
 };
 
-export default Pontos;
+export default Carregando;

@@ -1,13 +1,17 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import ListaTarefas from "./ListaTarefas";
 
 const Tarefas = (props) => {
+
+    React.useEffect(() => {
+      console.log("entrou na tarefa")
+  }, [props]);
+
   return (
     <>
       <Box
@@ -34,7 +38,7 @@ const Tarefas = (props) => {
                   height: 'auto',
                 }}
               >
-              <ListaTarefas idUsuario={props.idUsuario} />
+              <ListaTarefas idUsuario={props.idUsuario} setDescricaoTarefa={props.setDescricaoTarefa} />
               </Paper>
             </Grid>
           </Grid>

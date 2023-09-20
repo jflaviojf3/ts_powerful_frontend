@@ -4,13 +4,13 @@ import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import Stack from "@mui/material/Stack";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 
+import Relogio from "../../../components/Relogio"
 import { tarefaService } from "../../../../pages/api/usuarioService/tarefaService";
 import { getCurrentDateTime } from "./../../../utils/formatTime";
 import nookies from "nookies";
 
-export default function AppBarTarefas({ idUsuario, setMenuDescricao }) {
+export default function AppBarTarefas({ idUsuario, setRecarrega, recarrega }) {
   const [trocaIcone, setTrocaIcone] = React.useState(true);
-
   const [descricao, setDescricao] = React.useState("");
   const handleChange = (e) => {
     const value = e.target.value;
@@ -35,11 +35,11 @@ export default function AppBarTarefas({ idUsuario, setMenuDescricao }) {
           cookies.ACCESS_TOKEN,
           idUsuario,
           body
-        );
-        setMenuDescricao("Ponto")
-        setMenuDescricao("Tarefa")
-        setTrocaIcone(!trocaIcone);
-      } catch (error) {
+          ).then(function(response){
+            setRecarrega(recarrega+1)
+            setTrocaIcone(!trocaIcone);
+          })
+        } catch (error) {
         alert(error);
         console.error("Erro na solicitação POST:", error);
       }
@@ -55,7 +55,7 @@ export default function AppBarTarefas({ idUsuario, setMenuDescricao }) {
         direction="row"
         spacing={{ xs: 1, sm: 2, md: 4 }}
         sx={{ gap: 1, margin: 1 }}
-        alignItems="flex-start"
+        alignItems="center"
       >
         <TextField
           label="Registro de Tarefa"
@@ -70,6 +70,7 @@ export default function AppBarTarefas({ idUsuario, setMenuDescricao }) {
           }}
         />
 
+        <Relogio isRunning={!trocaIcone} />
         <IconButton onClick={playtarefa}>
           {trocaIcone ? (
             <PlayCircleIcon sx={{ fontSize: 50, color: "#FFFFFFBF" }} />
