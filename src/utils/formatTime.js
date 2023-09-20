@@ -68,3 +68,21 @@ export function getCurrentDateTime() {
   const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   return formattedDateTime;
 }
+
+export function minutosParaSegundos(tempo) {
+  const partes = tempo.split(':');
+  if (partes.length !== 3) {
+    throw new Error('O formato de entrada deve ser "HH:mm:ss"');
+  }
+
+  const horas = parseInt(partes[0], 10);
+  const minutos = parseInt(partes[1], 10);
+  const segundos = parseInt(partes[2], 10);
+
+  if (isNaN(horas) || isNaN(minutos) || isNaN(segundos)) {
+    throw new Error('Os valores devem ser números inteiros');
+  }
+
+  const totalSegundos = horas * 3600000  + minutos * 60 + segundos;
+  return totalSegundos;
+}

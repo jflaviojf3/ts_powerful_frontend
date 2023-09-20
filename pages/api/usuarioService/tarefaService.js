@@ -32,6 +32,19 @@ export const tarefaService = {
       });
   },
 
+  async pegaTarefaAtiva(token, usuarioId) {
+    return api
+      .get(`/v1/usuarios/${usuarioId}/tarefaAtiva`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(function (response) {
+        return response.data;
+      })
+      .catch(function (error) {
+        throw error.data;
+      });
+  },
+
   async pegaTarefasDia(token, usuarioId, dia) {
     return api
       .get(`/v1/usuarios/${usuarioId}/tarefaDia/${dia}`, {
@@ -71,9 +84,9 @@ export const tarefaService = {
       });
   },
 
-  async deletaTarefaUsuario(token, usuarioId, idtarefa) {
+  async deletaTarefaUsuario(token, usuarioId, idtarefa, entrada) {
     return api
-      .delete(`/v1/usuarios/${usuarioId}/tarefa/${idtarefa}/entrada/1`, {
+      .delete(`/v1/usuarios/${usuarioId}/tarefa/${idtarefa}/entrada/${entrada}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
