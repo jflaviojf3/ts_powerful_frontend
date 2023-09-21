@@ -1,30 +1,25 @@
 import { useState, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 
-function Clock({ isRunning, minutos }) {
+function Clock({ isRunning, minutos} ) {
   const [time, setTime] = useState(0);
 
   useEffect(() => {
     let interval;
 
     if (isRunning) {
-      console.log(minutos)
-      //minutos ? setTime(minutos) : ("")
-      let valorInicialSeg = minutos
+      let valorInicialSeg = minutos;
       interval = setInterval(() => {
         setTime((prevTime) => {
-          prevTime = valorInicialSeg
-          valorInicialSeg =  prevTime +1 
-          console.log(prevTime)
-          return (prevTime)
-        }
-         );
-      }, 1000)
+          prevTime = valorInicialSeg;
+          valorInicialSeg = prevTime + 1;
+          return (prevTime);
+        });
+      }, 1000);
     } else {
       clearInterval(interval);
-      setTime(0)
+      setTime(0);
     }
-
     return () => {
       clearInterval(interval);
     };

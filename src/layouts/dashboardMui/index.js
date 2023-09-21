@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import {
   styled,
   createTheme,
@@ -15,14 +15,13 @@ import Avatar from "@mui/material/Avatar";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
 import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+
 //MeusComponentes
 import MeusItems from "./listItems.js";
-import Tarefas from "../../sections/@dashboard/Tarefas"
+import Tarefas from "../../sections/@dashboard/Tarefas";
 import Pontos from "../../sections/@dashboard/Pontos";
 import Cargos from "../../sections/@dashboard/Cargos";
 import Clientes from "../../sections/@dashboard/Clientes";
@@ -34,18 +33,18 @@ import Configuracao from "../../sections/@dashboard/Configuracao";
 import Organizacao from "../../sections/@dashboard/Organizacao";
 import Carregando from "../../sections/@dashboard/Carregando";
 
-import AppBarTarefas from "../../sections/@dashboard/Tarefas/AppBarTarefas.js"
-import AppBarPonto from "../../sections/@dashboard/Pontos/AppBarPonto.js"
-import AppBarCargos from "../../sections/@dashboard/Cargos/AppBarCargos.js"
-import AppBarCarregando from "../../sections/@dashboard/Carregando/AppBarCarregando.js"
-import AppBarClientes from "../../sections/@dashboard/Clientes/AppBarClientes.js"
-import AppBarConfiguracao from "../../sections/@dashboard/Configuracao/AppBarConfiguracao.js"
-import AppBarEquipes from "../../sections/@dashboard/Equipes/AppBarEquipes.js"
-import AppBarExportarDados from "../../sections/@dashboard/ExportarDados/AppBarExportarDados.js"
-import AppBarOrganizacao from "../../sections/@dashboard/Projetos/AppBarProjetos.js"
-import AppBarProjetos from "../../sections/@dashboard/Projetos/AppBarProjetos.js"
-import AppBarVisualizarRelatorios from "../../sections/@dashboard/VisualizarRelatorios/AppBarVisualizarRelatorios.js"
-import AppBarUsuario from "../../sections/@dashboard/Tarefas/AppBarTarefas.js"
+import AppBarTarefas from "../../sections/@dashboard/Tarefas/AppBarTarefas.js";
+import AppBarPonto from "../../sections/@dashboard/Pontos/AppBarPonto.js";
+import AppBarCargos from "../../sections/@dashboard/Cargos/AppBarCargos.js";
+import AppBarCarregando from "../../sections/@dashboard/Carregando/AppBarCarregando.js";
+import AppBarClientes from "../../sections/@dashboard/Clientes/AppBarClientes.js";
+import AppBarConfiguracao from "../../sections/@dashboard/Configuracao/AppBarConfiguracao.js";
+import AppBarEquipes from "../../sections/@dashboard/Equipes/AppBarEquipes.js";
+import AppBarExportarDados from "../../sections/@dashboard/ExportarDados/AppBarExportarDados.js";
+import AppBarOrganizacao from "../../sections/@dashboard/Projetos/AppBarProjetos.js";
+import AppBarProjetos from "../../sections/@dashboard/Projetos/AppBarProjetos.js";
+import AppBarVisualizarRelatorios from "../../sections/@dashboard/VisualizarRelatorios/AppBarVisualizarRelatorios.js";
+import AppBarUsuario from "../../sections/@dashboard/Tarefas/AppBarTarefas.js";
 
 import { authService } from "../../../pages/api/autenticacaoService/auth.js";
 
@@ -131,24 +130,22 @@ export default function Dashboard(props) {
   const [perfi, setPerfil] = React.useState("null");
   const [sobrenome, setSobrenome] = React.useState("null");
   const [foto, setFoto] = React.useState("null");
-  const [idUsuario, setIdUsuario] = React.useState(props.dados.usuario.id_usuarios);
+  const [idUsuario, setIdUsuario] = React.useState(
+    props.dados.usuario.id_usuarios
+  );
   const [recarrega, setRecarrega] = React.useState(null);
   const [menuDescricao, setMenuDescricao] = React.useState("Tarefa");
   const [appBarAtual, setAppBarAtual] = React.useState("Tarefa");
   const [descricaoTarefa, setDescricaoTarefa] = React.useState("");
-  
+
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
-  // React.useEffect(() => {
-  //   ClickItem("Tarefa")
-  // }, [recarrega]);
 
   const usuarios = props.dados.usuario;
   const carregaDados = React.useCallback(() => {
-
     const cod_perfil = usuarios.cod_perfil;
     if (cod_perfil == 4) {
       setPerfil("Adm. Sistema");
@@ -161,7 +158,7 @@ export default function Dashboard(props) {
     }
     setSobrenome(usuarios.sobrenome);
     setNome(usuarios.nome);
-    setIdUsuario(usuarios.id_usuarios)
+    setIdUsuario(usuarios.id_usuarios);
     setMenuDescricao("Tarefa");
     const bufferData = !usuarios.foto ? "0" : usuarios.foto.data;
     const fotoBase = Buffer.from(bufferData).toString("base64");
@@ -176,16 +173,20 @@ export default function Dashboard(props) {
   }, [carregaDados]);
 
   const ClickItem = (itemText) => {
-    setRecarrega(recarrega +1)
-    setMenuDescricao(itemText)
-    setAppBarAtual(itemText)
+    setRecarrega(recarrega + 1);
+    setMenuDescricao(itemText);
+    setAppBarAtual(itemText);
   };
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}  sx={{ backgroundColor: '#3F51B5', padding: '2px' }}>
+        <AppBar
+          position="absolute"
+          open={open}
+          sx={{ backgroundColor: "#3F51B5", padding: "2px" }}
+        >
           <Toolbar
             sx={{
               pr: "24px",
@@ -209,34 +210,36 @@ export default function Dashboard(props) {
               color="inherit"
               noWrap
               sx={{ flexGrow: 1 }}
-            > 
+            >
               {appBarAtual === "Tarefa" ? (
-            <AppBarTarefas idUsuario={idUsuario} recarrega={recarrega} setDescricaoTarefa={setDescricaoTarefa} /> 
-             
-          ) : appBarAtual === "Cargos" ? (
-            <AppBarCargos />
-          ) : appBarAtual === "Clientes" ? (
-            <AppBarClientes />
-          ) : appBarAtual === "Configuração" ? (
-            <AppBarConfiguracao />
-          ) : appBarAtual === "Equipes" ? (
-            <AppBarEquipes />
-          ) : appBarAtual === "Exportar Dados" ? (
-            <AppBarExportarDados />
-          ) : appBarAtual === "Organização" ? (
-            <AppBarOrganizacao />
-          ) : appBarAtual === "Projetos" ? (
-            <AppBarProjetos />
-          ) : appBarAtual === "Visualizar Relatorios" ? (
-            <AppBarVisualizarRelatorios />
-          ) : appBarAtual === "Ponto" ? (
-            <AppBarPonto />
-          ) : appBarAtual === "Carregando" ? (
-            <AppBarCarregando />
-          ) : (
-            router.push('/'),
-            authService.logout()
-          )}
+                <AppBarTarefas
+                  idUsuario={idUsuario}
+                  recarrega={recarrega}
+                  setRecarrega={setRecarrega}
+                />
+              ) : appBarAtual === "Cargos" ? (
+                <AppBarCargos />
+              ) : appBarAtual === "Clientes" ? (
+                <AppBarClientes />
+              ) : appBarAtual === "Configuração" ? (
+                <AppBarConfiguracao />
+              ) : appBarAtual === "Equipes" ? (
+                <AppBarEquipes />
+              ) : appBarAtual === "Exportar Dados" ? (
+                <AppBarExportarDados />
+              ) : appBarAtual === "Organização" ? (
+                <AppBarOrganizacao />
+              ) : appBarAtual === "Projetos" ? (
+                <AppBarProjetos />
+              ) : appBarAtual === "Visualizar Relatorios" ? (
+                <AppBarVisualizarRelatorios />
+              ) : appBarAtual === "Ponto" ? (
+                <AppBarPonto />
+              ) : appBarAtual === "Carregando" ? (
+                <AppBarCarregando />
+              ) : (
+                (router.push("/"), authService.logout())
+              )}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -291,9 +294,9 @@ export default function Dashboard(props) {
           }}
         >
           {menuDescricao === "Tarefa" ? (
-            <Tarefas idUsuario={idUsuario}/>
-            //  setDescricaoTarefa={setDescricaoTarefa}
-          ) : menuDescricao === "Cargos" ? (
+            <Tarefas idUsuario={idUsuario} recarrega={recarrega} setRecarrega={setRecarrega} />
+          ) : 
+          menuDescricao === "Cargos" ? (
             <Cargos />
           ) : menuDescricao === "Clientes" ? (
             <Clientes />
@@ -314,8 +317,7 @@ export default function Dashboard(props) {
           ) : menuDescricao === "Carregando" ? (
             <Carregando />
           ) : (
-            router.push('/'),
-            authService.logout()
+            (router.push("/"), authService.logout())
           )}
           <Copyright sx={{ pt: 4 }} />
         </Box>

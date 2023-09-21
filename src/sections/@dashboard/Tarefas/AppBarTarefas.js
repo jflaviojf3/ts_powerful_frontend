@@ -4,25 +4,32 @@ import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import Stack from "@mui/material/Stack";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 
-import Relogio from "../../../components/Relogio"
+import Relogio from "../../../components/Relogio";
 import { tarefaService } from "../../../../pages/api/usuarioService/tarefaService";
-import { getCurrentDateTime, fDifMinutos, minutosParaSegundos } from "./../../../utils/formatTime";
+import {
+  getCurrentDateTime,
+  fDifMinutos,
+  minutosParaSegundos,
+} from "./../../../utils/formatTime";
 import nookies from "nookies";
 
-export default function AppBarTarefas({ idUsuario, recarrega, setDescricaoTarefa }) {
+export default function AppBarTarefas({
+  idUsuario,
+  recarrega,
+  setRecarrega
+}) {
   const [trocaIcone, setTrocaIcone] = React.useState(true);
   const [descricao, setDescricao] = React.useState("");
   const [minRelogio, setMinRelogio] = React.useState(null);
-  const [idTarefa, setIdTarefa] = React.useState(1);
   const [tarefaAtiva, setTarefaAtiva] = React.useState(null);
-  
+
   const handleChange = (e) => {
     const value = e.target.value;
     setDescricao(value);
   };
 
   const playtarefa = async (e) => {
-    if (trocaIcone){
+    if (trocaIcone) {
       e.preventDefault();
       try {
         if (!descricao) {
@@ -35,79 +42,69 @@ export default function AppBarTarefas({ idUsuario, recarrega, setDescricaoTarefa
           descricao: descricao,
           data_inicio: getCurrentDateTime(),
         };
-        await tarefaService.insereTarefaUsuario(
-          cookies.ACCESS_TOKEN,
-          idUsuario,
-          body
-          ).then(function(response){
-            setIdTarefa(response.id_tarefas)
+        await tarefaService
+          .insereTarefaUsuario(cookies.ACCESS_TOKEN, idUsuario, body)
+          .then(function (response) {
             setTrocaIcone(!trocaIcone);
-          })
-        } catch (error) {
+          });
+          setRecarrega(recarrega+1)
+      } catch (error) {
         alert(error);
         console.error("Erro na solicitação POST:", error);
       }
-    } else{
+    } else {
       e.preventDefault();
       try {
         const body = {
           data_fim: getCurrentDateTime(),
         };
         const cookies = nookies.get();
-        await tarefaService.atualizaTarefaUsuario(
-          cookies.ACCESS_TOKEN,
-          idUsuario,
-          idTarefa,
-          1,
-          body
-        ).then(function(response){
-            //setRecarrega(recarrega+1)
-            setTrocaIcone(!trocaIcone);
-          })
-        } catch (error) {
+        await tarefaService
+          .atualizaTarefaUsuario(
+            cookies.ACCESS_TOKEN,
+            idUsuario,
+            tarefaAtiva.id_tarefas,
+            tarefaAtiva.entrada,
+            body
+          )
+          .then(function (response) {
+            setRecarrega(recarrega+1)
+          });
+      } catch (error) {
         alert(error);
         console.error("Erro na solicitação POST:", error);
       }
       setTrocaIcone(!trocaIcone);
-      setDescricao("")
+      setDescricao("");
     }
   };
 
-  const retornaTarefaAtiva = async()=>{
-    console.log("Retorna Tarefa Ativa!")
+  const retornaTarefaAtiva = async () => {
+    console.log("AppBarTarefa", );
     const cookies = nookies.get();
-    const resultado =  await tarefaService.pegaTarefaAtiva(
+    const resultado = await tarefaService.pegaTarefaAtiva(
       cookies.ACCESS_TOKEN,
       idUsuario
-    )
-    await setTarefaAtiva(resultado)
-  }
-
-  //  React.useCallback(() => {
-  //   retornaTarefaAtiva()
-  //  }, [idUsuario]);
+    );
+    await setTarefaAtiva(resultado);
+  };
 
   React.useEffect(() => {
     retornaTarefaAtiva();
-    atualizaCampo()
-    console.log(recarrega)
-    console.log(tarefaAtiva)
+    atualizaCampo();
   }, [recarrega]);
 
-  const atualizaCampo = async()=> {
-    await tarefaAtiva ? (
-      console.log(tarefaAtiva.descricao),
-      console.log(fDifMinutos(tarefaAtiva.data_inicio, getCurrentDateTime())),
-      setTrocaIcone(false),
-      setDescricao(tarefaAtiva.descricao),
-      setMinRelogio(minutosParaSegundos(fDifMinutos(tarefaAtiva.data_inicio, getCurrentDateTime()) ))
-    ): (        
-      setDescricao(""),
-      setTrocaIcone(true),
-      setMinRelogio(null)
-    )
-  }
-
+  const atualizaCampo = async () => {
+    (await tarefaAtiva)
+      ? (setTrocaIcone(false),
+        setDescricao(tarefaAtiva.descricao),
+        setMinRelogio(
+          minutosParaSegundos(
+            fDifMinutos(tarefaAtiva.data_inicio, getCurrentDateTime())
+          )
+        ))
+      : (setTrocaIcone(true), setDescricao(""), setMinRelogio(null));
+  };
 
   return (
     <>

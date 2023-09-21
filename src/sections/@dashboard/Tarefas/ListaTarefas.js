@@ -13,7 +13,7 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-export default function ListaTarefas({ idUsuario, setDescricaoTarefa }) {
+export default function ListaTarefas({ idUsuario, recarrega, setRecarrega }) {
 
   const [listaDia, setListaDia] = React.useState([]);
   async function retornaListaDias() {
@@ -27,7 +27,8 @@ export default function ListaTarefas({ idUsuario, setDescricaoTarefa }) {
 
   React.useEffect(() => {
     retornaListaDias();
-  }, []);
+    console.log("Index Tarefa > ListaTarefas", recarrega)
+  }, [recarrega]);
 
   return (
     <React.Fragment>
@@ -39,7 +40,8 @@ export default function ListaTarefas({ idUsuario, setDescricaoTarefa }) {
           <>
           <Stack direction="row" spacing={2} key={dia} sx={{ mt: 3 }}>
             <Table size="small">
-              <GrupoTarefa idUsuario={idUsuario} dia={dia} setDescricaoTarefa={setDescricaoTarefa} />
+              <p>Lista Tarefas {recarrega}</p>
+              <GrupoTarefa idUsuario={idUsuario} dia={dia} recarrega={recarrega} setRecarrega={setRecarrega} />
             </Table>
           </Stack>
             {/* <Divider sx={{ mt: 4 }} color='secondary' /> */}

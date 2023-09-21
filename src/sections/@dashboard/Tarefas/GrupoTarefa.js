@@ -14,6 +14,7 @@ import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
+import Tooltip from '@mui/material/Tooltip';
 
 import { IconButton } from "@mui/material";
 import GroupIcon from "@mui/icons-material/Group";
@@ -28,11 +29,8 @@ import {
 import nookies from "nookies";
 import { tarefaService } from "../../../../pages/api/usuarioService/tarefaService";
 
-function preventDefault(event) {
-  event.preventDefault();
-}
+const GrupoTarefa = ({ idUsuario, dia, recarrega, setRecarrega }) => {
 
-const GrupoTarefa = ({ idUsuario, dia, setDescricaoTarefa }) => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
 
@@ -98,7 +96,9 @@ const GrupoTarefa = ({ idUsuario, dia, setDescricaoTarefa }) => {
 
   React.useEffect(() => {
     retornaTarefas();
-  }, []);
+    console.log("Index Tarefa > ListaTarefas > GrupoTarefa", recarrega)
+    console.log(tarefas)
+  }, [recarrega]);
 
   async function deletaTarefas(id_tarefas, entrada) {
     const cookies = nookies.get();
@@ -108,6 +108,8 @@ const GrupoTarefa = ({ idUsuario, dia, setDescricaoTarefa }) => {
       id_tarefas,
       entrada
     );
+
+    setRecarrega(recarrega+1)
   }
 
   async function replayTarefas(entrada, descricao) {
@@ -122,6 +124,7 @@ const GrupoTarefa = ({ idUsuario, dia, setDescricaoTarefa }) => {
       idUsuario,
       body
     );
+    setRecarrega(recarrega+1)
   }
 
   async function stopTarefas(idTarefa, entrada) {
@@ -136,8 +139,8 @@ const GrupoTarefa = ({ idUsuario, dia, setDescricaoTarefa }) => {
       entrada,
       body
     );
+    setRecarrega(recarrega+1)
   }
-
   return (
     <Table size="small">
       <TableHead>
@@ -155,17 +158,25 @@ const GrupoTarefa = ({ idUsuario, dia, setDescricaoTarefa }) => {
       </TableHead>
 
       <TableBody>
+      <p>GrupoTarefa {recarrega}</p>
         {
-        tarefas.map((row) => (
-          <TableRow key={row.id_tarefas + row.entrada}>
+        tarefas.map((row, index) => (
+          <TableRow key={index}>
             <TableCell sx={{ width: "60%" }} size="small">
               {row.entrada}
               {" | "}
               {row.descricao}
             </TableCell>
             <TableCell sx={{ width: "20%" }}>
-              {fDateTime(row.data_inicio, "hh:mm:ss a")}{" "}
-              {row.data_fim ? "-" : ""} {fDateTime(row.data_fim, "hh:mm:ss a")}
+            <Tooltip title={row.data_inicio} placement="top-end">
+              {fDateTime(row.data_inicio, "hh:mm:ss a")}
+              </Tooltip>
+              {" "}
+              {row.data_fim ? "-" : ""} 
+              {" "}
+              <Tooltip title={row.data_fim} placement="top-end">
+              {fDateTime(row.data_fim, "hh:mm:ss a")}
+              </Tooltip>
             </TableCell>
             <TableCell sx={{ width: "10%" }}>
               {row.data_fim
