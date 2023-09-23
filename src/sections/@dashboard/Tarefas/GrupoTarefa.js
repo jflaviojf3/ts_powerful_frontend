@@ -96,8 +96,6 @@ const GrupoTarefa = ({ idUsuario, dia, recarrega, setRecarrega }) => {
 
   React.useEffect(() => {
     retornaTarefas();
-    console.log("Index Tarefa > ListaTarefas > GrupoTarefa", recarrega)
-    console.log(tarefas)
   }, [recarrega]);
 
   async function deletaTarefas(id_tarefas, entrada) {
@@ -113,6 +111,7 @@ const GrupoTarefa = ({ idUsuario, dia, recarrega, setRecarrega }) => {
   }
 
   async function replayTarefas(entrada, descricao) {
+
     const body = {
       descricao: descricao,
       data_inicio: getCurrentDateTime(),
@@ -128,6 +127,7 @@ const GrupoTarefa = ({ idUsuario, dia, recarrega, setRecarrega }) => {
   }
 
   async function stopTarefas(idTarefa, entrada) {
+
     const body = {
       data_fim: getCurrentDateTime(),
     };
@@ -158,7 +158,6 @@ const GrupoTarefa = ({ idUsuario, dia, recarrega, setRecarrega }) => {
       </TableHead>
 
       <TableBody>
-      <p>GrupoTarefa {recarrega}</p>
         {
         tarefas.map((row, index) => (
           <TableRow key={index}>
@@ -169,13 +168,13 @@ const GrupoTarefa = ({ idUsuario, dia, recarrega, setRecarrega }) => {
             </TableCell>
             <TableCell sx={{ width: "20%" }}>
             <Tooltip title={row.data_inicio} placement="top-end">
-              {fDateTime(row.data_inicio, "hh:mm:ss a")}
+              {fDateTime(row.data_inicio, "HH:mm:ss a")}
               </Tooltip>
               {" "}
               {row.data_fim ? "-" : ""} 
               {" "}
               <Tooltip title={row.data_fim} placement="top-end">
-              {fDateTime(row.data_fim, "hh:mm:ss a")}
+              {fDateTime(row.data_fim, "HH:mm:ss a")}
               </Tooltip>
             </TableCell>
             <TableCell sx={{ width: "10%" }}>

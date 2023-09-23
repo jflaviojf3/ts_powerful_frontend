@@ -43,7 +43,6 @@ const Ponto = ({ idUsuario, recarrega, setRecarrega }) =>{
       {/* <p>{pontos[0].situacao.splint(" ", 1)} {fDateTime(pontos[0].hora_ponto, "hh:mm a")} </p>
       <p>{pontos[1].situacao.splint(" ", 1)} {fDateTime(pontos[1].hora_ponto, "hh:mm a")} </p>
       <p>{pontos[2].situacao.splint(" ", 1)} {fDateTime(pontos[2].hora_ponto, "hh:mm a")} </p> */}
-      <p></p>
       </div>
 
     </React.Fragment>

@@ -27,7 +27,6 @@ export default function ListaTarefas({ idUsuario, recarrega, setRecarrega }) {
 
   React.useEffect(() => {
     retornaListaDias();
-    console.log("Index Tarefa > ListaTarefas", recarrega)
   }, [recarrega]);
 
   return (
@@ -40,7 +39,6 @@ export default function ListaTarefas({ idUsuario, recarrega, setRecarrega }) {
           <>
           <Stack direction="row" spacing={2} key={dia} sx={{ mt: 3 }}>
             <Table size="small">
-              <p>Lista Tarefas {recarrega}</p>
               <GrupoTarefa idUsuario={idUsuario} dia={dia} recarrega={recarrega} setRecarrega={setRecarrega} />
             </Table>
           </Stack>

@@ -13,12 +13,10 @@ import {
 } from "./../../../utils/formatTime";
 import nookies from "nookies";
 
-export default function AppBarTarefas({
-  idUsuario,
-  recarrega,
-  setRecarrega
-}) {
+export default function AppBarTarefas({ idUsuario, recarrega, setRecarrega }) {
   const [trocaIcone, setTrocaIcone] = React.useState(true);
+  const [running, setRunning] = React.useState(false);
+
   const [descricao, setDescricao] = React.useState("");
   const [minRelogio, setMinRelogio] = React.useState(null);
   const [tarefaAtiva, setTarefaAtiva] = React.useState(null);
@@ -29,7 +27,7 @@ export default function AppBarTarefas({
   };
 
   const playtarefa = async (e) => {
-    if (trocaIcone) {
+    if (!running) {
       e.preventDefault();
       try {
         if (!descricao) {
@@ -42,45 +40,47 @@ export default function AppBarTarefas({
           descricao: descricao,
           data_inicio: getCurrentDateTime(),
         };
-        await tarefaService
-          .insereTarefaUsuario(cookies.ACCESS_TOKEN, idUsuario, body)
-          .then(function (response) {
-            setTrocaIcone(!trocaIcone);
-          });
-          setRecarrega(recarrega+1)
-      } catch (error) {
+        await tarefaService.insereTarefaUsuario(
+          cookies.ACCESS_TOKEN,
+          idUsuario,
+          body
+        );
+
+        setTrocaIcone(false);
+
+        setRunning(true);
+        setDescricao(descricao);
+        setRecarrega(recarrega + 1);
+        } catch (error) {
         alert(error);
         console.error("Erro na solicitação POST:", error);
       }
     } else {
-      e.preventDefault();
       try {
         const body = {
           data_fim: getCurrentDateTime(),
         };
         const cookies = nookies.get();
-        await tarefaService
-          .atualizaTarefaUsuario(
-            cookies.ACCESS_TOKEN,
-            idUsuario,
-            tarefaAtiva.id_tarefas,
-            tarefaAtiva.entrada,
-            body
-          )
-          .then(function (response) {
-            setRecarrega(recarrega+1)
-          });
+        await tarefaService.atualizaTarefaUsuario(
+          cookies.ACCESS_TOKEN,
+          idUsuario,
+          tarefaAtiva.id_tarefas,
+          tarefaAtiva.entrada,
+          body
+        );
+
+        setTrocaIcone(true);
+        setDescricao("");
+        setRunning(false);
+        setRecarrega(recarrega + 1);
       } catch (error) {
         alert(error);
         console.error("Erro na solicitação POST:", error);
       }
-      setTrocaIcone(!trocaIcone);
-      setDescricao("");
     }
   };
 
   const retornaTarefaAtiva = async () => {
-    console.log("AppBarTarefa", );
     const cookies = nookies.get();
     const resultado = await tarefaService.pegaTarefaAtiva(
       cookies.ACCESS_TOKEN,
@@ -97,7 +97,7 @@ export default function AppBarTarefas({
   const atualizaCampo = async () => {
     (await tarefaAtiva)
       ? (setTrocaIcone(false),
-        setDescricao(tarefaAtiva.descricao),
+        setDescricao(""),
         setMinRelogio(
           minutosParaSegundos(
             fDifMinutos(tarefaAtiva.data_inicio, getCurrentDateTime())
@@ -127,9 +127,9 @@ export default function AppBarTarefas({
           }}
         />
 
-        <Relogio isRunning={!trocaIcone} minutos={minRelogio} />
+        <Relogio isRunning={running} minutos={minRelogio} />
         <IconButton onClick={playtarefa}>
-          {trocaIcone ? (
+          {!running ? (
             <PlayCircleIcon sx={{ fontSize: 50, color: "#FFFFFFBF" }} />
           ) : (
             <StopCircleIcon sx={{ fontSize: 50, color: "#FFFFFFBF" }} />

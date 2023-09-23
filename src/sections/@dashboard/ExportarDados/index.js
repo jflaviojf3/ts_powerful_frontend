@@ -5,8 +5,52 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
+import { gerarPlanilhaExcel } from "@/utils/PlanilhaUtil";
+import { Button } from "@mui/material";
 
 const ExportarDados = () => {
+
+
+  const geraPlanilha = () => {
+
+    var dataAtual = new Date();
+
+    const dados = [["Tarefa", "Hora", "", "", ""]];
+
+    dados.push(["", "", "", "", ""]);
+
+
+    for (let index = 0; index < 10; index++) {
+      dados.push([
+        `Tarefa ${index}`,
+        `Hora 0${index}:0${index}`
+      ]);
+    }
+
+
+    const relatorio = {
+      title: "Relatório de Tarefas",
+      subject: "Tarefas",
+      author: "TSPowerful",
+      sheetName: "Relatório de Tarefas",
+      tabName: "Relatório de Tarefas",
+      nameFile:
+        "tarefas" +
+        "_" +
+        dataAtual.getHours().toString()
+        .padStart(2, "0") +
+        "_" +
+        dataAtual.getMinutes().toString()
+        .padStart(2, "0") +
+        "_" +
+        dataAtual.getSeconds().toString()
+        .padStart(2, "0") +
+        ".xls",
+    };
+
+    gerarPlanilhaExcel(dados, relatorio);
+  }
+
   return (
     <>
       <Box
@@ -37,6 +81,8 @@ const ExportarDados = () => {
               <Typography variant="body2" color="text.secondary" align="center">
                 {" "}TELA DE EXPORTAR DADOS{" "}
               </Typography>
+
+              <Button onClick={geraPlanilha}>Gerar Planilha</Button>
               </Paper>
             </Grid>
           </Grid>

@@ -6,10 +6,9 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import ListaTarefas from "./ListaTarefas";
 
-const Tarefas = ({idUsuario, recarrega, setRecarrega}) => {
+const Tarefas = ({idUsuario, recarrega, setRecarrega }) => {
 
     React.useEffect(() => {
-      console.log("Index Tarefa", recarrega)
   }, [recarrega]);
 
   return (
@@ -38,7 +37,6 @@ const Tarefas = ({idUsuario, recarrega, setRecarrega}) => {
                   height: 'auto',
                 }}
               >
-                <p>Index Tarefa: {recarrega}</p>
               <ListaTarefas idUsuario={idUsuario} recarrega={recarrega} setRecarrega={setRecarrega} />
               </Paper>
             </Grid>

@@ -6,7 +6,6 @@ function Clock({ isRunning, minutos} ) {
 
   useEffect(() => {
     let interval;
-
     if (isRunning) {
       let valorInicialSeg = minutos;
       interval = setInterval(() => {
@@ -38,7 +37,7 @@ function Clock({ isRunning, minutos} ) {
 
   return (
     <>
-      <Typography variant="h4" sx={{ color: "text.primary" }}>
+      <Typography variant="h4" >
         {formatTime(time)}
       </Typography>
     </>
