@@ -1,22 +1,75 @@
 import * as React from "react";
 import { TextField, IconButton } from "@mui/material";
-import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import TouchAppIcon from "@mui/icons-material/TouchApp";
 import Stack from "@mui/material/Stack";
-import StopCircleIcon from "@mui/icons-material/StopCircle";
 
-import Relogio from "../../../components/Relogio"
-import { tarefaService } from "../../../../pages/api/usuarioService/tarefaService";
-import { getCurrentDateTime, fDifMinutos } from "./../../../utils/formatTime";
+import Relogio from "../../../components/RelogioBrasil";
+import DataAtual from "../../../components/DataAtualBrasil";
+import { pontoService } from "../../../../pages/api/usuarioService/pontoService";
+import { getCurrentDateTime, fDate } from "./../../../utils/formatTime";
 import nookies from "nookies";
 
-export default function AppBarTarefas({ idUsuario, setRecarrega, recarrega }) {
+export default function AppBarPonto({ idUsuario, setRecarrega, recarrega }) {
   const [trocaIcone, setTrocaIcone] = React.useState(true);
   const [descricao, setDescricao] = React.useState("");
+  const [situacao, setSituacao] = React.useState("Entrada Expediente");
 
-  
   const handleChange = (e) => {
     const value = e.target.value;
     setDescricao(value);
+  };
+
+  const batePonto = async (e) => {
+      e.preventDefault();
+      try {
+        const cookies = nookies.get();
+        const body = {
+          situacao: situacao,
+          hora_ponto: getCurrentDateTime(),
+          descricao: descricao,
+        };
+        await pontoService
+          .inserePontoUsuario(cookies.ACCESS_TOKEN, idUsuario, body)
+          .then(function (response) {
+            setTrocaIcone(!trocaIcone);
+          });
+          setRecarrega(recarrega+1)
+      } catch (error) {
+        alert(error);
+        console.error("Erro na solicitação POST:", error);
+      }
+  };
+
+  const retornaPontosDia = async () => {
+    console.log("AppBarPonto", );
+    const cookies = nookies.get();
+    const resultado = await pontoService.pegaPontosDia(
+      cookies.ACCESS_TOKEN,
+      idUsuario,
+      fDate(getCurrentDateTime(), 'yyyyMMdd')
+    );
+    atualizaCampo(resultado);    
+    //await setTarefaAtiva(resultado);
+  };
+
+  React.useEffect(() => {
+    retornaPontosDia();
+    atualizaCampo();
+  }, [recarrega]);
+
+  const atualizaCampo = async (result) => {
+    try {
+      if (result == []){
+        setSituacao("Entrada Expediente")
+      } else if (result[result.length - 1].situacao == "Entrada Expediente") {
+        setSituacao("Saída para Almoço")
+      } else if (result[result.length - 1].situacao == "Saída para Almoço") {
+        setSituacao("Entrada após Almoço")
+      } else if (result[result.length - 1].situacao == "Entrada após Almoço") {
+        setSituacao("Saida Expediente")
+      }
+    } catch (error) {
+    }
   };
 
   return (
@@ -28,24 +81,22 @@ export default function AppBarTarefas({ idUsuario, setRecarrega, recarrega }) {
         alignItems="center"
       >
         <TextField
-          label="Registro de Tarefa"
-          id="filled-size-normal"
+          id="normal"
+          label={situacao}
+          placeholder="Descrição"
           variant="filled"
           value={descricao}
           onChange={handleChange}
           sx={{
             backgroundColor: "#FFFFFFBF",
             borderRadius: "5px",
-            width: "60%",
+            width: "40%",
           }}
         />
-
-        <IconButton>
-          {trocaIcone ? (
-            <PlayCircleIcon sx={{ fontSize: 50, color: "#FFFFFFBF" }} />
-          ) : (
-            <StopCircleIcon sx={{ fontSize: 50, color: "#FFFFFFBF" }} />
-          )}
+        <Relogio />
+        <DataAtual />
+        <IconButton onClick={batePonto}>
+          <TouchAppIcon sx={{ fontSize: 50, color: "#FFFFFFBF" }} />
         </IconButton>
       </Stack>
     </>

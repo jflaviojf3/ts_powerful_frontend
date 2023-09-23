@@ -45,8 +45,11 @@ function getDataFuturaPorDataEspecifica(data, dias) {
 
 export function fDataSemana(dataHora) {
   const data = getDataFuturaPorDataEspecifica(new Date(dataHora), 1);
-  const formato = "EEEE, d 'de' MMMM 'de' yyyy";
-  return format(data, formato, { locale: ptBR }); // ptBR é o locale para português do Brasil
+  const formato = "EEEE, dd 'de' MMMM 'de' yyyy";
+  const dataSemana = format(data, formato, { locale: ptBR }); // ptBR é o locale para português do Brasil
+  return dataSemana.replace(/\w\S*/g, (match) => {
+    return match.charAt(0).toUpperCase() + match.slice(1).toLowerCase();
+  }).replace(/\bDe\b/g, 'de');
 }
 
 export function fcalcMinutos(...dataHora) {
@@ -85,4 +88,12 @@ export function minutosParaSegundos(tempo) {
 
   const totalSegundos = horas * 3600000  + minutos * 60 + segundos;
   return totalSegundos;
+}
+
+export function obterHoraAtualBrasil() {
+  const dataAtual = new Date();
+  const horaAtualBrasil = format(dataAtual, 'HH:mm:ss', {
+    locale: ptBR,
+  });
+  return horaAtualBrasil;
 }

@@ -1,15 +1,16 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import { Stack } from "@mui/material";
+import Ponto from "./Ponto";
+import TrabalhoDia from "./TrabalhoDia";
+import SaldoDia from "./SaldoDia";
+import SaldoTotal from "./SaldoTotal";
 
-import Ponto from './Ponto'
-
-const Pontos = () => {
+const Pontos = ({idUsuario, recarrega, setRecarrega}) => {
   return (
     <>
       <Box
@@ -20,34 +21,79 @@ const Pontos = () => {
               ? theme.palette.grey[100]
               : theme.palette.grey[900],
           flexGrow: 1,
-          height: "100vh",
+          height: "90vh",
           overflow: "auto",
         }}
       >
         <Toolbar />
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
+        <Container maxWidth="lg" align="center" sx={{ mt: 4, mb: 4 }}>
+          <Grid container spacing={2} align="center">
+            <Grid item xs={12} align="center">
               <Paper
                 sx={{
                   p: 2,
                   display: "flex",
                   flexDirection: "column",
-                  height: 240,
+                  height: 410,
                 }}
               >
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  align="center"
-                >
-                  {" "}
-                  TELA DE PONTOS{" "}
-                </Typography>
-                <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
-                <Ponto></Ponto>
-                </Stack>
+                <Ponto
+              idUsuario={idUsuario}
+              recarrega={recarrega}
+              setRecarrega={setRecarrega} />
               </Paper>
+            </Grid>
+            <Grid
+              container
+              spacing={3}
+              align="center"
+              sx={{ p: 2, display: "flex", flexDirection: "row" }}
+            >
+              <Grid item xs={12} md={4} >
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: 100,
+                    width: "100%", // Use 100% para preencher o espaço disponível horizontalmente
+                    maxWidth: "33vh", // Adicione uma largura máxima
+                    margin: "auto", // Centralize horizontalmente
+                  }}
+                >
+                  <TrabalhoDia />
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={4} >
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: 100,
+                    width: "100%", // Use 100% para preencher o espaço disponível horizontalmente
+                    maxWidth: "33vh", // Adicione uma largura máxima
+                    margin: "auto", // Centralize horizontalmente
+                  }}
+                >
+                  <SaldoDia />
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={4} >
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: 100,
+                    width: "100%", // Use 100% para preencher o espaço disponível horizontalmente
+                    maxWidth: "33vh", // Adicione uma largura máxima
+                    margin: "auto", // Centralize horizontalmente
+                  }}
+                >
+                  <SaldoTotal />
+                </Paper>
+              </Grid>
             </Grid>
           </Grid>
         </Container>

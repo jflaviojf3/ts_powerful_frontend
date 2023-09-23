@@ -143,7 +143,6 @@ export default function Dashboard(props) {
     setOpen(!open);
   };
 
-
   const usuarios = props.dados.usuario;
   const carregaDados = React.useCallback(() => {
     const cod_perfil = usuarios.cod_perfil;
@@ -234,7 +233,11 @@ export default function Dashboard(props) {
               ) : appBarAtual === "Visualizar Relatorios" ? (
                 <AppBarVisualizarRelatorios />
               ) : appBarAtual === "Ponto" ? (
-                <AppBarPonto />
+                <AppBarPonto
+                  idUsuario={idUsuario}
+                  recarrega={recarrega}
+                  setRecarrega={setRecarrega}
+                />
               ) : appBarAtual === "Carregando" ? (
                 <AppBarCarregando />
               ) : (
@@ -294,9 +297,12 @@ export default function Dashboard(props) {
           }}
         >
           {menuDescricao === "Tarefa" ? (
-            <Tarefas idUsuario={idUsuario} recarrega={recarrega} setRecarrega={setRecarrega} />
-          ) : 
-          menuDescricao === "Cargos" ? (
+            <Tarefas
+              idUsuario={idUsuario}
+              recarrega={recarrega}
+              setRecarrega={setRecarrega}
+            />
+          ) : menuDescricao === "Cargos" ? (
             <Cargos />
           ) : menuDescricao === "Clientes" ? (
             <Clientes />
@@ -313,7 +319,11 @@ export default function Dashboard(props) {
           ) : menuDescricao === "Visualizar Relatorios" ? (
             <VisualizarRelatorios />
           ) : menuDescricao === "Ponto" ? (
-            <Pontos />
+            <Pontos
+              idUsuario={idUsuario}
+              recarrega={recarrega}
+              setRecarrega={setRecarrega}
+            />
           ) : menuDescricao === "Carregando" ? (
             <Carregando />
           ) : (
