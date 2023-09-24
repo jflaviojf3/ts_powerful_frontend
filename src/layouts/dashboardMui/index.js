@@ -41,7 +41,7 @@ import AppBarClientes from "../../sections/@dashboard/Clientes/AppBarClientes.js
 import AppBarConfiguracao from "../../sections/@dashboard/Configuracao/AppBarConfiguracao.js";
 import AppBarEquipes from "../../sections/@dashboard/Equipes/AppBarEquipes.js";
 import AppBarExportarDados from "../../sections/@dashboard/ExportarDados/AppBarExportarDados.js";
-import AppBarOrganizacao from "../../sections/@dashboard/Projetos/AppBarProjetos.js";
+import AppBarOrganizacao from "../../sections/@dashboard/Organizacao/AppBarOrganizacao.js";
 import AppBarProjetos from "../../sections/@dashboard/Projetos/AppBarProjetos.js";
 import AppBarVisualizarRelatorios from "../../sections/@dashboard/VisualizarRelatorios/AppBarVisualizarRelatorios.js";
 import AppBarUsuario from "../../sections/@dashboard/Tarefas/AppBarTarefas.js";
@@ -217,21 +217,46 @@ export default function Dashboard(props) {
                   setRecarrega={setRecarrega}
                 />
               ) : appBarAtual === "Cargos" ? (
-                <AppBarCargos />
+                <AppBarCargos
+                idUsuario={idUsuario}
+                recarrega={recarrega}
+                setRecarrega={setRecarrega} />
               ) : appBarAtual === "Clientes" ? (
-                <AppBarClientes />
+                <AppBarClientes
+                idUsuario={idUsuario}
+                recarrega={recarrega}
+                setRecarrega={setRecarrega} />
               ) : appBarAtual === "Configuração" ? (
-                <AppBarConfiguracao />
+                <AppBarConfiguracao
+                idUsuario={idUsuario}
+                recarrega={recarrega}
+                setRecarrega={setRecarrega} />
               ) : appBarAtual === "Equipes" ? (
-                <AppBarEquipes />
+                <AppBarEquipes
+                idUsuario={idUsuario}
+                recarrega={recarrega}
+                setRecarrega={setRecarrega} />
               ) : appBarAtual === "Exportar Dados" ? (
-                <AppBarExportarDados />
+                <AppBarExportarDados
+                idUsuario={idUsuario}
+                recarrega={recarrega}
+                setRecarrega={setRecarrega} />
               ) : appBarAtual === "Organização" ? (
-                <AppBarOrganizacao />
+                <Organizacao
+                AppBar={true} 
+                idUsuario={idUsuario}
+                recarrega={recarrega}
+                setRecarrega={setRecarrega}/>
               ) : appBarAtual === "Projetos" ? (
-                <AppBarProjetos />
+                <AppBarProjetos
+                idUsuario={idUsuario}
+                recarrega={recarrega}
+                setRecarrega={setRecarrega} />
               ) : appBarAtual === "Visualizar Relatorios" ? (
-                <AppBarVisualizarRelatorios />
+                <AppBarVisualizarRelatorios
+                idUsuario={idUsuario}
+                recarrega={recarrega}
+                setRecarrega={setRecarrega} />
               ) : appBarAtual === "Ponto" ? (
                 <AppBarPonto
                   idUsuario={idUsuario}
@@ -303,21 +328,45 @@ export default function Dashboard(props) {
               setRecarrega={setRecarrega}
             />
           ) : menuDescricao === "Cargos" ? (
-            <Cargos />
+            <Cargos
+            idUsuario={idUsuario}
+            recarrega={recarrega}
+            setRecarrega={setRecarrega} />
           ) : menuDescricao === "Clientes" ? (
-            <Clientes />
+            <Clientes
+            idUsuario={idUsuario}
+            recarrega={recarrega}
+            setRecarrega={setRecarrega} />
           ) : menuDescricao === "Configuração" ? (
-            <Configuracao />
+            <Configuracao
+            idUsuario={idUsuario}
+            recarrega={recarrega}
+            setRecarrega={setRecarrega} />
           ) : menuDescricao === "Equipes" ? (
-            <Equipes />
+            <Equipes
+            idUsuario={idUsuario}
+            recarrega={recarrega}
+            setRecarrega={setRecarrega} />
           ) : menuDescricao === "Exportar Dados" ? (
-            <ExportarDados />
+            <ExportarDados
+            idUsuario={idUsuario}
+            recarrega={recarrega}
+            setRecarrega={setRecarrega} />
           ) : menuDescricao === "Organização" ? (
-            <Organizacao />
+            <Organizacao
+            idUsuario={idUsuario}
+            recarrega={recarrega}
+            setRecarrega={setRecarrega} />
           ) : menuDescricao === "Projetos" ? (
-            <Projetos />
+            <Projetos
+            idUsuario={idUsuario}
+            recarrega={recarrega}
+            setRecarrega={setRecarrega} />
           ) : menuDescricao === "Visualizar Relatorios" ? (
-            <VisualizarRelatorios />
+            <VisualizarRelatorios
+            idUsuario={idUsuario}
+            recarrega={recarrega}
+            setRecarrega={setRecarrega} />
           ) : menuDescricao === "Ponto" ? (
             <Pontos
               idUsuario={idUsuario}

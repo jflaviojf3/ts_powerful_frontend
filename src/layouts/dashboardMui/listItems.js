@@ -21,7 +21,7 @@ const meusItems = ({ ClickItem }) => {
     <React.Fragment>
       <Divider />
       <React.Fragment>
-        <ListSubheader component="div" inset color="inherit">
+        <ListSubheader component="div" inset color="inherit" sx={{ }}>
           Registros
         </ListSubheader>
         <ListItemButton onClick={() => ClickItem("Tarefa")}>

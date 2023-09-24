@@ -6,14 +6,20 @@ import { ptBR } from 'date-fns/locale';
 export function fDate(date, newFormat) {
   const fm = newFormat || 'dd MMM yyyy';
 
-  return date ? format(new Date(date), fm) : '';
+  return date ? format(new Date(date), fm, {
+    locale: ptBR,
+  }) : '';
 }
 
 export function fDateTime(date, newFormat) {
   const fm = newFormat || 'dd MMM yyyy p';
 
-  return date ? format(new Date(date), fm) : '';
+  return date ? format(new Date(date), fm,{
+    locale: ptBR,
+  }) : '';
 }
+
+
 
 export function fTimestamp(date) {
   return date ? getTime(new Date(date)) : '';
