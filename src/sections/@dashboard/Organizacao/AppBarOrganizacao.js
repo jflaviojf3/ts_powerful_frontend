@@ -9,7 +9,7 @@ import { organizacaoService } from "@/../pages/api/organizacaoService/organizaca
 import { getCurrentDateTime, fDifMinutos } from "../../../utils/formatTime";
 import nookies from "nookies";
 
-const AppBarOrganizacao = ({ idUsuario, setRecarrega, recarrega, buscaAppBar, setBuscaAppBar }) => {
+const AppBarOrganizacao = ({ idUsuario, setRecarrega, recarrega, buscaAppBarOrg, setBuscaAppBarOrg, setTelaCadastro }) => {
   const [descricao, setDescricao] = React.useState("");
 
   const handleSearch = async (e) => {
@@ -27,9 +27,8 @@ const AppBarOrganizacao = ({ idUsuario, setRecarrega, recarrega, buscaAppBar, se
         cookies.ACCESS_TOKEN,
         body
       );
+      setBuscaAppBarOrg([resultado])
       setRecarrega(recarrega + 1);
-      await console.log("AppOrg", [resultado])
-      await setBuscaAppBar([resultado])
       } catch (error) {
       alert(error);
       console.error("Erro na solicitação POST:", error);
@@ -38,6 +37,7 @@ const AppBarOrganizacao = ({ idUsuario, setRecarrega, recarrega, buscaAppBar, se
 
   const handleCreate = async (e) => {
     e.preventDefault();
+    setTelaCadastro("Cadastro")
   };
 
   return (

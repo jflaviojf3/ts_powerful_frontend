@@ -41,7 +41,6 @@ export default function AppBarPonto({ idUsuario, setRecarrega, recarrega }) {
   };
 
   const retornaPontosDia = async () => {
-    console.log("AppBarPonto", );
     const cookies = nookies.get();
     const resultado = await pontoService.pegaPontosDia(
       cookies.ACCESS_TOKEN,

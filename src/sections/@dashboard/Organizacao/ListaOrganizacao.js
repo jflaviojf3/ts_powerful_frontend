@@ -22,10 +22,11 @@ import { organizacaoService } from "@/../pages/api/organizacaoService/organizaca
 import { fDateTime } from "@/utils/formatTime";
 
 export default function ListaOrganizacao({
-  buscaAppBar,
   idUsuario,
-  recarrega,
   setRecarrega,
+  recarrega,
+  buscaAppBarOrg,
+  setBuscaAppBarOrg,
 }) {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -35,7 +36,11 @@ export default function ListaOrganizacao({
   };
 
   const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+    if (
+      anchorRef &&
+      anchorRef.current &&
+      anchorRef.current.contains(event.target)
+    ) {
       return;
     }
     setOpen(false);
@@ -61,11 +66,9 @@ export default function ListaOrganizacao({
   const [organizacoes, setOrganizacoes] = React.useState([]);
 
   async function retornaOrganizacoes() {
-    if (buscaAppBar) {
-        console.log('ou aqui')
-      setOrganizacoes(buscaAppBar);
+    if (buscaAppBarOrg) {
+      setOrganizacoes(buscaAppBarOrg);
     } else {
-        console.log('aqui')
       const cookies = nookies.get();
       const ListaOrgs = await organizacaoService.pegaTodasOrganizacoes(
         cookies.ACCESS_TOKEN
@@ -91,9 +94,8 @@ export default function ListaOrganizacao({
   };
 
   React.useEffect(() => {
-    console.log("ListaOrg", buscaAppBar);
     retornaOrganizacoes();
-  }, [recarrega, buscaAppBar]);
+  }, [recarrega]);
 
   return (
     <React.Fragment>
@@ -105,14 +107,14 @@ export default function ListaOrganizacao({
           <TableBody>
             {organizacoes.map((row, index) => (
               <TableRow key={index}>
-                <TableCell sx={{ width: "8%" }} size="small">
+                <TableCell sx={{ width: "8%",  padding: "0px", margin: "0px" }} size="small">
                   {index <= 9 ? "0" + (index + 1) : index + 1}
                   {" |"}
                 </TableCell>
-                <TableCell sx={{ width: "70%" }} size="small">
+                <TableCell sx={{ width: "72%", padding: "0px", margin: "0px" }} size="small">
                   {row.nome}
                 </TableCell>
-                <TableCell sx={{ width: "30%" }} size="small">
+                <TableCell sx={{ width: "18%", padding: "0px", margin: "0px" }} size="small">
                   {" | "}
                   {
                     <Tooltip title={row.createdAt} placement="top-end">
@@ -120,7 +122,7 @@ export default function ListaOrganizacao({
                     </Tooltip>
                   }
                 </TableCell>
-                <TableCell sx={{ width: "2%" }} size="small">
+                <TableCell sx={{ width: "2%",  padding: "0px", margin: "0px" }} size="small">
                   <IconButton
                     ref={anchorRef}
                     id="composition-button"

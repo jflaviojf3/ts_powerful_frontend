@@ -5,24 +5,34 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import ListaOrganizacao from "./ListaOrganizacao";
+import ManterOrganizacao from "./ManterOrganizacao";
 import AppBarOrganizacao from "./AppBarOrganizacao";
 
-const Organizacao = ({ AppBar, idUsuario, recarrega, setRecarrega }) => {
-  const [buscaAppBar, setBuscaAppBar] = React.useState("");
+const Organizacao = ({
+  AppBar,
+  idUsuario,
+  recarrega,
+  setRecarrega,
+  buscaAppBarOrg,
+  setBuscaAppBarOrg,
+}) => {
 
+  const [telaCadastro, setTelaCadastro] = React.useState("kk")
   React.useEffect(() => {
-    console.log("IndexOrg", buscaAppBar)
   }, [recarrega]);
+
   return (
     <>
       {AppBar ? (
         <>
           <AppBarOrganizacao
-            buscaAppBar={buscaAppBar}
-            setBuscaAppBar={setBuscaAppBar}
+            buscaAppBarOrg={buscaAppBarOrg}
+            setBuscaAppBarOrg={setBuscaAppBarOrg}
             idUsuario={idUsuario}
             recarrega={recarrega}
             setRecarrega={setRecarrega}
+            telaCadastro={telaCadastro}
+            setTelaCadastro={setTelaCadastro}
           />
         </>
       ) : (
@@ -50,12 +60,25 @@ const Organizacao = ({ AppBar, idUsuario, recarrega, setRecarrega }) => {
                     height: "auto",
                   }}
                 >
-                  <ListaOrganizacao
-                    buscaAppBar={buscaAppBar}
-                    idUsuario={idUsuario}
-                    recarrega={recarrega}
-                    setRecarrega={setRecarrega}
-                  />
+                  {
+                    telaCadastro ? (
+                      <ListaOrganizacao
+                      buscaAppBarOrg={buscaAppBarOrg}
+                      setBuscaAppBarOrg={setBuscaAppBarOrg}
+                      idUsuario={idUsuario}
+                      recarrega={recarrega}
+                      setRecarrega={setRecarrega}
+                    />
+                    ) : (
+                      <ManterOrganizacao
+                      buscaAppBarOrg={buscaAppBarOrg}
+                      setBuscaAppBarOrg={setBuscaAppBarOrg}
+                      idUsuario={idUsuario}
+                      recarrega={recarrega}
+                      setRecarrega={setRecarrega}
+                    />
+                    )
+                  }
                 </Paper>
               </Grid>
             </Grid>
