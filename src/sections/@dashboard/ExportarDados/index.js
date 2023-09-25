@@ -31,7 +31,7 @@ import { pontoService } from "@/../pages/api/usuarioService/pontoService";
 import AppContext from "@/hooks/AppContext";
 
 const ExportarDados = ({ idUsuario }) => {
-  const { recarrega, setRecarrega, setDadosAppBar, dadosAppBar } =
+  const { recarrega, setRecarrega, setDadosAppBar, dadosAppBar, telaDetalhe, setTelaDetalhe } =
     React.useContext(AppContext);
 
   const [tarefas, setTarefas] = React.useState([]);
@@ -40,8 +40,8 @@ const ExportarDados = ({ idUsuario }) => {
     const tarefas = await tarefaService.pegaTarefasPeriodo(
       cookies.ACCESS_TOKEN,
       idUsuario,
-      "20210925",
-      fDate(getCurrentDateTime(), "yyyyMMdd")
+      telaDetalhe ? telaDetalhe.dataInicio : fDate(getCurrentDateTime(true), "yyyyMMdd"),
+      telaDetalhe ? telaDetalhe.dataFim : fDate(getCurrentDateTime(), "yyyyMMdd")
     );
     await setTarefas(tarefas);
   }
@@ -52,41 +52,52 @@ const ExportarDados = ({ idUsuario }) => {
     const pontoDia = await pontoService.pegaPontosPeriodo(
       cookies.ACCESS_TOKEN,
       idUsuario,
-      "20210925",
-      fDate(getCurrentDateTime(), "yyyyMMdd")
+      telaDetalhe ? telaDetalhe.dataInicio : fDate(getCurrentDateTime(true), "yyyyMMdd"),
+      telaDetalhe ? telaDetalhe.dataFim : fDate(getCurrentDateTime(), "yyyyMMdd")
     );
     await setPontos(pontoDia);
   }
-
-  const [dadosTarefa, setDadosTarefa] = React.useState([]);
-  const [dadosPonto, setDadosPonto] = React.useState([]);
   const dadosListaTarefa = [
     ["Entrada", "Descrição", "Data_Inicio", "Data_Fim", "Tempo"],
   ];
-  const dadosListaPonto = [["Situação", "Descrição", "Data_Hora"]];
+  const enviaDadosTarefa = (col1, col2, col3, col4, col5, col6) => {
+    dadosListaTarefa.push([col1, col2, col3, col4, col5, col6]);
+  };
 
-  const enviaDadosExportar = (aba, col1, col2, col3, col4, col5, col6) => {
+  const dadosListaPonto = [["Situação", "Descrição", "Data_Hora"]];
+  const enviaDadosPonto = (col1, col2, col3) => {
+    dadosListaPonto.push([col1, col2, col3]);
+  };
+  const enviaDadoExportacao = (aba) => {
+    let dadosTela = {}
     if (aba == 1) {
-      console.log("passei em Exp tarefa")
-      dadosListaTarefa.push([col1, col2, col3, col4, col5, col6]);
+      dadosTela = {
+        planilha: "tarefa",
+        dados: dadosListaTarefa,
+      };
+      setDadosAppBar(dadosTela)
     } else if (aba == 2) {
-      console.log("passei em Exp ponto")
-      dadosListaPonto.push([col1, col2, col3]);
+      dadosTela = {
+        planilha: "ponto",
+        dados: dadosListaPonto,
+      };
+      setDadosAppBar(dadosTela)
+    } else {
+      alert("Erro ao exportar dados");
     }
   };
-  
-  console.log(dadosListaPonto)
 
   React.useEffect(() => {
     retornaTarefas();
     retornaPontos();
-    console.log("PAREI AQUI")
-  }, [recarrega]);
+    enviaDadoExportacao(value)
+  }, [recarrega, telaDetalhe]);
 
   const [value, setValue] = React.useState("1");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    setRecarrega(recarrega + 1);
   };
 
   return (
@@ -155,12 +166,11 @@ const ExportarDados = ({ idUsuario }) => {
                         <TableBody>
                           {tarefas.map((row, index) => (
                             <TableRow key={index}>
-                              {enviaDadosExportar(
-                                value,
+                              {enviaDadosTarefa(
                                 row.entrada,
                                 row.descricao,
-                                fDateTime(row.createdAt, "HH:mm:ss a"),
-                                fDateTime(row.data_fim, "HH:mm:ss a"),
+                                fDateTime(row.createdAt, "dd/MM/yyyy - HH:mm:ss"),
+                                fDateTime(row.data_fim, "dd/MM/yyyy - HH:mm:ss"),
                                 row.data_fim
                                   ? fDifMinutos(row.createdAt, row.data_fim)
                                   : "00:00:00"
@@ -175,14 +185,14 @@ const ExportarDados = ({ idUsuario }) => {
                                   title={row.createdAt}
                                   placement="top-end"
                                 >
-                                  {fDateTime(row.createdAt, "HH:mm:ss a")}
+                                  {fDateTime(row.createdAt, "HH:mm:ss")}
                                 </Tooltip>{" "}
                                 {row.data_fim ? "-" : ""}{" "}
                                 <Tooltip
                                   title={row.data_fim}
                                   placement="top-end"
                                 >
-                                  {fDateTime(row.data_fim, "HH:mm:ss a")}
+                                  {fDateTime(row.data_fim, "HH:mm:ss")}
                                 </Tooltip>
                               </TableCell>
                               <TableCell sx={{ width: "15%" }}>
@@ -220,13 +230,12 @@ const ExportarDados = ({ idUsuario }) => {
                         <TableBody>
                           {pontos.map((row, index) => (
                             <TableRow key={index}>
-                              {enviaDadosExportar(
-                                value,
+                              {enviaDadosPonto(
                                 row.situacao,
                                 row.descricao,
                                 fDateTime(
                                   row.hora_ponto,
-                                  "dd/MM/yyyy - HH:mm:ss a"
+                                  "dd/MM/yyyy - HH:mm:ss"
                                 )
                               )}
                               <TableCell sx={{ width: "18%" }} size="small">

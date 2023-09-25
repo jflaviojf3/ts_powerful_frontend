@@ -170,14 +170,14 @@ const GrupoTarefa = ({ idUsuario, dia }) => {
               {row.descricao}
             </TableCell>
             <TableCell sx={{ width: "20%" }}>
-            <Tooltip title={row.createdAt} placement="top-end">
-              {fDateTime(row.createdAt, "HH:mm:ss a")}
+            <Tooltip title={fDateTime(row.createdAt, "dd/MM/yyyy - HH:mm:ss")} placement="top-end">
+              {fDateTime(row.createdAt, "HH:mm:ss")}
               </Tooltip>
               {" "}
               {row.data_fim ? "-" : ""} 
               {" "}
-              <Tooltip title={row.data_fim} placement="top-end">
-              {fDateTime(row.data_fim, "HH:mm:ss a")}
+              <Tooltip title={fDateTime(row.data_fim, "dd/MM/yyyy - HH:mm:ss")} placement="top-end">
+              {fDateTime(row.data_fim, "HH:mm:ss")}
               </Tooltip>
             </TableCell>
             <TableCell sx={{ width: "10%" }}>
