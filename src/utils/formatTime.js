@@ -50,7 +50,7 @@ function getDataFuturaPorDataEspecifica(data, dias) {
 }
 
 export function fDataSemana(dataHora) {
-  const data = getDataFuturaPorDataEspecifica(new Date(dataHora), 1);
+  const data = getDataFuturaPorDataEspecifica(new Date(dataHora), 0);
   const formato = "EEEE, dd 'de' MMMM 'de' yyyy";
   const dataSemana = format(data, formato, { locale: ptBR }); // ptBR é o locale para português do Brasil
   return dataSemana.replace(/\w\S*/g, (match) => {

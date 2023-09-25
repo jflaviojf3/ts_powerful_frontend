@@ -20,14 +20,12 @@ import Title from "@/layouts/dashboardMui/Title";
 import nookies from "nookies";
 import { organizacaoService } from "@/../pages/api/organizacaoService/organizacaoService";
 import { fDateTime } from "@/utils/formatTime";
+import AppContext from "@/hooks/AppContext";
 
 export default function ListaOrganizacao({
   idUsuario,
-  setRecarrega,
-  recarrega,
-  buscaAppBarOrg,
-  setBuscaAppBarOrg,
 }) {
+  const {recarrega, setRecarrega, dadosAppBar} = React.useContext(AppContext);
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
 
@@ -66,8 +64,8 @@ export default function ListaOrganizacao({
   const [organizacoes, setOrganizacoes] = React.useState([]);
 
   async function retornaOrganizacoes() {
-    if (buscaAppBarOrg) {
-      setOrganizacoes(buscaAppBarOrg);
+    if (dadosAppBar) {
+      setOrganizacoes(dadosAppBar);
     } else {
       const cookies = nookies.get();
       const ListaOrgs = await organizacaoService.pegaTodasOrganizacoes(
@@ -88,10 +86,6 @@ export default function ListaOrganizacao({
     );
     setRecarrega(recarrega + 1);
   }
-
-  const handleEdit = async (e) => {
-    e.preventDefault();
-  };
 
   React.useEffect(() => {
     retornaOrganizacoes();

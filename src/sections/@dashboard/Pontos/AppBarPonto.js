@@ -8,8 +8,10 @@ import DataAtual from "../../../components/DataAtualBrasil";
 import { pontoService } from "../../../../pages/api/usuarioService/pontoService";
 import { getCurrentDateTime, fDate } from "./../../../utils/formatTime";
 import nookies from "nookies";
+import AppContext from "@/hooks/AppContext";
 
-export default function AppBarPonto({ idUsuario, setRecarrega, recarrega }) {
+export default function AppBarPonto({ idUsuario }) {
+  const {recarrega, setRecarrega} = React.useContext(AppContext);
   const [trocaIcone, setTrocaIcone] = React.useState(true);
   const [descricao, setDescricao] = React.useState("");
   const [situacao, setSituacao] = React.useState("Entrada Expediente");

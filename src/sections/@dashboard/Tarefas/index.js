@@ -5,8 +5,10 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import ListaTarefas from "./ListaTarefas";
+import AppContext from "@/hooks/AppContext";
 
-const Tarefas = ({idUsuario, recarrega, setRecarrega }) => {
+const Tarefas = ({idUsuario }) => {
+const {recarrega, setRecarrega} = React.useContext(AppContext);
 
     React.useEffect(() => {
   }, [recarrega]);

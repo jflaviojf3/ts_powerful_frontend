@@ -48,6 +48,8 @@ import AppBarUsuario from "../../sections/@dashboard/Tarefas/AppBarTarefas.js";
 
 import { authService } from "../../../pages/api/autenticacaoService/auth.js";
 
+import AppContext from "@/hooks/AppContext";
+
 const StyledAccount = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -125,6 +127,9 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 export default function Dashboard(props) {
+
+  const {recarrega, setRecarrega, setTelaDetalhe, setDadosAppBar} = React.useContext(AppContext);
+  
   const router = useRouter();
   const [nome, setNome] = React.useState("null");
   const [perfi, setPerfil] = React.useState("null");
@@ -133,10 +138,8 @@ export default function Dashboard(props) {
   const [idUsuario, setIdUsuario] = React.useState(
     props.dados.usuario.id_usuarios
   );
-  const [recarrega, setRecarrega] = React.useState(null);
   const [menuDescricao, setMenuDescricao] = React.useState("Tarefa");
   const [appBarAtual, setAppBarAtual] = React.useState("Tarefa");
-  const [descricaoTarefa, setDescricaoTarefa] = React.useState("");
 
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
@@ -172,16 +175,15 @@ export default function Dashboard(props) {
   }, [carregaDados]);
 
   const ClickItem = (itemText) => {
-    setRecarrega(recarrega + 1);
     setMenuDescricao(itemText);
     setAppBarAtual(itemText);
-    setBuscaAppBarOrg("");
+    setDadosAppBar(null)
+    setTelaDetalhe(false)
+    setRecarrega(recarrega + 1);
   };
 
   //Tranferencia de dados de AppBar para Tela
-  const [buscaAppBarOrg, setBuscaAppBarOrg] = React.useState("");
-
-  return (
+    return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
@@ -256,8 +258,6 @@ export default function Dashboard(props) {
                   idUsuario={idUsuario}
                   recarrega={recarrega}
                   setRecarrega={setRecarrega}
-                  buscaAppBarOrg={buscaAppBarOrg}
-                  setBuscaAppBarOrg={setBuscaAppBarOrg}
                 />
               ) : appBarAtual === "Projetos" ? (
                 <AppBarProjetos
@@ -376,8 +376,6 @@ export default function Dashboard(props) {
               idUsuario={idUsuario}
               recarrega={recarrega}
               setRecarrega={setRecarrega}
-              buscaAppBarOrg={buscaAppBarOrg}
-              setBuscaAppBarOrg={setBuscaAppBarOrg}
             />
           ) : menuDescricao === "Projetos" ? (
             <Projetos

@@ -52,12 +52,9 @@ export const pontoService = {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        console.log(`/v1/usuarios/${usuarioId}/pontosDia/${dia}`)
-        console.log(response.data)
         return response.data;
       })
       .catch(function (error) {
-        console.log(error.data)
         throw error.data;
       });
   },

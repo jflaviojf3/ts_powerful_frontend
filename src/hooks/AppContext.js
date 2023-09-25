@@ -7,9 +7,11 @@ const AppContext = React.createContext({});
 
 export const AppProvider = ({ children }) => {
   const [tempoAtualTarefa, setTempoAtualTarefa] = React.useState(0);
+  const [telaDetalhe, setTelaDetalhe] = React.useState(false);
+  const [dadosAppBar, setDadosAppBar] = React.useState(null);
+  const [recarrega, setRecarrega] = React.useState(0);
 
   async function buscarTarefaPorId(idUsuario) {
-    console.log("id tarefa", idUsuario);
     const cookies = nookies.get();
     const response = await tarefaService.pegaTarefaAtiva(
       cookies.ACCESS_TOKEN,
@@ -20,7 +22,17 @@ export const AppProvider = ({ children }) => {
 
   return (
     <AppContext.Provider
-      value={{ buscarTarefaPorId, setTempoAtualTarefa, tempoAtualTarefa }}
+      value={{
+        buscarTarefaPorId,
+        setTempoAtualTarefa,
+        tempoAtualTarefa,
+        setTelaDetalhe,
+        telaDetalhe,
+        setDadosAppBar,
+        dadosAppBar,
+        setRecarrega,
+        recarrega
+      }}
     >
       {children}
     </AppContext.Provider>

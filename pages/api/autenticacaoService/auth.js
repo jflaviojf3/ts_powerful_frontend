@@ -14,12 +14,10 @@ export const authService = {
         senha: senha,
       })
       .then(function (response) {
-        console.log(baseUrl)
         tokenService.save(response.data.token);
         return response.data;
       })
       .catch(function (error) {
-        console.log(baseUrl)
         throw error.response.data.message;
       });
   },

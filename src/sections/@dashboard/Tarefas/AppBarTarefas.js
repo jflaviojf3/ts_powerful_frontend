@@ -14,10 +14,9 @@ import {
 import nookies from "nookies";
 import AppContext from "@/hooks/AppContext";
 
-export default function AppBarTarefas({ idUsuario, recarrega, setRecarrega }) {
+export default function AppBarTarefas({ idUsuario }) {
 
-  const appContext = React.useContext(AppContext);
-
+  const {recarrega, setRecarrega, buscarTarefaPorId} = React.useContext(AppContext);
   const [trocaIcone, setTrocaIcone] = React.useState(true);
   const [running, setRunning] = React.useState(false);
 
@@ -49,9 +48,7 @@ export default function AppBarTarefas({ idUsuario, recarrega, setRecarrega }) {
           idUsuario,
           body
         );
-
         setTrocaIcone(false);
-
         setRunning(true);
         setDescricao(descricao);
         setRecarrega(recarrega + 1);
@@ -98,11 +95,10 @@ export default function AppBarTarefas({ idUsuario, recarrega, setRecarrega }) {
     retornaTarefaAtiva();
     atualizaCampo();
     buscaTarefaPorId();
-
   }, [recarrega]);
 
   const buscaTarefaPorId = async () => {
-    const response = await appContext.buscarTarefaPorId(idUsuario);
+    const response = await buscarTarefaPorId(idUsuario);
 
     if(response) {
       setDescricao(response.descricao);

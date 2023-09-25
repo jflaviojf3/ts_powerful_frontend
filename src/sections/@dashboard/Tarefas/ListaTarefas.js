@@ -7,13 +7,12 @@ import Title from "../../../layouts/dashboardMui/Title";
 import GrupoTarefa from "./GrupoTarefa";
 
 import nookies from "nookies";
-import { tarefaService } from "../../../../pages/api/usuarioService/tarefaService";
+import { tarefaService } from "@/../pages/api/usuarioService/tarefaService";
+import AppContext from "@/hooks/AppContext";
 
-function preventDefault(event) {
-  event.preventDefault();
-}
+export default function ListaTarefas({ idUsuario }) {
 
-export default function ListaTarefas({ idUsuario, recarrega, setRecarrega }) {
+  const {recarrega, setRecarrega} = React.useContext(AppContext);
 
   const [listaDia, setListaDia] = React.useState([]);
   async function retornaListaDias() {
@@ -39,7 +38,7 @@ export default function ListaTarefas({ idUsuario, recarrega, setRecarrega }) {
           <>
           <Stack direction="row" spacing={2} key={dia} sx={{ mt: 3 }}>
             <Table size="small">
-              <GrupoTarefa idUsuario={idUsuario} dia={dia} recarrega={recarrega} setRecarrega={setRecarrega} />
+              <GrupoTarefa idUsuario={idUsuario} dia={dia} />
             </Table>
           </Stack>
             {/* <Divider sx={{ mt: 4 }} color='secondary' /> */}

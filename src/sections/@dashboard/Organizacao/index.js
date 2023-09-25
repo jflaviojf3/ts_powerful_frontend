@@ -7,17 +7,14 @@ import Paper from "@mui/material/Paper";
 import ListaOrganizacao from "./ListaOrganizacao";
 import ManterOrganizacao from "./ManterOrganizacao";
 import AppBarOrganizacao from "./AppBarOrganizacao";
+import AppContext from "@/hooks/AppContext";
 
 const Organizacao = ({
   AppBar,
-  idUsuario,
-  recarrega,
-  setRecarrega,
-  buscaAppBarOrg,
-  setBuscaAppBarOrg,
+  idUsuario
 }) => {
 
-  const [telaCadastro, setTelaCadastro] = React.useState("kk")
+  const {recarrega, setRecarrega, telaDetalhe} = React.useContext(AppContext);
   React.useEffect(() => {
   }, [recarrega]);
 
@@ -26,13 +23,7 @@ const Organizacao = ({
       {AppBar ? (
         <>
           <AppBarOrganizacao
-            buscaAppBarOrg={buscaAppBarOrg}
-            setBuscaAppBarOrg={setBuscaAppBarOrg}
             idUsuario={idUsuario}
-            recarrega={recarrega}
-            setRecarrega={setRecarrega}
-            telaCadastro={telaCadastro}
-            setTelaCadastro={setTelaCadastro}
           />
         </>
       ) : (
@@ -61,21 +52,13 @@ const Organizacao = ({
                   }}
                 >
                   {
-                    telaCadastro ? (
+                    !telaDetalhe ? (
                       <ListaOrganizacao
-                      buscaAppBarOrg={buscaAppBarOrg}
-                      setBuscaAppBarOrg={setBuscaAppBarOrg}
                       idUsuario={idUsuario}
-                      recarrega={recarrega}
-                      setRecarrega={setRecarrega}
                     />
                     ) : (
                       <ManterOrganizacao
-                      buscaAppBarOrg={buscaAppBarOrg}
-                      setBuscaAppBarOrg={setBuscaAppBarOrg}
                       idUsuario={idUsuario}
-                      recarrega={recarrega}
-                      setRecarrega={setRecarrega}
                     />
                     )
                   }

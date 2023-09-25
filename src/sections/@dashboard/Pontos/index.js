@@ -9,8 +9,10 @@ import Ponto from "./Ponto";
 import TrabalhoDia from "./TrabalhoDia";
 import SaldoDia from "./SaldoDia";
 import SaldoTotal from "./SaldoTotal";
+import AppContext from "@/hooks/AppContext";
 
-const Pontos = ({idUsuario, recarrega, setRecarrega}) => {
+const Pontos = ({ idUsuario }) => {
+  const { recarrega, setRecarrega } = React.useContext(AppContext);
   return (
     <>
       <Box
@@ -37,10 +39,7 @@ const Pontos = ({idUsuario, recarrega, setRecarrega}) => {
                   height: 410,
                 }}
               >
-                <Ponto
-              idUsuario={idUsuario}
-              recarrega={recarrega}
-              setRecarrega={setRecarrega} />
+                <Ponto idUsuario={idUsuario} />
               </Paper>
             </Grid>
             <Grid
@@ -49,7 +48,7 @@ const Pontos = ({idUsuario, recarrega, setRecarrega}) => {
               align="center"
               sx={{ p: 2, display: "flex", flexDirection: "row" }}
             >
-              <Grid item xs={12} md={4} >
+              <Grid item xs={12} md={4}>
                 <Paper
                   sx={{
                     p: 2,
@@ -64,7 +63,7 @@ const Pontos = ({idUsuario, recarrega, setRecarrega}) => {
                   <TrabalhoDia />
                 </Paper>
               </Grid>
-              <Grid item xs={12} md={4} >
+              <Grid item xs={12} md={4}>
                 <Paper
                   sx={{
                     p: 2,
@@ -79,7 +78,7 @@ const Pontos = ({idUsuario, recarrega, setRecarrega}) => {
                   <SaldoDia />
                 </Paper>
               </Grid>
-              <Grid item xs={12} md={4} >
+              <Grid item xs={12} md={4}>
                 <Paper
                   sx={{
                     p: 2,

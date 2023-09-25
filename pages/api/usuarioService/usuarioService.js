@@ -12,7 +12,6 @@ export const usuarioService = {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
-        console.log(response.data)
         return response.data;
       })
       .catch(function (error) {

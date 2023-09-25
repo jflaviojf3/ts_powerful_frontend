@@ -3,14 +3,21 @@ import { TextField, Button, Stack } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import CorporateFareIcon from "@mui/icons-material/CorporateFare";
+import Alert from '@mui/material/Alert';
 
 import Relogio from "../../../components/Relogio";
 import { organizacaoService } from "@/../pages/api/organizacaoService/organizacaoService";
 import { getCurrentDateTime, fDifMinutos } from "../../../utils/formatTime";
 import nookies from "nookies";
+import AppContext from "@/hooks/AppContext";
 
-const AppBarOrganizacao = ({ idUsuario, setRecarrega, recarrega, buscaAppBarOrg, setBuscaAppBarOrg, setTelaCadastro }) => {
+const AppBarOrganizacao = ({
+  idUsuario
+}) => {
+  const appContext = React.useContext(AppContext);
+  const {recarrega, setRecarrega} = React.useContext(AppContext);
   const [descricao, setDescricao] = React.useState("");
+  const [alertado, setAlertado] = React.useState(false);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -21,15 +28,21 @@ const AppBarOrganizacao = ({ idUsuario, setRecarrega, recarrega, buscaAppBarOrg,
       }
       const cookies = nookies.get();
       const body = {
-        nome: descricao
+        nome: descricao,
       };
       const resultado = await organizacaoService.pegaOrganizacaoNome(
         cookies.ACCESS_TOKEN,
         body
       );
-      setBuscaAppBarOrg([resultado])
+
+      resultado
+        ? (appContext.setDadosAppBar([resultado]))
+        : (appContext.setDadosAppBar(null),
+        alert("Resultado não encontrado."),
+        setDescricao(""))
+
       setRecarrega(recarrega + 1);
-      } catch (error) {
+    } catch (error) {
       alert(error);
       console.error("Erro na solicitação POST:", error);
     }
@@ -37,7 +50,7 @@ const AppBarOrganizacao = ({ idUsuario, setRecarrega, recarrega, buscaAppBarOrg,
 
   const handleCreate = async (e) => {
     e.preventDefault();
-    setTelaCadastro("Cadastro")
+    appContext.setTelaDetalhe(true);
   };
 
   return (

@@ -27,13 +27,14 @@ import {
 } from "../../../utils/formatTime";
 
 import nookies from "nookies";
-import { tarefaService } from "../../../../pages/api/usuarioService/tarefaService";
+import { tarefaService } from "@/../pages/api/usuarioService/tarefaService";
+import AppContext from "@/hooks/AppContext";
 
-const GrupoTarefa = ({ idUsuario, dia, recarrega, setRecarrega }) => {
+const GrupoTarefa = ({ idUsuario, dia }) => {
+  const {recarrega, setRecarrega} = React.useContext(AppContext);
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
-  console.log(anchorRef)
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -80,9 +81,7 @@ const GrupoTarefa = ({ idUsuario, dia, recarrega, setRecarrega }) => {
   React.useEffect(() => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus();
-      console.log("quando desclica", anchorRef.current.focus())
     }
-    console.log("quando clica")
     prevOpen.current = open;
   }, [open]);
 
@@ -212,7 +211,6 @@ const GrupoTarefa = ({ idUsuario, dia, recarrega, setRecarrega }) => {
               >
                 <MoreIcon />
               </IconButton>
-              {console.log(anchorRef.current)}
               <Popper
                 open={open}
                 anchorEl={anchorRef.current}
