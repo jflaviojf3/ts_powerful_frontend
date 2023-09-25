@@ -33,6 +33,7 @@ const GrupoTarefa = ({ idUsuario, dia, recarrega, setRecarrega }) => {
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
+  console.log(anchorRef)
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -52,11 +53,11 @@ const GrupoTarefa = ({ idUsuario, dia, recarrega, setRecarrega }) => {
     await deletaTarefas(idTarefa, entrada);
   };
 
-  const handleReplay = async (e, entrada, descricao) => {
+  const handleReplay = async (e, entrada, descricao, data_inicio) => {
     if (anchorRef.current && anchorRef.current.contains(e.target)) {
       return;
     }
-    await replayTarefas(entrada, descricao);
+    await replayTarefas(entrada, descricao, data_inicio);
   };
 
   const handleStop = async (e, idTarefas, entrada) => {
@@ -79,7 +80,9 @@ const GrupoTarefa = ({ idUsuario, dia, recarrega, setRecarrega }) => {
   React.useEffect(() => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus();
+      console.log("quando desclica", anchorRef.current.focus())
     }
+    console.log("quando clica")
     prevOpen.current = open;
   }, [open]);
 
@@ -110,15 +113,15 @@ const GrupoTarefa = ({ idUsuario, dia, recarrega, setRecarrega }) => {
     setRecarrega(recarrega+1)
   }
 
-  async function replayTarefas(entrada, descricao) {
+  async function replayTarefas(entrada, descricao, data_inicio) {
 
     const body = {
       descricao: descricao,
-      data_inicio: getCurrentDateTime(),
+      data_inicio: data_inicio,
       entrada: entrada + 1,
     };
     const cookies = nookies.get();
-    await tarefaService.insereTarefaUsuario(
+    const response = await tarefaService.insereTarefaUsuario(
       cookies.ACCESS_TOKEN,
       idUsuario,
       body
@@ -167,8 +170,8 @@ const GrupoTarefa = ({ idUsuario, dia, recarrega, setRecarrega }) => {
               {row.descricao}
             </TableCell>
             <TableCell sx={{ width: "20%" }}>
-            <Tooltip title={row.data_inicio} placement="top-end">
-              {fDateTime(row.data_inicio, "HH:mm:ss a")}
+            <Tooltip title={row.createdAt} placement="top-end">
+              {fDateTime(row.createdAt, "HH:mm:ss a")}
               </Tooltip>
               {" "}
               {row.data_fim ? "-" : ""} 
@@ -179,7 +182,7 @@ const GrupoTarefa = ({ idUsuario, dia, recarrega, setRecarrega }) => {
             </TableCell>
             <TableCell sx={{ width: "10%" }}>
               {row.data_fim
-                ? fDifMinutos(row.data_inicio, row.data_fim)
+                ? fDifMinutos(row.createdAt, row.data_fim)
                 : "00:00:00"}
             </TableCell>
             <TableCell sx={{ width: "10%" }}>
@@ -188,7 +191,7 @@ const GrupoTarefa = ({ idUsuario, dia, recarrega, setRecarrega }) => {
                 size="small"
                 onClick={
                   row.data_fim
-                    ? (e) => handleReplay(e, row.entrada, row.descricao)
+                    ? (e) => handleReplay(e, row.entrada, row.descricao, row.data_inicio)
                     : (e) => handleStop(e, row.id_tarefas, row.entrada)
                 }
               >
@@ -209,6 +212,7 @@ const GrupoTarefa = ({ idUsuario, dia, recarrega, setRecarrega }) => {
               >
                 <MoreIcon />
               </IconButton>
+              {console.log(anchorRef.current)}
               <Popper
                 open={open}
                 anchorEl={anchorRef.current}

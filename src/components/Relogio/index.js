@@ -25,7 +25,7 @@ function Clock({ isRunning, minutos} ) {
   }, [isRunning]);
 
   const formatTime = (seconds) => {
-    const hours = Math.floor(seconds / 3600)
+    const hours = Math.floor((seconds / 3600) / 1000).toFixed(0)
       .toString()
       .padStart(2, "0");
     const minutes = Math.floor((seconds % 3600) / 60)

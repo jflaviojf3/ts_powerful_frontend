@@ -12,12 +12,16 @@ import {
   minutosParaSegundos,
 } from "./../../../utils/formatTime";
 import nookies from "nookies";
+import AppContext from "@/hooks/AppContext";
 
 export default function AppBarTarefas({ idUsuario, recarrega, setRecarrega }) {
+
+  const appContext = React.useContext(AppContext);
+
   const [trocaIcone, setTrocaIcone] = React.useState(true);
   const [running, setRunning] = React.useState(false);
 
-  const [descricao, setDescricao] = React.useState("");
+  const [descricao, setDescricao] = React.useState();
   const [minRelogio, setMinRelogio] = React.useState(null);
   const [tarefaAtiva, setTarefaAtiva] = React.useState(null);
 
@@ -90,20 +94,38 @@ export default function AppBarTarefas({ idUsuario, recarrega, setRecarrega }) {
   };
 
   React.useEffect(() => {
+
     retornaTarefaAtiva();
     atualizaCampo();
+    buscaTarefaPorId();
+
   }, [recarrega]);
+
+  const buscaTarefaPorId = async () => {
+    const response = await appContext.buscarTarefaPorId(idUsuario);
+
+    if(response) {
+      setDescricao(response.descricao);
+
+      setMinRelogio(
+        minutosParaSegundos(
+          fDifMinutos(response.createdAt, getCurrentDateTime())
+        )
+      );
+
+     setRunning(true);
+    }
+  }
 
   const atualizaCampo = async () => {
     (await tarefaAtiva)
       ? (setTrocaIcone(false),
-        setDescricao(""),
-        setMinRelogio(
+          setMinRelogio(
           minutosParaSegundos(
-            fDifMinutos(tarefaAtiva.data_inicio, getCurrentDateTime())
+            fDifMinutos(tarefaAtiva.createdAt, getCurrentDateTime())
           )
         ))
-      : (setTrocaIcone(true), setDescricao(""), setMinRelogio(null));
+        : (setTrocaIcone(true), setMinRelogio(null));
   };
 
   return (
@@ -117,6 +139,7 @@ export default function AppBarTarefas({ idUsuario, recarrega, setRecarrega }) {
         <TextField
           label="Registro de Tarefa"
           id="filled-size-normal"
+          InputLabelProps={{ shrink: descricao ? true : false }}
           variant="filled"
           value={descricao}
           onChange={handleChange}

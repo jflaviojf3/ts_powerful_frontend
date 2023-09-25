@@ -295,7 +295,7 @@ export default function Dashboard(props) {
             }}
           >
             <Box>
-              <Link underline="none" href="www.google.com">
+              <Link underline="none" href="PainelInterno">
                 <StyledAccount>
                   <Avatar src={foto} alt="photoURL" />
                   <Box sx={{ ml: 2 }}>
