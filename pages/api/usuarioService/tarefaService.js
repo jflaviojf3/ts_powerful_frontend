@@ -58,6 +58,19 @@ export const tarefaService = {
       });
   },
 
+  async pegaTarefasPeriodo(token, usuarioId, dataInicio, dataFim) {
+    return api
+      .get(`/v1/usuarios/${usuarioId}/tarefaInicio/${dataInicio}/tarefaFim/${dataFim}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(function (response) {
+        return response.data;
+      })
+      .catch(function (error) {
+        throw error.data;
+      });
+  },
+
   async insereTarefaUsuario(token, usuarioId, body) {
     return api
       .post(`/v1/usuarios/${usuarioId}/tarefa`, body, {
@@ -96,4 +109,5 @@ export const tarefaService = {
         throw error.data;
       });
   },
+
 };

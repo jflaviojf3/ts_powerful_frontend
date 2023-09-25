@@ -59,6 +59,19 @@ export const pontoService = {
       });
   },
 
+  async pegaPontosPeriodo(token, usuarioId, dataInicio, dataFim) {
+    return api
+      .get(`/v1/usuarios/${usuarioId}/pontoInicio/${dataInicio}/pontoFim/${dataFim}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(function (response) {
+        return response.data;
+      })
+      .catch(function (error) {
+        throw error.data;
+      });
+  },
+
   async inserePontoUsuario(token, usuarioId, body) {
     return api
       .post(`/v1/usuarios/${usuarioId}/pontos`, body, {

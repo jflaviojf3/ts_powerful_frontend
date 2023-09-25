@@ -148,12 +148,13 @@ const GrupoTarefa = ({ idUsuario, dia }) => {
       <TableHead>
         <TableRow>
           <TableCell sx={{ width: "60%", color: "primary.main" }}>
-            {fDataSemana(dia.data_dia)}
+            {fDataSemana(dia.data_dia, 1)}
           </TableCell>
           <TableCell sx={{ width: "20%", color: "primary.main" }}>
             Periodo
           </TableCell>
           <TableCell sx={{ width: "10%", color: "primary.main" }}>
+            Tempo
           </TableCell>
           <TableCell sx={{ width: "10%" }}></TableCell>
         </TableRow>

@@ -1,22 +1,51 @@
 import * as React from "react";
-import { TextField, IconButton } from "@mui/material";
-import PlayCircleIcon from "@mui/icons-material/PlayCircle";
-import Stack from "@mui/material/Stack";
-import StopCircleIcon from "@mui/icons-material/StopCircle";
+import DownloadIcon from "@mui/icons-material/Download";
+import { Stack, Button } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-import Relogio from "../../../components/Relogio"
+import { gerarPlanilhaExcel } from "@/utils/PlanilhaUtil";
+import Relogio from "../../../components/Relogio";
 import { tarefaService } from "../../../../pages/api/usuarioService/tarefaService";
 import { getCurrentDateTime, fDifMinutos } from "../../../utils/formatTime";
 import nookies from "nookies";
 
-export default function AppBarTarefas({ idUsuario, setRecarrega, recarrega }) {
-  const [trocaIcone, setTrocaIcone] = React.useState(true);
-  const [descricao, setDescricao] = React.useState("");
+import AppContext from "@/hooks/AppContext";
 
-  
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setDescricao(value);
+export default function AppBarTarefas({ idUsuario }) {
+  const [valueInicio, setSetValueInicio] = React.useState(null);
+  const [valueFim, setValueFim] = React.useState(null);
+  const { recarrega, setRecarrega, setDadosAppBar, dadosAppBar } =
+    React.useContext(AppContext);
+
+  const geraPlanilha = (dados) => {
+    var dataAtual = new Date();
+
+    const relatorio = {
+      title: "Relatório de Tarefas",
+      subject: "Tarefas",
+      author: "TSPowerful",
+      sheetName: "Relatório de Tarefas",
+      tabName: "Relatório de Tarefas",
+      nameFile:
+        "tarefas" +
+        "_" +
+        dataAtual.getHours().toString().padStart(2, "0") +
+        "_" +
+        dataAtual.getMinutes().toString().padStart(2, "0") +
+        "_" +
+        dataAtual.getSeconds().toString().padStart(2, "0") +
+        ".xls",
+    };
+
+    gerarPlanilhaExcel(dados, relatorio);
+  };
+
+  const handleCreate = async (e) => {
+    e.preventDefault();
+    setRecarrega(recarrega+1)
+    //geraPlanilha();
   };
 
   return (
@@ -27,26 +56,40 @@ export default function AppBarTarefas({ idUsuario, setRecarrega, recarrega }) {
         sx={{ gap: 1, margin: 1 }}
         alignItems="center"
       >
-        <TextField
-          label="Registro de Tarefa"
-          id="filled-size-normal"
-          variant="filled"
-          value={descricao}
-          onChange={handleChange}
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+            label="Data Inicio"
+            value={valueInicio}
+            onChange={(newValue) => setSetValueInicio(newValue)}
+            sx={{
+              backgroundColor: "#FFFFFFBF",
+              borderRadius: "5px",
+              width: "30%",
+            }}
+          />
+          <DatePicker
+            label="Data Fim"
+            value={valueFim}
+            onChange={(newValue) => setValueFim(newValue)}
+            sx={{
+              backgroundColor: "#FFFFFFBF",
+              borderRadius: "5px",
+              width: "30%",
+            }}
+          />
+        </LocalizationProvider>
+
+        <Button
+          variant="contained"
+          endIcon={<DownloadIcon />}
+          onClick={handleCreate}
           sx={{
             backgroundColor: "#FFFFFFBF",
-            borderRadius: "5px",
-            width: "60%",
+            color: "#111",
           }}
-        />
-
-        <IconButton>
-          {trocaIcone ? (
-            <PlayCircleIcon sx={{ fontSize: 50, color: "#FFFFFFBF" }} />
-          ) : (
-            <StopCircleIcon sx={{ fontSize: 50, color: "#FFFFFFBF" }} />
-          )}
-        </IconButton>
+        >
+          Exportar
+        </Button>
       </Stack>
     </>
   );

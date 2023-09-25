@@ -35,6 +35,7 @@ export default function AppBarPonto({ idUsuario }) {
           .then(function (response) {
             setTrocaIcone(!trocaIcone);
           });
+          setDescricao("")
           setRecarrega(recarrega+1)
       } catch (error) {
         alert(error);

@@ -1,55 +1,93 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
+import Title from "@/layouts/dashboardMui/Title";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { gerarPlanilhaExcel } from "@/utils/PlanilhaUtil";
 import { Button } from "@mui/material";
+import Box from "@mui/material/Box";
+import Tab from "@mui/material/Tab";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Tooltip from "@mui/material/Tooltip";
 
-const ExportarDados = () => {
+import {
+  fDate,
+  fDateTime,
+  fDifMinutos,
+  getCurrentDateTime,
+} from "../../../utils/formatTime";
 
+import nookies from "nookies";
+import { tarefaService } from "@/../pages/api/usuarioService/tarefaService";
+import { pontoService } from "@/../pages/api/usuarioService/pontoService";
+import AppContext from "@/hooks/AppContext";
 
-  const geraPlanilha = () => {
+const ExportarDados = ({ idUsuario }) => {
+  const { recarrega, setRecarrega, setDadosAppBar, dadosAppBar } =
+    React.useContext(AppContext);
 
-    var dataAtual = new Date();
-
-    const dados = [["Tarefa", "Hora", "", "", ""]];
-
-    dados.push(["", "", "", "", ""]);
-
-
-    for (let index = 0; index < 10; index++) {
-      dados.push([
-        `Tarefa ${index}`,
-        `Hora 0${index}:0${index}`
-      ]);
-    }
-
-
-    const relatorio = {
-      title: "Relatório de Tarefas",
-      subject: "Tarefas",
-      author: "TSPowerful",
-      sheetName: "Relatório de Tarefas",
-      tabName: "Relatório de Tarefas",
-      nameFile:
-        "tarefas" +
-        "_" +
-        dataAtual.getHours().toString()
-        .padStart(2, "0") +
-        "_" +
-        dataAtual.getMinutes().toString()
-        .padStart(2, "0") +
-        "_" +
-        dataAtual.getSeconds().toString()
-        .padStart(2, "0") +
-        ".xls",
-    };
-
-    gerarPlanilhaExcel(dados, relatorio);
+  const [tarefas, setTarefas] = React.useState([]);
+  async function retornaTarefas() {
+    const cookies = nookies.get();
+    const tarefas = await tarefaService.pegaTarefasPeriodo(
+      cookies.ACCESS_TOKEN,
+      idUsuario,
+      "20210925",
+      fDate(getCurrentDateTime(), "yyyyMMdd")
+    );
+    await setTarefas(tarefas);
   }
+
+  const [pontos, setPontos] = React.useState([]);
+  async function retornaPontos() {
+    const cookies = nookies.get();
+    const pontoDia = await pontoService.pegaPontosPeriodo(
+      cookies.ACCESS_TOKEN,
+      idUsuario,
+      "20210925",
+      fDate(getCurrentDateTime(), "yyyyMMdd")
+    );
+    await setPontos(pontoDia);
+  }
+
+  const [dadosTarefa, setDadosTarefa] = React.useState([]);
+  const [dadosPonto, setDadosPonto] = React.useState([]);
+  const dadosListaTarefa = [
+    ["Entrada", "Descrição", "Data_Inicio", "Data_Fim", "Tempo"],
+  ];
+  const dadosListaPonto = [["Situação", "Descrição", "Data_Hora"]];
+
+  const enviaDadosExportar = (aba, col1, col2, col3, col4, col5, col6) => {
+    if (aba == 1) {
+      console.log("passei em Exp tarefa")
+      dadosListaTarefa.push([col1, col2, col3, col4, col5, col6]);
+    } else if (aba == 2) {
+      console.log("passei em Exp ponto")
+      dadosListaPonto.push([col1, col2, col3]);
+    }
+  };
+  
+  console.log(dadosListaPonto)
+
+  React.useEffect(() => {
+    retornaTarefas();
+    retornaPontos();
+    console.log("PAREI AQUI")
+  }, [recarrega]);
+
+  const [value, setValue] = React.useState("1");
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   return (
     <>
@@ -68,21 +106,148 @@ const ExportarDados = () => {
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           <Grid container spacing={3}>
-            {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
+            <Grid item xs={12}>
               <Paper
                 sx={{
                   p: 2,
                   display: "flex",
                   flexDirection: "column",
-                  height: 240,
+                  height: "auto",
                 }}
               >
-              <Typography variant="body2" color="text.secondary" align="center">
-                {" "}TELA DE EXPORTAR DADOS{" "}
-              </Typography>
+                <Title align="center" variant="h5">
+                  Lista de {value == 1 ? "Tarefa" : "Ponto"}
+                </Title>
+                <Box sx={{ width: "100%", typography: "body1" }}>
+                  <TabContext value={value}>
+                    <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                      <TabList
+                        onChange={handleChange}
+                        aria-label="lab API tabs example"
+                        centered
+                      >
+                        <Tab label="EXPORTAR LISTA DE TAREFAS" value="1" />
+                        <Tab label="EXPORTAR LISTA DE PONTOS" value="2" />
+                      </TabList>
+                    </Box>
+                    <TabPanel value="1">
+                      <Table size="small">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell
+                              sx={{ width: "60%", color: "primary.main" }}
+                            >
+                              Descrição da Tarefa
+                            </TableCell>
+                            <TableCell
+                              sx={{ width: "25%", color: "primary.main" }}
+                            >
+                              Periodo
+                            </TableCell>
+                            <TableCell
+                              sx={{ width: "15%", color: "primary.main" }}
+                            >
+                              Tempo Total
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
 
-              <Button onClick={geraPlanilha}>Gerar Planilha</Button>
+                        <TableBody>
+                          {tarefas.map((row, index) => (
+                            <TableRow key={index}>
+                              {enviaDadosExportar(
+                                value,
+                                row.entrada,
+                                row.descricao,
+                                fDateTime(row.createdAt, "HH:mm:ss a"),
+                                fDateTime(row.data_fim, "HH:mm:ss a"),
+                                row.data_fim
+                                  ? fDifMinutos(row.createdAt, row.data_fim)
+                                  : "00:00:00"
+                              )}
+                              <TableCell sx={{ width: "60%" }} size="small">
+                                {row.entrada}
+                                {" | "}
+                                {row.descricao}
+                              </TableCell>
+                              <TableCell sx={{ width: "25%" }}>
+                                <Tooltip
+                                  title={row.createdAt}
+                                  placement="top-end"
+                                >
+                                  {fDateTime(row.createdAt, "HH:mm:ss a")}
+                                </Tooltip>{" "}
+                                {row.data_fim ? "-" : ""}{" "}
+                                <Tooltip
+                                  title={row.data_fim}
+                                  placement="top-end"
+                                >
+                                  {fDateTime(row.data_fim, "HH:mm:ss a")}
+                                </Tooltip>
+                              </TableCell>
+                              <TableCell sx={{ width: "15%" }}>
+                                {row.data_fim
+                                  ? fDifMinutos(row.createdAt, row.data_fim)
+                                  : "00:00:00"}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TabPanel>
+                    <TabPanel value="2">
+                      <Table size="small">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell
+                              sx={{ width: "18%", color: "primary.main" }}
+                            >
+                              Situação
+                            </TableCell>
+                            <TableCell
+                              sx={{ width: "57%", color: "primary.main" }}
+                            >
+                              Descrição do Ponto
+                            </TableCell>
+                            <TableCell
+                              sx={{ width: "25%", color: "primary.main" }}
+                            >
+                              Data e Hora
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
+
+                        <TableBody>
+                          {pontos.map((row, index) => (
+                            <TableRow key={index}>
+                              {enviaDadosExportar(
+                                value,
+                                row.situacao,
+                                row.descricao,
+                                fDateTime(
+                                  row.hora_ponto,
+                                  "dd/MM/yyyy - HH:mm:ss a"
+                                )
+                              )}
+                              <TableCell sx={{ width: "18%" }} size="small">
+                                {row.situacao}
+                              </TableCell>
+                              <TableCell sx={{ width: "57%" }} size="small">
+                                {row.descricao}
+                              </TableCell>
+                              <TableCell sx={{ width: "25%" }}>
+                                {fDateTime(
+                                  row.hora_ponto,
+                                  "dd/MM/yyyy - HH:mm:ss a"
+                                )}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TabPanel>
+                  </TabContext>
+                </Box>
               </Paper>
             </Grid>
           </Grid>

@@ -14,8 +14,7 @@ import AppContext from "@/hooks/AppContext";
 const AppBarOrganizacao = ({
   idUsuario
 }) => {
-  const appContext = React.useContext(AppContext);
-  const {recarrega, setRecarrega} = React.useContext(AppContext);
+  const {recarrega, setRecarrega, setTelaDetalhe, setDadosAppBar} = React.useContext(AppContext);
   const [descricao, setDescricao] = React.useState("");
   const [alertado, setAlertado] = React.useState(false);
 
@@ -36,8 +35,8 @@ const AppBarOrganizacao = ({
       );
 
       resultado
-        ? (appContext.setDadosAppBar([resultado]))
-        : (appContext.setDadosAppBar(null),
+        ? (setDadosAppBar([resultado]))
+        : (setDadosAppBar(null),
         alert("Resultado não encontrado."),
         setDescricao(""))
 
@@ -50,7 +49,7 @@ const AppBarOrganizacao = ({
 
   const handleCreate = async (e) => {
     e.preventDefault();
-    appContext.setTelaDetalhe(true);
+    setTelaDetalhe(true);
   };
 
   return (
