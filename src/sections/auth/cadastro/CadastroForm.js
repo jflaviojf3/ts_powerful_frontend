@@ -16,6 +16,7 @@ import { cadastroService } from "../../../../pages/api/usuarioService/cadastroSe
 // ----------------------------------------------------------------------
 
 const CadastroForm = (props) => {
+  const [loading, setLoading ] = useState(false)
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     nome: "",
@@ -41,6 +42,7 @@ const CadastroForm = (props) => {
         alert("Por favor, preencha todos os campos.");
         return;
       }
+      setLoading(true)
       const data = await cadastroService.cadastroSimples(
         formData.nome,
         formData.sobrenome,
@@ -48,12 +50,14 @@ const CadastroForm = (props) => {
         formData.password
       );
       if(data.status === 200){
+        setLoading(false)
         alert("Cadastro realizado com sucesso!");
         setTimeout(() => {
           props.setFormularioAtual("LoginForm");
-        }, 2000);
+        }, 1500);
       }
     } catch (error) {
+      setLoading(false)
       alert(error);
       console.error("Erro na solicitação POST:", error);
     }
@@ -111,6 +115,7 @@ const CadastroForm = (props) => {
           type="submit"
           variant="contained"
           onClick={handleSubmit}
+          loading={loading}
         >
           Cadastrar
         </LoadingButton>

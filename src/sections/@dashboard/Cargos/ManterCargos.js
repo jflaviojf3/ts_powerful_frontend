@@ -13,7 +13,7 @@ import { organizacaoService } from "@/../pages/api/organizacaoService/organizaca
 import { fDateTime } from "@/utils/formatTime";
 import AppContext from "@/hooks/AppContext";
 
-export default function ManterOrganizacao({ idUsuario }) {
+export default function ManterCargo({ idUsuario }) {
   const { recarrega, setRecarrega, dadosAppBar, setTelaDetalhe, telaEdicao, setTelaEdicao } =
     React.useContext(AppContext);
 

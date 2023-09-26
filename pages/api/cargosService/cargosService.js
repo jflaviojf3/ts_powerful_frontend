@@ -5,10 +5,10 @@ const api = axios.create({
   baseURL: baseUrl,
 });
 
-export const organizacaoService = {
-  async pegaTodasOrganizacoes(token) {
+export const cargoService = {
+  async pegaTodasCargos(token) {
     return api
-      .get(`/v1/organizacoes`, {
+      .get(`/v1/cargos`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
@@ -19,9 +19,9 @@ export const organizacaoService = {
       });
   },
 
-  async pegaOrganizacaoId(token, organizacaoId) {
+  async pegaCargosId(token, cargosId) {
     return api
-      .get(`/v1/organizacoes/${organizacaoId}`, {
+      .get(`/v1/cargos/${cargosId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
@@ -32,9 +32,9 @@ export const organizacaoService = {
       });
   },
 
-  async pegaOrganizacaoNome(token, body) {
+  async pegaCargoNome(token, body) {
     return api
-      .post(`/v1/organizacoes/nomeOrganizacao`, body, {
+      .post(`/v1/cargos/nomeCargo`, body, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
@@ -47,7 +47,7 @@ export const organizacaoService = {
 
   async insereOrganizacao(token, body) {
     return api
-      .post(`/v1/organizacoes/`, body, {
+      .post(`/v1/cargos/`, body, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
@@ -58,9 +58,9 @@ export const organizacaoService = {
       });
   },
 
-  async atualizaOrganizacao(token, organizacaoId, body) {
+  async atualizaCargos(token, cargosId, body) {
     return api
-      .put(`/v1/organizacoes/${organizacaoId}`, body, {
+      .put(`/v1/cargos/${cargosId}`, body, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {
@@ -71,9 +71,9 @@ export const organizacaoService = {
       });
   },
 
-  async deletaOrganizacao(token, organizacaoId) {
+  async deletaCargos(token, cargosId) {
     return api
-      .delete(`/v1/organizacoes/${organizacaoId}`, {
+      .delete(`/v1/cargos/${cargosId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {

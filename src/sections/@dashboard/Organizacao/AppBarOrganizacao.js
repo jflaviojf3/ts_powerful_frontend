@@ -3,7 +3,7 @@ import { TextField, Button, Stack } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import CorporateFareIcon from "@mui/icons-material/CorporateFare";
-import Alert from '@mui/material/Alert';
+import Alert from "@mui/material/Alert";
 
 import Relogio from "../../../components/Relogio";
 import { organizacaoService } from "@/../pages/api/organizacaoService/organizacaoService";
@@ -11,10 +11,14 @@ import { getCurrentDateTime, fDifMinutos } from "../../../utils/formatTime";
 import nookies from "nookies";
 import AppContext from "@/hooks/AppContext";
 
-const AppBarOrganizacao = ({
-  idUsuario
-}) => {
-  const {recarrega, setRecarrega, setTelaDetalhe, setDadosAppBar} = React.useContext(AppContext);
+const AppBarOrganizacao = ({ idUsuario }) => {
+  const {
+    recarrega,
+    setRecarrega,
+    telaDetalhe,
+    setTelaDetalhe,
+    setDadosAppBar,
+  } = React.useContext(AppContext);
   const [descricao, setDescricao] = React.useState("");
   const [alertado, setAlertado] = React.useState(false);
 
@@ -35,10 +39,10 @@ const AppBarOrganizacao = ({
       );
 
       resultado
-        ? (setDadosAppBar([resultado]))
+        ? setDadosAppBar([resultado])
         : (setDadosAppBar(null),
-        alert("Resultado não encontrado."),
-        setDescricao(""))
+          alert("Resultado não encontrado."),
+          setDescricao(""));
 
       setRecarrega(recarrega + 1);
     } catch (error) {
@@ -65,6 +69,7 @@ const AppBarOrganizacao = ({
           id="filled-size-normal"
           variant="filled"
           value={descricao}
+          disabled={telaDetalhe}
           sx={{
             backgroundColor: "#FFFFFFBF",
             borderRadius: "5px",
@@ -78,7 +83,7 @@ const AppBarOrganizacao = ({
           }}
           InputProps={{
             endAdornment: (
-              <IconButton onClick={handleSearch} edge="end">
+              <IconButton onClick={telaDetalhe ? ()=>{}: handleSearch} edge="end">
                 <SearchIcon />
               </IconButton>
             ),
@@ -88,6 +93,7 @@ const AppBarOrganizacao = ({
           variant="contained"
           endIcon={<CorporateFareIcon />}
           onClick={handleCreate}
+          disabled={telaDetalhe}
           sx={{
             backgroundColor: "#FFFFFFBF",
             color: "#111",

@@ -22,7 +22,7 @@ import { organizacaoService } from "@/../pages/api/organizacaoService/organizaca
 import { fDateTime } from "@/utils/formatTime";
 import AppContext from "@/hooks/AppContext";
 
-export default function ListaOrganizacao({
+export default function ListaCargos({
   idUsuario,
 }) {
   const {recarrega, setRecarrega, dadosAppBar, setTelaDetalhe, setTelaEdicao} = React.useContext(AppContext);
@@ -103,7 +103,7 @@ export default function ListaOrganizacao({
   return (
     <React.Fragment>
       <Title align="center" variant="h5">
-        Lista de Organizações
+        Lista de Cargos
       </Title>
       <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
         <Table size="small">

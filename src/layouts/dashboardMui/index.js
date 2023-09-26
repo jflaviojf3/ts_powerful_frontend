@@ -127,9 +127,14 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 export default function Dashboard(props) {
+  const {
+    recarrega,
+    setRecarrega,
+    setTelaDetalhe,
+    setDadosAppBar,
+    setTelaEdicao,
+  } = React.useContext(AppContext);
 
-  const {recarrega, setRecarrega, setTelaDetalhe, setDadosAppBar} = React.useContext(AppContext);
-  
   const router = useRouter();
   const [nome, setNome] = React.useState("null");
   const [perfi, setPerfil] = React.useState("null");
@@ -177,13 +182,14 @@ export default function Dashboard(props) {
   const ClickItem = (itemText) => {
     setMenuDescricao(itemText);
     setAppBarAtual(itemText);
-    setDadosAppBar(null)
-    setTelaDetalhe(false)
+    setDadosAppBar(null);
+    setTelaDetalhe(false);
+    setTelaEdicao({ editando: false });
     setRecarrega(recarrega + 1);
   };
 
   //Tranferencia de dados de AppBar para Tela
-    return (
+  return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
@@ -217,46 +223,25 @@ export default function Dashboard(props) {
               sx={{ flexGrow: 1 }}
             >
               {appBarAtual === "Tarefa" ? (
-                <AppBarTarefas
-                  idUsuario={idUsuario}
-                />
+                <AppBarTarefas idUsuario={idUsuario} />
               ) : appBarAtual === "Cargos" ? (
-                <AppBarCargos
-                  idUsuario={idUsuario}
-                />
+                <AppBarCargos idUsuario={idUsuario} />
               ) : appBarAtual === "Clientes" ? (
-                <AppBarClientes
-                  idUsuario={idUsuario}
-                />
+                <AppBarClientes idUsuario={idUsuario} />
               ) : appBarAtual === "Configuração" ? (
-                <AppBarConfiguracao
-                  idUsuario={idUsuario}
-                />
+                <AppBarConfiguracao idUsuario={idUsuario} />
               ) : appBarAtual === "Equipes" ? (
-                <AppBarEquipes
-                  idUsuario={idUsuario}
-                />
+                <AppBarEquipes idUsuario={idUsuario} />
               ) : appBarAtual === "Exportar Dados" ? (
-                <AppBarExportarDados
-                  idUsuario={idUsuario}
-                />
+                <AppBarExportarDados idUsuario={idUsuario} />
               ) : appBarAtual === "Organização" ? (
-                <Organizacao
-                  AppBar={true}
-                  idUsuario={idUsuario}
-                />
+                <Organizacao AppBar={true} idUsuario={idUsuario} />
               ) : appBarAtual === "Projetos" ? (
-                <AppBarProjetos
-                  idUsuario={idUsuario}
-                />
+                <AppBarProjetos idUsuario={idUsuario} />
               ) : appBarAtual === "Visualizar Relatorios" ? (
-                <AppBarVisualizarRelatorios
-                  idUsuario={idUsuario}
-                />
+                <AppBarVisualizarRelatorios idUsuario={idUsuario} />
               ) : appBarAtual === "Ponto" ? (
-                <AppBarPonto
-                  idUsuario={idUsuario}
-                />
+                <AppBarPonto idUsuario={idUsuario} />
               ) : appBarAtual === "Carregando" ? (
                 <AppBarCarregando />
               ) : (
@@ -316,45 +301,25 @@ export default function Dashboard(props) {
           }}
         >
           {menuDescricao === "Tarefa" ? (
-            <Tarefas
-              idUsuario={idUsuario}
-            />
+            <Tarefas idUsuario={idUsuario} />
           ) : menuDescricao === "Cargos" ? (
-            <Cargos
-              idUsuario={idUsuario}
-            />
+            <Cargos idUsuario={idUsuario} />
           ) : menuDescricao === "Clientes" ? (
-            <Clientes
-              idUsuario={idUsuario}
-            />
+            <Clientes idUsuario={idUsuario} />
           ) : menuDescricao === "Configuração" ? (
-            <Configuracao
-              idUsuario={idUsuario}
-            />
+            <Configuracao idUsuario={idUsuario} />
           ) : menuDescricao === "Equipes" ? (
-            <Equipes
-              idUsuario={idUsuario}
-            />
+            <Equipes idUsuario={idUsuario} />
           ) : menuDescricao === "Exportar Dados" ? (
-            <ExportarDados
-              idUsuario={idUsuario}
-            />
+            <ExportarDados idUsuario={idUsuario} />
           ) : menuDescricao === "Organização" ? (
-            <Organizacao
-              idUsuario={idUsuario}
-            />
+            <Organizacao idUsuario={idUsuario} />
           ) : menuDescricao === "Projetos" ? (
-            <Projetos
-              idUsuario={idUsuario}
-            />
+            <Projetos idUsuario={idUsuario} />
           ) : menuDescricao === "Visualizar Relatorios" ? (
-            <VisualizarRelatorios
-              idUsuario={idUsuario}
-            />
+            <VisualizarRelatorios idUsuario={idUsuario} />
           ) : menuDescricao === "Ponto" ? (
-            <Pontos
-              idUsuario={idUsuario}
-            />
+            <Pontos idUsuario={idUsuario} />
           ) : menuDescricao === "Carregando" ? (
             <Carregando />
           ) : (

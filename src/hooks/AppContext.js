@@ -8,6 +8,7 @@ const AppContext = React.createContext({});
 export const AppProvider = ({ children }) => {
   const [tempoAtualTarefa, setTempoAtualTarefa] = React.useState(0);
   const [telaDetalhe, setTelaDetalhe] = React.useState(false);
+  const [telaEdicao, setTelaEdicao] = React.useState({ editando: false });
   const [dadosAppBar, setDadosAppBar] = React.useState(null);
   const [recarrega, setRecarrega] = React.useState(0);
 
@@ -28,10 +29,12 @@ export const AppProvider = ({ children }) => {
         tempoAtualTarefa,
         setTelaDetalhe,
         telaDetalhe,
+        setTelaEdicao,
+        telaEdicao,
         setDadosAppBar,
         dadosAppBar,
         setRecarrega,
-        recarrega
+        recarrega,
       }}
     >
       {children}

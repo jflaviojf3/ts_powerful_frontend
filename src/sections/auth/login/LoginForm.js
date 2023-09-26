@@ -21,6 +21,7 @@ import { authService } from "../../../../pages/api/autenticacaoService/auth";
 // ----------------------------------------------------------------------
 
 const LoginForm = () => {
+  const [loading, setLoading ] = useState(false)
   const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
@@ -48,7 +49,9 @@ const LoginForm = () => {
       }
       const data = await authService.login(formData.email, formData.password);
       setTokenAuth(data.token);
+      setLoading(true)
     } catch (error) {
+      setLoading(false)
       alert(error);
       console.error("Erro na solicitação POST:", error);
     }
@@ -110,11 +113,11 @@ const LoginForm = () => {
         justifyContent="space-between"
         sx={{ my: 2 }}
       >
-        <Checkbox name="remember" label="Remember me" />
+        {/* <Checkbox name="remember" label="Remember me" />
 
         <Link variant="subtitle2" underline="hover">
           Esqueceu a Senha?
-        </Link>
+        </Link> */}
       </Stack>
 
       <LoadingButton
@@ -123,6 +126,7 @@ const LoginForm = () => {
         type="submit"
         variant="contained"
         onClick={handleSubmit}
+        loading={loading}
       >
         Login
       </LoadingButton>
