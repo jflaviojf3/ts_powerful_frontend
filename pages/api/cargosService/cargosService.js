@@ -5,7 +5,7 @@ const api = axios.create({
   baseURL: baseUrl,
 });
 
-export const cargoService = {
+export const cargosService = {
   async pegaTodasCargos(token) {
     return api
       .get(`/v1/cargos`, {
@@ -45,7 +45,7 @@ export const cargoService = {
       });
   },
 
-  async insereOrganizacao(token, body) {
+  async insereCargos(token, body) {
     return api
       .post(`/v1/cargos/`, body, {
         headers: { Authorization: `Bearer ${token}` },

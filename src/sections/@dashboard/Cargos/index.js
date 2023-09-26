@@ -9,22 +9,15 @@ import ManterCargos from "./ManterCargos";
 import AppBarCargos from "./AppBarCargos";
 import AppContext from "@/hooks/AppContext";
 
-const Cargos = ({
-  AppBar,
-  idUsuario
-}) => {
-
-  const {recarrega, setRecarrega, telaDetalhe} = React.useContext(AppContext);
-  React.useEffect(() => {
-  }, [recarrega]);
+const Cargos = ({ AppBar, idUsuario }) => {
+  const { recarrega, setRecarrega, telaDetalhe } = React.useContext(AppContext);
+  React.useEffect(() => {}, [recarrega]);
 
   return (
     <>
       {AppBar ? (
         <>
-          <AppBarCargos
-            idUsuario={idUsuario}
-          />
+          <AppBarCargos idUsuario={idUsuario} />
         </>
       ) : (
         <Box
@@ -51,17 +44,11 @@ const Cargos = ({
                     height: "auto",
                   }}
                 >
-                  {
-                    !telaDetalhe ? (
-                      <ListaCargos
-                      idUsuario={idUsuario}
-                    />
-                    ) : (
-                      <ManterCargos
-                      idUsuario={idUsuario}
-                    />
-                    )
-                  }
+                  {!telaDetalhe ? (
+                    <ListaCargos idUsuario={idUsuario} />
+                  ) : (
+                    <ManterCargos idUsuario={idUsuario} />
+                  )}
                 </Paper>
               </Grid>
             </Grid>

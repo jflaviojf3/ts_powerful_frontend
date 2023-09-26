@@ -18,14 +18,18 @@ import { IconButton } from "@mui/material";
 import Title from "@/layouts/dashboardMui/Title";
 
 import nookies from "nookies";
-import { organizacaoService } from "@/../pages/api/organizacaoService/organizacaoService";
+import { cargosService } from "@/../pages/api/cargosService/cargosService";
 import { fDateTime } from "@/utils/formatTime";
 import AppContext from "@/hooks/AppContext";
 
-export default function ListaCargos({
-  idUsuario,
-}) {
-  const {recarrega, setRecarrega, dadosAppBar, setTelaDetalhe, setTelaEdicao} = React.useContext(AppContext);
+export default function ListaCargos({ idUsuario }) {
+  const {
+    recarrega,
+    setRecarrega,
+    dadosAppBar,
+    setTelaDetalhe,
+    setTelaEdicao,
+  } = React.useContext(AppContext);
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
 
@@ -61,43 +65,58 @@ export default function ListaCargos({
     prevOpen.current = open;
   }, [open]);
 
-  const [organizacoes, setOrganizacoes] = React.useState([]);
+  const [cargos, setCargos] = React.useState([]);
 
-  async function retornaOrganizacoes() {
+  async function retornaCargos() {
     if (dadosAppBar) {
-      setOrganizacoes(dadosAppBar);
+      setCargos(dadosAppBar);
     } else {
       const cookies = nookies.get();
-      const ListaOrgs = await organizacaoService.pegaTodasOrganizacoes(
+      const ListaCargos = await cargosService.pegaTodasCargos(
         cookies.ACCESS_TOKEN
       );
-      setOrganizacoes(ListaOrgs);
+      setCargos(ListaCargos);
     }
   }
 
-  async function handleEdit(e, id_organizacoes, nome, data_criacao) {
+  async function handleEdit(
+    e,
+    id_cargos,
+    nome,
+    descricao_cargo,
+    data_inicio,
+    data_fim,
+    cod_categoria
+  ) {
     if (anchorRef.current && anchorRef.current.contains(e.target)) {
       return;
     }
     e.preventDefault();
     setTelaDetalhe(true);
-    setTelaEdicao({editando:true, dados: {id_organizacoes:id_organizacoes, nome:nome, data_criacao:data_criacao}})
+    setTelaEdicao({
+      editando: true,
+      dados: {
+        id_cargos: id_cargos,
+        nome: nome,
+        descricao_cargo: descricao_cargo,
+        data_inicio: data_inicio,
+        data_fim: data_fim,
+        cod_categoria: cod_categoria,
+      },
+    });
   }
 
-  async function handleExcluir(e, id_organizacoes) {
+  async function handleExcluir(e, id_cargos) {
     if (anchorRef.current && anchorRef.current.contains(e.target)) {
       return;
     }
     const cookies = nookies.get();
-    await organizacaoService.deletaOrganizacao(
-      cookies.ACCESS_TOKEN,
-      id_organizacoes
-    );
+    await cargosService.deletaCargos(cookies.ACCESS_TOKEN, id_cargos);
     setRecarrega(recarrega + 1);
   }
 
   React.useEffect(() => {
-    retornaOrganizacoes();
+    retornaCargos();
   }, [recarrega]);
 
   return (
@@ -107,25 +126,53 @@ export default function ListaCargos({
       </Title>
       <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
         <Table size="small">
+          <TableHead>
+            <TableRow>
+              <TableCell
+                sx={{ width: "8%", color: "primary.main" }}
+                padding="none"
+              ></TableCell>
+              <TableCell
+                sx={{ width: "60%", color: "primary.main" }}
+                padding="none"
+              >
+                Descrição do Cargo
+              </TableCell>
+              <TableCell
+                sx={{ width: "17%", color: "primary.main" }}
+                padding="none"
+              >
+                Inicio do Cargo
+              </TableCell>
+              <TableCell
+                sx={{ width: "13%", color: "primary.main" }}
+                padding="none"
+              >
+              </TableCell>
+              <TableCell
+                sx={{ width: "2%", color: "primary.main" }}
+                padding="none"
+              ></TableCell>
+            </TableRow>
+          </TableHead>
           <TableBody>
-            {organizacoes.map((row, index) => (
+            {cargos.map((row, index) => (
               <TableRow key={index}>
-                <TableCell sx={{ width: "8%",  padding: "0px", margin: "0px" }} size="small">
+                <TableCell sx={{ width: "8%" }} size="small" padding="none">
                   {index <= 9 ? "0" + (index + 1) : index + 1}
-                  {" |"}
                 </TableCell>
-                <TableCell sx={{ width: "72%", padding: "0px", margin: "0px" }} size="small">
+                <TableCell sx={{ width: "60%" }} size="small" padding="none">
                   {row.nome}
                 </TableCell>
-                <TableCell sx={{ width: "18%", padding: "0px", margin: "0px" }} size="small">
-                  {" | "}
-                  {
-                    <Tooltip title={row.createdAt} placement="top-end">
-                      {fDateTime(row.createdAt, "dd MMM yyyy")}
-                    </Tooltip>
-                  }
+                <TableCell sx={{ width: "17%" }} size="small" padding="none">
+                  {fDateTime(row.data_inicio, "dd MMM yyyy")}
                 </TableCell>
-                <TableCell sx={{ width: "2%",  padding: "0px", margin: "0px" }} size="small">
+                <TableCell sx={{ width: "13%" }} size="small" padding="none">
+                  {row.data_fim
+                    ? fDateTime(row.data_fim, "dd MMM yyyy")
+                    : "Ativo"}
+                </TableCell>
+                <TableCell sx={{ width: "2%" }} size="small" padding="none">
                   <IconButton
                     ref={anchorRef}
                     id="composition-button"
@@ -162,11 +209,20 @@ export default function ListaCargos({
                               onKeyDown={handleListKeyDown}
                               variant="menu"
                             >
-                              <MenuItem onClick={(e) => handleEdit(e, row.id_organizacoes, row.nome ,row.createdAt)}>Editar</MenuItem>
                               <MenuItem
                                 onClick={(e) =>
-                                  handleExcluir(e, row.id_organizacoes)
+                                  handleEdit(
+                                    e,
+                                    row.id_cargos,
+                                    row.nome,
+                                    row.createdAt
+                                  )
                                 }
+                              >
+                                Editar
+                              </MenuItem>
+                              <MenuItem
+                                onClick={(e) => handleExcluir(e, row.id_cargos)}
                               >
                                 Excluir
                               </MenuItem>

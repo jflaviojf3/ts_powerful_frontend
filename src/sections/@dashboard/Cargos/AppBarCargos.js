@@ -3,15 +3,15 @@ import { TextField, Button, Stack } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-import Alert from '@mui/material/Alert';
+import Alert from "@mui/material/Alert";
 
 import Relogio from "../../../components/Relogio";
-import { organizacaoService } from "@/../pages/api/organizacaoService/organizacaoService";
+import { cargosService } from "@/../pages/api/cargosService/cargosService";
 import { getCurrentDateTime, fDifMinutos } from "../../../utils/formatTime";
 import nookies from "nookies";
 import AppContext from "@/hooks/AppContext";
 
-const AppBarOrganizacao = ({ idUsuario }) => {
+const AppBarCargos = ({ idUsuario }) => {
   const {
     recarrega,
     setRecarrega,
@@ -26,14 +26,14 @@ const AppBarOrganizacao = ({ idUsuario }) => {
     e.preventDefault();
     try {
       if (!descricao) {
-        alert("Por favor, Nome da Organização não pode ser vazia");
+        alert("Por favor, preencha todos os campos");
         return;
       }
       const cookies = nookies.get();
       const body = {
         nome: descricao,
       };
-      const resultado = await organizacaoService.pegaOrganizacaoNome(
+      const resultado = await cargosService.pegaCargoNome(
         cookies.ACCESS_TOKEN,
         body
       );
@@ -83,7 +83,10 @@ const AppBarOrganizacao = ({ idUsuario }) => {
           }}
           InputProps={{
             endAdornment: (
-              <IconButton onClick={telaDetalhe ? ()=>{}: handleSearch} edge="end">
+              <IconButton
+                onClick={telaDetalhe ? () => {} : handleSearch}
+                edge="end"
+              >
                 <SearchIcon />
               </IconButton>
             ),
@@ -106,4 +109,4 @@ const AppBarOrganizacao = ({ idUsuario }) => {
   );
 };
 
-export default AppBarOrganizacao;
+export default AppBarCargos;
