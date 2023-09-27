@@ -5,7 +5,7 @@ import { LoadingButton } from "@mui/lab";
 import Title from "@/layouts/dashboardMui/Title";
 
 import nookies from "nookies";
-import { cargosService } from "@/../pages/api/cargosService/cargosService";
+import { clientesService } from "@/../pages/api/clientesService/clientesService";
 import { tabGenericaService } from "@/../pages/api/tabGenericaService/tabGenericaService";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -62,15 +62,15 @@ function ButtonDatePicker(props) {
   );
 }
 
-export default function ManterCargo({ idUsuario }) {
-  const [age, setAge] = React.useState("");
+export default function ManterClientes({ idUsuario }) {
+  const [chave, setChave] = React.useState("");
   const [valueInicio, setValueInicio] = React.useState(null);
   const [valueFim, setValueFim] = React.useState(null);
   const [parCategoria, setParCategoria] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
 
   const handleChangeSeleted = (event) => {
-    setAge(event.target.value);
+    setChave(event.target.value);
   };
   const {
     recarrega,
@@ -82,14 +82,15 @@ export default function ManterCargo({ idUsuario }) {
   } = React.useContext(AppContext);
 
   const [formData, setFormData] = React.useState({
-    id_cargos: telaEdicao.editando ? telaEdicao.dados.id_cargos : "",
+    id_clientes: telaEdicao.editando ? telaEdicao.dados.id_clientes : "",
     nome: telaEdicao.editando ? telaEdicao.dados.nome : "",
-    descricao_cargo: telaEdicao.editando
-      ? telaEdicao.dados.descricao_cargo
+    descricao: telaEdicao.editando
+      ? telaEdicao.dados.descricao
       : "",
     data_inicio: telaEdicao.editando ? telaEdicao.dados.data_inicio : "",
     data_fim: telaEdicao.editando ? telaEdicao.dados.data_fim : "",
-    cod_categoria: telaEdicao.editando ? telaEdicao.dados.cod_categoria : "",
+    email: telaEdicao.editando ? telaEdicao.dados.email : "",
+    cod_prioridade: telaEdicao.editando ? telaEdicao.dados.cod_prioridade : "",
   });
 
   const handleChange = (e) => {
@@ -101,20 +102,21 @@ export default function ManterCargo({ idUsuario }) {
     e.preventDefault();
     setLoading(true)
     try {
-      if (!formData.nome || !valueInicio || !formData.descricao_cargo || !age) {
-        alert(`Por favor, preencha todos os campos.`);
+      if (!formData.nome || !valueInicio || !formData.descricao || !formData.email || !chave) {
         setLoading(false)
+        alert(`Por favor, preencha todos os campos.`);
         return;
       }
 
       const body = {
         nome: formData.nome,
-        descricao_cargo: formData.descricao_cargo,
+        descricao: formData.descricao,
+        email: formData.email,
         data_inicio: formatarDataBR(valueInicio),
-        cod_categoria: age,
+        cod_prioridade: chave,
       };
       const cookies = nookies.get();
-      const ListaCargos = await cargosService.insereCargos(
+      const ListaClientes = await clientesService.insereClientes(
         cookies.ACCESS_TOKEN,
         body
       );
@@ -124,8 +126,8 @@ export default function ManterCargo({ idUsuario }) {
         setTelaDetalhe(false);
       }, 1000);
     } catch (error) {
-      alert(error);
       setLoading(false)
+      alert(error);
       console.error("Erro na solicitação POST:", error);
     }
   };
@@ -139,8 +141,9 @@ export default function ManterCargo({ idUsuario }) {
       if (
         !formData.nome ||
         !valueInicio ||
-        !formData.descricao_cargo ||
-        !age
+        !formData.descricao ||
+        !formData.email ||
+        !chave
       ) {
         setLoading(false)
         alert("Por favor, preencha todos os campos.");
@@ -148,16 +151,17 @@ export default function ManterCargo({ idUsuario }) {
       }
       const body = {
         nome: formData.nome,
-        descricao_cargo: formData.descricao_cargo,
+        descricao: formData.descricao,
         data_inicio: formatarDataBR(valueInicio),
-        cod_categoria: age,
+        cod_prioridade: chave,
+        email: formData.email,
         data_fim: valueFim ? formatarDataBR(valueFim): null,
       };
       console.log("Edit", body)
       const cookies = nookies.get();
-      const ListaCargos = await cargosService.atualizaCargos(
+      const ListaClientes = await clientesService.atualizaClientes(
         cookies.ACCESS_TOKEN,
-        telaEdicao.dados.id_cargos,
+        telaEdicao.dados.id_clientes,
         body
       );
       alert("Cadastro atulizado com sucesso!");
@@ -175,24 +179,25 @@ export default function ManterCargo({ idUsuario }) {
   const retornaParametro = async (parametro) => {
     try {
       const cookies = nookies.get();
-      const ListaCargo = await tabGenericaService.pegaListaPropriedadeId(
+      const ListaParam = await tabGenericaService.pegaListaPropriedadeId(
         cookies.ACCESS_TOKEN,
         parametro
       );
-      await setParCategoria(ListaCargo);
+      await setParCategoria(ListaParam);
     } catch (error) {
       alert(error);
       console.error("Erro na solicitação POST:", error);
     }
   };
 
-  const retornaValorPar = (cod_categoria, consultaParam) => {
+  const retornaValorPar = async (cod_prioridade, consultaParam) => {
     if (telaEdicao.editando) {
       if (consultaParam.length > 0) {
-        const descricaoCodigo = consultaParam.find(
-          (item) => item.cod_propriedade === cod_categoria
+        const descricaoCodigo = await consultaParam.find(
+          (item) => item.cod_propriedade === cod_prioridade
         );
-        setAge(descricaoCodigo.cod_propriedade);
+        console.log(descricaoCodigo)
+        await setChave(descricaoCodigo.cod_propriedade);
       } else {
         setRecarrega(recarrega + 1);
       }
@@ -205,15 +210,15 @@ export default function ManterCargo({ idUsuario }) {
   };
 
   React.useEffect(() => {
-    retornaParametro(3);
-    retornaValorPar(formData.cod_categoria, parCategoria);
+    retornaParametro(4);
+    retornaValorPar(formData.cod_prioridade, parCategoria);
     carregaDataInicio(valueInicio ? "" : valueInicio, valueFim ? "" : valueFim);
   }, [recarrega]);
 
   return (
     <React.Fragment>
       <Title align="center" variant="h5">
-        {telaEdicao.editando ? "Atualiza Cargo" : "Novo Cargo"}
+        {telaEdicao.editando ? "Atualiza Cliente" : "Novo Cliente"}
       </Title>
       <Divider sx={{ my: 3 }}></Divider>
       <Stack spacing={3}>
@@ -221,7 +226,7 @@ export default function ManterCargo({ idUsuario }) {
           <Stack direction="row" spacing={4}>
             <TextField
               name="nome"
-              label="Nome do Cargo"
+              label="Nome do Cliente"
               value={formData.nome}
               onChange={handleChange}
               sx={{ width: "40%" }}
@@ -230,10 +235,10 @@ export default function ManterCargo({ idUsuario }) {
               <ButtonDatePicker
                 label={`Data Inicio: ${
                   valueInicio == null
-                    ? fDate(formData.data_inicio, "dd/MM/yyyy")
+                    ? "27/09/2023"//fDate(formData.data_inicio, "dd/MM/yyyy")
                     : valueInicio
                 }`}
-                value={fDate(formData.data_inicio, "dd/MM/yyyy")}
+                value={"27/09/2023"}//fDate(formData.data_inicio, "dd/MM/yyyy")}
                 onChange={(newValue) =>
                   setValueInicio(fDate(`${newValue}`, "dd/MM/yyyy"))
                 }
@@ -255,23 +260,24 @@ export default function ManterCargo({ idUsuario }) {
             <TextField
               id="outlined-multiline-static"
               multiline
-              rows={4}
+              rows={5}
               defaultValue="Default Value"
-              name="descricao_cargo"
+              name="descricao"
               label="Descrição do Cargo"
-              value={formData.descricao_cargo}
+              value={formData.descricao}
               onChange={handleChange}
-              sx={{ width: "73%" }}
+              sx={{ width: "69%" }}
             />
-            <FormControl sx={{ m: 1, minWidth: 120, width: "30%" }}>
-              <InputLabel id="demo-simple-select-helper-label">
-                Categoria
+            <Stack spacing={4}>
+            <FormControl sx={{ m: 1, maxwidth: "40%", minWidth: 300, }}>
+              <InputLabel id="demo-simple-select-helper-label" >
+                Prioridade
               </InputLabel>
               <Select
                 labelId="demo-simple-select-helper-label"
                 id="demo-simple-select-helper"
-                value={age}
-                label="Categoria"
+                value={chave}
+                label="Prioridade"
                 onChange={handleChangeSeleted}
               >
                 <MenuItem value="">
@@ -284,6 +290,14 @@ export default function ManterCargo({ idUsuario }) {
                 ))}
               </Select>
             </FormControl>
+            <TextField
+              name="email"
+              label="Email do Cliente"
+              value={formData.email}
+              onChange={handleChange}
+              sx={{ width: "40%", minWidth: 300, }}
+            />
+            </Stack>
           </Stack>
         </Stack>
         <LoadingButton

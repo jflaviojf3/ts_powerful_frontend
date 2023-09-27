@@ -1,9 +1,5 @@
 import * as React from "react";
-import {
-  Stack,
-  TextField,
-  Divider,
-} from "@mui/material";
+import { Stack, TextField, Divider } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 import Title from "@/layouts/dashboardMui/Title";
@@ -14,9 +10,16 @@ import { fDateTime } from "@/utils/formatTime";
 import AppContext from "@/hooks/AppContext";
 
 export default function ManterOrganizacao({ idUsuario }) {
-  const { recarrega, setRecarrega, dadosAppBar, setTelaDetalhe, telaEdicao, setTelaEdicao } =
-    React.useContext(AppContext);
+  const {
+    recarrega,
+    setRecarrega,
+    dadosAppBar,
+    setTelaDetalhe,
+    telaEdicao,
+    setTelaEdicao,
+  } = React.useContext(AppContext);
 
+  const [loading, setLoading] = React.useState(false);
   const [formData, setFormData] = React.useState({
     nome: telaEdicao.editando ? telaEdicao.dados.nome : "",
   });
@@ -27,8 +30,10 @@ export default function ManterOrganizacao({ idUsuario }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
     try {
       if (!formData.nome) {
+        setLoading(false)
         alert("Por favor, preencha todos os campos.");
         return;
       }
@@ -41,12 +46,12 @@ export default function ManterOrganizacao({ idUsuario }) {
         body
       );
 
-        alert("Cadastro realizado com sucesso!");
-        setTimeout(() => {
-          setTelaDetalhe(false);
-        }, 1000);
-      
+      alert("Cadastro realizado com sucesso!");
+      setTimeout(() => {
+        setTelaDetalhe(false);
+      }, 1000);
     } catch (error) {
+      setLoading(false)
       alert(error);
       console.error("Erro na solicitação POST:", error);
     }
@@ -54,8 +59,10 @@ export default function ManterOrganizacao({ idUsuario }) {
 
   const EditSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
     try {
       if (!formData.nome) {
+        setLoading(false)
         alert("Por favor, preencha todos os campos.");
         return;
       }
@@ -68,13 +75,13 @@ export default function ManterOrganizacao({ idUsuario }) {
         telaEdicao.dados.id_organizacoes,
         body
       );
-        alert("Cadastro Atulizado com sucesso!");
-        setTimeout(() => {
-          setTelaDetalhe(false);
-          setTelaEdicao({editando: false});
-        }, 1000);
-      
+      alert("Cadastro Atulizado com sucesso!");
+      setTimeout(() => {
+        setTelaDetalhe(false);
+        setTelaEdicao({ editando: false });
+      }, 1000);
     } catch (error) {
+      setLoading(false)
       alert(error);
       console.error("Erro na solicitação POST:", error);
     }
@@ -100,9 +107,10 @@ export default function ManterOrganizacao({ idUsuario }) {
             size="large"
             type="submit"
             variant="contained"
-            onClick={telaEdicao.editando ? EditSubmit : handleSubmit } 
+            loading={loading}
+            onClick={telaEdicao.editando ? EditSubmit : handleSubmit}
           >
-            {telaEdicao.editando ? "ATUALIZAR": "CADASTRAR" }
+            {telaEdicao.editando ? "ATUALIZAR" : "CADASTRAR"}
           </LoadingButton>
         </Stack>
       </Stack>

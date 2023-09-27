@@ -1,17 +1,12 @@
 import * as React from "react";
-import { Stack, Divider } from "@mui/material";
+import { Stack } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import MoreIcon from "@mui/icons-material/MoreVert";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
-import Grow from "@mui/material/Grow";
-import Paper from "@mui/material/Paper";
-import Popper from "@mui/material/Popper";
-import MenuItem from "@mui/material/MenuItem";
-import MenuList from "@mui/material/MenuList";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+
 import Tooltip from "@mui/material/Tooltip";
 import { IconButton } from "@mui/material";
 
@@ -22,44 +17,14 @@ import { organizacaoService } from "@/../pages/api/organizacaoService/organizaca
 import { fDateTime } from "@/utils/formatTime";
 import AppContext from "@/hooks/AppContext";
 
-export default function ListaOrganizacao({
-  idUsuario,
-}) {
-  const {recarrega, setRecarrega, dadosAppBar, setTelaDetalhe, setTelaEdicao} = React.useContext(AppContext);
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
-
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
-
-  const handleClose = (event) => {
-    if (
-      anchorRef &&
-      anchorRef.current &&
-      anchorRef.current.contains(event.target)
-    ) {
-      return;
-    }
-    setOpen(false);
-  };
-
-  function handleListKeyDown(event) {
-    if (event.key === "Tab") {
-      event.preventDefault();
-      setOpen(false);
-    } else if (event.key === "Escape") {
-      setOpen(false);
-    }
-  }
-
-  const prevOpen = React.useRef(open);
-  React.useEffect(() => {
-    if (prevOpen.current === true && open === false) {
-      anchorRef.current.focus();
-    }
-    prevOpen.current = open;
-  }, [open]);
+export default function ListaOrganizacao({ idUsuario }) {
+  const {
+    recarrega,
+    setRecarrega,
+    dadosAppBar,
+    setTelaDetalhe,
+    setTelaEdicao,
+  } = React.useContext(AppContext);
 
   const [organizacoes, setOrganizacoes] = React.useState([]);
 
@@ -76,18 +41,19 @@ export default function ListaOrganizacao({
   }
 
   async function handleEdit(e, id_organizacoes, nome, data_criacao) {
-    if (anchorRef.current && anchorRef.current.contains(e.target)) {
-      return;
-    }
     e.preventDefault();
     setTelaDetalhe(true);
-    setTelaEdicao({editando:true, dados: {id_organizacoes:id_organizacoes, nome:nome, data_criacao:data_criacao}})
+    setTelaEdicao({
+      editando: true,
+      dados: {
+        id_organizacoes: id_organizacoes,
+        nome: nome,
+        data_criacao: data_criacao,
+      },
+    });
   }
 
   async function handleExcluir(e, id_organizacoes) {
-    if (anchorRef.current && anchorRef.current.contains(e.target)) {
-      return;
-    }
     const cookies = nookies.get();
     await organizacaoService.deletaOrganizacao(
       cookies.ACCESS_TOKEN,
@@ -110,14 +76,23 @@ export default function ListaOrganizacao({
           <TableBody>
             {organizacoes.map((row, index) => (
               <TableRow key={index}>
-                <TableCell sx={{ width: "8%",  padding: "0px", margin: "0px" }} size="small">
+                <TableCell
+                  sx={{ width: "8%", padding: "0px", margin: "0px" }}
+                  size="small"
+                >
                   {index <= 9 ? "0" + (index + 1) : index + 1}
                   {" |"}
                 </TableCell>
-                <TableCell sx={{ width: "72%", padding: "0px", margin: "0px" }} size="small">
+                <TableCell
+                  sx={{ width: "72%", padding: "0px", margin: "0px" }}
+                  size="small"
+                >
                   {row.nome}
                 </TableCell>
-                <TableCell sx={{ width: "18%", padding: "0px", margin: "0px" }} size="small">
+                <TableCell
+                  sx={{ width: "18%", padding: "0px", margin: "0px" }}
+                  size="small"
+                >
                   {" | "}
                   {
                     <Tooltip title={row.createdAt} placement="top-end">
@@ -125,57 +100,33 @@ export default function ListaOrganizacao({
                     </Tooltip>
                   }
                 </TableCell>
-                <TableCell sx={{ width: "2%",  padding: "0px", margin: "0px" }} size="small">
+                <TableCell
+                  sx={{ width: "2%", padding: "0px", margin: "0px" }}
+                  size="small"
+                >
                   <IconButton
-                    ref={anchorRef}
-                    id="composition-button"
-                    aria-controls={open ? "composition-menu" : undefined}
-                    aria-expanded={open ? "true" : undefined}
-                    aria-haspopup="true"
-                    onClick={handleToggle}
+                    padding="none"
+                    aria-label="delete"
                     size="small"
+                    onClick={(e) =>
+                      handleEdit(
+                        e,
+                        row.id_organizacoes,
+                        row.nome,
+                        row.createdAt
+                      )
+                    }
                   >
-                    <MoreIcon />
+                    <ModeEditIcon fontSize="inherit" />
                   </IconButton>
-                  <Popper
-                    open={open}
-                    anchorEl={anchorRef.current}
-                    role={undefined}
-                    placement="auto"
-                    transition
-                    disablePortal
+                  <IconButton
+                    padding="none"
+                    aria-label="delete"
+                    size="small"
+                    onClick={(e) => handleExcluir(e, row.id_organizacoes)}
                   >
-                    {({ TransitionProps, placement }) => (
-                      <Grow
-                        {...TransitionProps}
-                        style={{
-                          transformOrigin:
-                            placement === "auto" ? "left top" : "left bottom",
-                        }}
-                      >
-                        <Paper>
-                          <ClickAwayListener onClickAway={handleClose}>
-                            <MenuList
-                              autoFocusItem={open}
-                              id="composition-menu"
-                              aria-labelledby="composition-button"
-                              onKeyDown={handleListKeyDown}
-                              variant="menu"
-                            >
-                              <MenuItem onClick={(e) => handleEdit(e, row.id_organizacoes, row.nome ,row.createdAt)}>Editar</MenuItem>
-                              <MenuItem
-                                onClick={(e) =>
-                                  handleExcluir(e, row.id_organizacoes)
-                                }
-                              >
-                                Excluir
-                              </MenuItem>
-                            </MenuList>
-                          </ClickAwayListener>
-                        </Paper>
-                      </Grow>
-                    )}
-                  </Popper>
+                    <DeleteIcon fontSize="inherit" />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}

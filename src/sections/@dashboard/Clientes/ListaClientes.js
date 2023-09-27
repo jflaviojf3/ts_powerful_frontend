@@ -12,11 +12,11 @@ import { IconButton } from "@mui/material";
 import Title from "@/layouts/dashboardMui/Title";
 
 import nookies from "nookies";
-import { cargosService } from "@/../pages/api/cargosService/cargosService";
+import { clientesService } from "@/../pages/api/clientesService/clientesService";
 import { fDateTime } from "@/utils/formatTime";
 import AppContext from "@/hooks/AppContext";
 
-export default function ListaCargos({ idUsuario }) {
+export default function ListaClientes({ idUsuario }) {
   const {
     recarrega,
     setRecarrega,
@@ -25,58 +25,60 @@ export default function ListaCargos({ idUsuario }) {
     setTelaEdicao,
   } = React.useContext(AppContext);
 
-  const [cargos, setCargos] = React.useState([]);
+  const [clientes, setClientes] = React.useState([]);
 
-  async function retornaCargos() {
+  async function retornaClientes() {
     if (dadosAppBar) {
-      setCargos(dadosAppBar);
+      setClientes(dadosAppBar);
     } else {
       const cookies = nookies.get();
-      const ListaCargos = await cargosService.pegaTodasCargos(
+      const ListaClientes = await clientesService.pegaTodosClientes(
         cookies.ACCESS_TOKEN
       );
-      setCargos(ListaCargos);
+      setClientes(ListaClientes);
     }
   }
 
   async function handleEdit(
     e,
-    id_cargos,
+    id_clientes,
     nome,
-    descricao_cargo,
+    descricao,
     data_inicio,
     data_fim,
-    cod_categoria
+    email,
+    cod_prioridade
   ) {
     e.preventDefault();
     setTelaDetalhe(true);
     setTelaEdicao({
       editando: true,
       dados: {
-        id_cargos: id_cargos,
+        id_clientes: id_clientes,
         nome: nome,
-        descricao_cargo: descricao_cargo,
+        descricao: descricao,
         data_inicio: data_inicio,
         data_fim: data_fim,
-        cod_categoria: cod_categoria,
+        email: email,
+        cod_prioridade: cod_prioridade,
       },
     });
   }
 
-  async function handleExcluir(e, id_cargos) {
+  async function handleExcluir(e, id_clientes) {
     const cookies = nookies.get();
-    await cargosService.deletaCargos(cookies.ACCESS_TOKEN, id_cargos);
+    await clientesService.deletaClientes(cookies.ACCESS_TOKEN, id_clientes);
     setRecarrega(recarrega + 1);
   }
 
   React.useEffect(() => {
-    retornaCargos();
+    retornaClientes();
   }, [recarrega]);
 
   return (
     <React.Fragment>
       <Title align="center" variant="h5">
-        Lista de Cargos
+        Lista de Clientes
       </Title>
       <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
         <Table size="small">
@@ -90,13 +92,13 @@ export default function ListaCargos({ idUsuario }) {
                 sx={{ width: "60%", color: "primary.main" }}
                 padding="none"
               >
-                Descrição do Cargo
+                Nome do Clientes
               </TableCell>
               <TableCell
                 sx={{ width: "17%", color: "primary.main" }}
                 padding="none"
               >
-                Inicio do Cargo
+                Inicio do Contrato
               </TableCell>
               <TableCell
                 sx={{ width: "13%", color: "primary.main" }}
@@ -109,7 +111,7 @@ export default function ListaCargos({ idUsuario }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {cargos.map((row, index) => (
+            {clientes.map((row, index) => (
               <TableRow key={index}>
                 <TableCell sx={{ width: "8%" }} size="small" padding="none">
                   {index <= 9 ? "0" + (index + 1) : index + 1}
@@ -133,23 +135,23 @@ export default function ListaCargos({ idUsuario }) {
                     onClick={(e) =>
                       handleEdit(
                         e,
-                        row.id_cargos,
+                        row.id_clientes,
                         row.nome,
-                        row.descricao_cargo,
+                        row.descricao,
                         row.data_inicio,
                         row.data_fim,
-                        row.cod_categoria
+                        row.email,
+                        row.cod_prioridade
                       )
                     }
                   >
                     <ModeEditIcon fontSize="inherit" />
                   </IconButton>
-
                   <IconButton
                     padding="none"
                     aria-label="delete"
                     size="small"
-                    onClick={(e) => handleExcluir(e, row.id_cargos)}
+                    onClick={(e) => handleExcluir(e, row.id_clientes)}
                   >
                     <DeleteIcon fontSize="inherit" />
                   </IconButton>

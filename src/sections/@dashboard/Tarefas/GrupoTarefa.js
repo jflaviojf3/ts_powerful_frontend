@@ -8,13 +8,6 @@ import TableRow from "@mui/material/TableRow";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
-import MoreIcon from "@mui/icons-material/MoreVert";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
-import Grow from "@mui/material/Grow";
-import Paper from "@mui/material/Paper";
-import Popper from "@mui/material/Popper";
-import MenuItem from "@mui/material/MenuItem";
-import MenuList from "@mui/material/MenuList";
 import Tooltip from "@mui/material/Tooltip";
 
 import { Box, Collapse, IconButton, Typography } from "@mui/material";
@@ -38,21 +31,6 @@ const GrupoTarefa = ({ idUsuario, dia }) => {
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
-
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
-
-  const handleClose = (event) => {
-    if (
-      anchorRef &&
-      anchorRef.current &&
-      anchorRef.current.contains(event.target)
-    ) {
-      return;
-    }
-    setOpen(false);
-  };
 
   const handleExcluir = async (e, idTarefa, entrada) => {
     if (anchorRef.current && anchorRef.current.contains(e.target)) {
@@ -90,15 +68,6 @@ const GrupoTarefa = ({ idUsuario, dia }) => {
     }
     await stopTarefas(idTarefas, entrada);
   };
-
-  function handleListKeyDown(event) {
-    if (event.key === "Tab") {
-      event.preventDefault();
-      setOpen(false);
-    } else if (event.key === "Escape") {
-      setOpen(false);
-    }
-  }
 
   const prevOpen = React.useRef(open);
   React.useEffect(() => {
@@ -138,7 +107,6 @@ const GrupoTarefa = ({ idUsuario, dia }) => {
               secundarias.push(t2);
             }
           }
-
           tarefaObj = { ...tarefaObj, secundarias: secundarias };
         }
 
@@ -294,62 +262,7 @@ const GrupoTarefa = ({ idUsuario, dia }) => {
               >
                 <DeleteIcon fontSize="inherit" />
               </IconButton>
-              {/* <IconButton
-                ref={anchorRef}
-                id="composition-button"
-                aria-controls={open ? "composition-menu" : undefined}
-                aria-expanded={open ? "true" : undefined}
-                aria-haspopup="true"
-                onClick={handleToggle}
-                size="small"
-              >
-                <MoreIcon />
-              </IconButton>
-              <Popper
-                open={open}
-                anchorEl={anchorRef.current}
-                role={undefined}
-                placement="auto"
-                transition
-                disablePortal
-              >
-                {({ TransitionProps, placement }) => (
-                  <Grow
-                    {...TransitionProps}
-                    style={{
-                      transformOrigin:
-                        placement === "auto" ? "left top" : "left bottom",
-                    }}
-                  >
-                    <Paper>
-                      <ClickAwayListener onClickAway={handleClose}>
-                        <MenuList
-                          autoFocusItem={open}
-                          id="composition-menu"
-                          aria-labelledby="composition-button"
-                          onKeyDown={handleListKeyDown}
-                          variant="menu"
-                        >
-                          <MenuItem onClick={handleClose}>Clientes</MenuItem>
-                          <MenuItem onClick={handleClose}>Projetos</MenuItem>
-                          <MenuItem onClick={handleClose}>Editar</MenuItem>
-                          <MenuItem
-                            onClick={(e) =>
-                              handleExcluir(
-                                e,
-                                row.principal.id_tarefas,
-                                row.principal.entrada
-                              )
-                            }
-                          >
-                            Excluir
-                          </MenuItem>
-                        </MenuList>
-                      </ClickAwayListener>
-                    </Paper>
-                  </Grow>
-                )}
-              </Popper> */}
+
             </TableCell>
           </TableRow>
         ) : (

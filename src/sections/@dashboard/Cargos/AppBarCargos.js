@@ -26,7 +26,7 @@ const AppBarCargos = ({ idUsuario }) => {
     e.preventDefault();
     try {
       if (!descricao) {
-        alert("Por favor, preencha todos os campos");
+        alert("Por favor, preencha o campo de busca");
         return;
       }
       const cookies = nookies.get();
