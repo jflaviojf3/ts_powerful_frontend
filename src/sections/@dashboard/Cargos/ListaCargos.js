@@ -215,7 +215,10 @@ export default function ListaCargos({ idUsuario }) {
                                     e,
                                     row.id_cargos,
                                     row.nome,
-                                    row.createdAt
+                                    row.descricao_cargo,
+                                    row.data_inicio,
+                                    row.data_fim,
+                                    row.cod_categoria
                                   )
                                 }
                               >

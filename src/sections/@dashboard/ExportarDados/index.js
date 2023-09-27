@@ -57,6 +57,7 @@ const ExportarDados = ({ idUsuario }) => {
     );
     await setPontos(pontoDia);
   }
+
   const dadosListaTarefa = [
     ["Entrada", "Descrição", "Data_Inicio", "Data_Fim", "Tempo"],
   ];
@@ -68,6 +69,7 @@ const ExportarDados = ({ idUsuario }) => {
   const enviaDadosPonto = (col1, col2, col3) => {
     dadosListaPonto.push([col1, col2, col3]);
   };
+
   const enviaDadoExportacao = (aba) => {
     let dadosTela = {}
     if (aba == 1) {
@@ -86,18 +88,17 @@ const ExportarDados = ({ idUsuario }) => {
       alert("Erro ao exportar dados");
     }
   };
-
+  const [value, setValue] = React.useState("1");
+  
   React.useEffect(() => {
     retornaTarefas();
     retornaPontos();
     enviaDadoExportacao(value)
-  }, [recarrega, telaDetalhe]);
-
-  const [value, setValue] = React.useState("1");
+  }, [recarrega, telaDetalhe ]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    setRecarrega(recarrega + 1);
+    //setRecarrega(recarrega + 1);
   };
 
   return (
@@ -162,7 +163,6 @@ const ExportarDados = ({ idUsuario }) => {
                             </TableCell>
                           </TableRow>
                         </TableHead>
-
                         <TableBody>
                           {tarefas.map((row, index) => (
                             <TableRow key={index}>

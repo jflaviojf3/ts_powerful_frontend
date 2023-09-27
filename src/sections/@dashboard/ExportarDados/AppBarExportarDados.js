@@ -58,6 +58,7 @@ function ButtonDatePicker(props) {
 }
 
 export default function AppBarTarefas({ idUsuario }) {
+  
   const [valueInicio, setValueInicio] = React.useState(null);
   const [valueFim, setValueFim] = React.useState(null);
   const { recarrega, setRecarrega, telaDetalhe, setTelaDetalhe, dadosAppBar } =
@@ -65,7 +66,6 @@ export default function AppBarTarefas({ idUsuario }) {
 
   const geraPlanilha = (dados) => {
     var dataAtual = new Date();
-
     let relatorio = {};
     if (dados.planilha === "tarefa") {
       relatorio = {
@@ -107,8 +107,15 @@ export default function AppBarTarefas({ idUsuario }) {
 
   const handleCreate = async (e) => {
     e.preventDefault();
-    geraPlanilha(dadosAppBar);
-  };
+      setRecarrega(recarrega+1)
+      setTimeout(() => {
+        enviaDados()
+      }, "1000");
+ };
+
+ function enviaDados(){
+  geraPlanilha(dadosAppBar)
+ }
 
   const enviaNovoPeriodo = (dataInicio, dataFim) => {
     const periodo = {
@@ -122,6 +129,7 @@ export default function AppBarTarefas({ idUsuario }) {
     enviaNovoPeriodo(
       valueInicio ? fDate(valueInicio, "yyyyMMdd") : fDate(getCurrentDateTime(true), "yyyyMMdd") , 
       valueFim ? fDate(valueFim, "yyyyMMdd") : fDate(getCurrentDateTime(), "yyyyMMdd") )
+
   }, [recarrega, valueFim]);
 
   return (

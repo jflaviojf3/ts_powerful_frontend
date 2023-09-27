@@ -19,8 +19,6 @@ export function fDateTime(date, newFormat) {
   }) : '';
 }
 
-
-
 export function fTimestamp(date) {
   return date ? getTime(new Date(date)) : '';
 }
@@ -106,4 +104,13 @@ export function obterHoraAtualBrasil() {
     locale: ptBR,
   });
   return horaAtualBrasil;
+}
+
+export function formatarDataBR(dataNoFormatoBrasileiro) {
+  const partes = dataNoFormatoBrasileiro.split('/');
+  if (partes.length === 3) {
+    const [dia, mes, ano] = partes;
+    return `${ano}-${mes}-${dia}`;
+  }
+  return null; // Retornar null em caso de entrada inválida
 }
