@@ -1,4 +1,5 @@
 import * as React from "react";
+import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -13,26 +14,26 @@ import Groups2Icon from "@mui/icons-material/Groups2";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import CorporateFareIcon from "@mui/icons-material/CorporateFare";
 import SettingsIcon from "@mui/icons-material/Settings";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 import Divider from "@mui/material/Divider";
 
-const meusItems = ({ ClickItem }) => {
+const meusItems = ({ ClickItem, perfil }) => {
   return (
     <React.Fragment>
       <Divider />
       <React.Fragment>
-        <ListSubheader component="div" inset color="inherit" sx={{ }}>
+        <ListSubheader component="div" inset color="inherit"  >
           Registros
         </ListSubheader>
-        <ListItemButton onClick={() => ClickItem("Tarefa")}>
+        <ListItemButton onClick={() => ClickItem("Tarefa")} >
           <ListItemIcon>
-            <TaskIcon />
+            <TaskIcon fontSize="small"/>
           </ListItemIcon>
           <ListItemText secondary="Tarefa" />
         </ListItemButton>
-        <ListItemButton onClick={() => ClickItem("Ponto")}>
+        <ListItemButton onClick={() => ClickItem("Ponto")} >
           <ListItemIcon>
-            <TouchAppIcon />
+            <TouchAppIcon fontSize="small"/>
           </ListItemIcon>
           <ListItemText secondary="Ponto" />
         </ListItemButton>
@@ -40,75 +41,98 @@ const meusItems = ({ ClickItem }) => {
       <Divider />
 
       <React.Fragment>
-        <ListSubheader component="div" inset color="inherit">
+        <ListSubheader component="div" inset color="inherit" >
           Relatorios
         </ListSubheader>
-        <ListItemButton onClick={() => ClickItem("Exportar Dados")}>
+
+{        <ListItemButton onClick={() => ClickItem("Exportar Dados")} >
           <ListItemIcon>
-            <SaveIcon />
+            <SaveIcon fontSize="small"/>
           </ListItemIcon>
           <ListItemText secondary="Exportar Dados" />
-        </ListItemButton>
-        <ListItemButton
-          onClick={() => ClickItem("Visualizar Relatorios")}
-        >
+        </ListItemButton>}
+
+{       perfil === "Adm. Sistema" || perfil === "Gerente" ?
+        <ListItemButton onClick={() => ClickItem("Visualizar Relatorios")} >
           <ListItemIcon>
-            <InsightsIcon />
+            <InsightsIcon fontSize="small"/>
           </ListItemIcon>
           <ListItemText secondary="Visualizar Relatorios" />
-        </ListItemButton>
+        </ListItemButton> : <></>}
+
       </React.Fragment>
-      <Divider />
+      {       perfil === "Adm. Sistema" || perfil === "Gerente" ?
+      <Divider /> : <></>}
+
       <React.Fragment>
-        <ListSubheader component="div" inset color="inherit">
+        
+{       perfil === "Adm. Sistema" || perfil === "Gerente" ?
+        <ListSubheader component="div" inset color="inherit" >
           Gerenciamento
-        </ListSubheader>
-        <ListItemButton onClick={() => ClickItem("Projetos")}>
+        </ListSubheader> : <></>}
+
+{       perfil === "Adm. Sistema" || perfil === "Gerente" ?
+        <ListItemButton onClick={() => ClickItem("Projetos")} >
           <ListItemIcon>
-            <AccountTreeIcon />
+            <AccountTreeIcon fontSize="small"/>
           </ListItemIcon>
           <ListItemText secondary="Projetos" />
-        </ListItemButton>
-        <ListItemButton onClick={() => ClickItem("Clientes")}>
+        </ListItemButton> : <></>}
+
+{       perfil === "Adm. Sistema" || perfil === "Gerente" ?
+        <ListItemButton onClick={() => ClickItem("Clientes")} >
           <ListItemIcon>
-            <RecentActorsIcon />
+            <RecentActorsIcon fontSize="small"/>
           </ListItemIcon>
           <ListItemText secondary="Clientes" />
-        </ListItemButton>
-        <ListItemButton onClick={() => ClickItem("Equipes")}>
+        </ListItemButton> : <></>}
+
+{       perfil === "Adm. Sistema" || perfil === "Gerente" ?
+        <ListItemButton onClick={() => ClickItem("Equipes")} >
           <ListItemIcon>
-            <Groups2Icon />
+            <Groups2Icon fontSize="small"/>
           </ListItemIcon>
           <ListItemText secondary="Equipes" />
-        </ListItemButton>
-        <ListItemButton onClick={() => ClickItem("Cargos")}>
+        </ListItemButton> : <></>}
+
+{       perfil === "Adm. Sistema" || perfil === "Gerente" ? 
+        <ListItemButton onClick={() => ClickItem("Cargos")} >
           <ListItemIcon>
-            <AssignmentIndIcon />
+            <AssignmentIndIcon fontSize="small"/>
           </ListItemIcon>
           <ListItemText secondary="Cargos" />
-        </ListItemButton>
+        </ListItemButton> : <></>}
+
       </React.Fragment>
-      <Divider sx={{ mt: 1 }} />
+      <Divider sx={{ mt: 8 }} />
+      
+      <List component="nav" >
       <React.Fragment>
-        <ListItemButton onClick={() => ClickItem("Organização")}>
-          <ListItemIcon>
-            <CorporateFareIcon />
+{ perfil === "Adm. Sistema" || perfil === "Gerente" ?
+        <ListItemButton onClick={() => ClickItem("Organização")}  >
+          <ListItemIcon  >
+            <CorporateFareIcon fontSize="small"/>
           </ListItemIcon>
-          <ListItemText secondary="Organização" />
-        </ListItemButton>
-        <ListItemButton onClick={() => ClickItem("Configuração")}>
+          <ListItemText secondary="Organização"  />
+        </ListItemButton> : <></>}
+
+{       perfil === "Adm. Sistema" ?   
+        <ListItemButton onClick={() => ClickItem("Configuração")} >
           <ListItemIcon>
-            <SettingsIcon />
+            <SettingsIcon fontSize="small"/>
           </ListItemIcon>
           <ListItemText secondary="Configuração" />
-        </ListItemButton>
-        <ListItemButton onClick={() => ClickItem("Logout")}>
+        </ListItemButton> : <></>}
+
+        <ListItemButton onClick={() => ClickItem("Logout")} >
           <ListItemIcon>
-            <LogoutIcon />
+            <LogoutIcon fontSize="small"/>
           </ListItemIcon>
           <ListItemText secondary="Logout" />
         </ListItemButton>
       </React.Fragment>
+      </List>
+
     </React.Fragment>
   );
 };

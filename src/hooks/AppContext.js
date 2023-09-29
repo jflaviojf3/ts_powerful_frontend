@@ -9,6 +9,7 @@ export const AppProvider = ({ children }) => {
   const [tempoAtualTarefa, setTempoAtualTarefa] = React.useState(0);
   const [telaDetalhe, setTelaDetalhe] = React.useState(false);
   const [telaEdicao, setTelaEdicao] = React.useState({ editando: false });
+  const [usuarioLogado, setUsuarioLogado] = React.useState({ });
   const [dadosAppBar, setDadosAppBar] = React.useState(null);
   const [recarrega, setRecarrega] = React.useState(0);
 
@@ -35,6 +36,8 @@ export const AppProvider = ({ children }) => {
         dadosAppBar,
         setRecarrega,
         recarrega,
+        setUsuarioLogado,
+        usuarioLogado
       }}
     >
       {children}

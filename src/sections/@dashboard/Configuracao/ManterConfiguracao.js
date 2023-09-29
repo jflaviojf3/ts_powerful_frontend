@@ -261,6 +261,7 @@ export default function ManterClientes({ idUsuario }) {
               id="outlined-multiline-static"
               multiline
               rows={5}
+              defaultValue="Default Value"
               name="descricao"
               label="Descrição do Cargo"
               value={formData.descricao}
@@ -284,7 +285,6 @@ export default function ManterClientes({ idUsuario }) {
                 </MenuItem>
                 {parCategoria.map((row, index) => (
                   <MenuItem key={index} value={row.cod_propriedade}>
-                    {console.log(index)}
                     {row.descricao_codigo}
                   </MenuItem>
                 ))}

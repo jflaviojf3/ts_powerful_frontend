@@ -1,54 +1,62 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
+import ListaProjetos from "./ListaProjetos";
+import ManterProjetos from "./ManterProjetos";
+import AppBarProjetos from "./AppBarProjetos";
+import AppContext from "@/hooks/AppContext";
 
-const Projetos = () => {
+const Clientes = ({ AppBar, idUsuario }) => {
+  const { recarrega, setRecarrega, telaDetalhe } = React.useContext(AppContext);
+  React.useEffect(() => {}, [recarrega]);
+
   return (
     <>
-      <Box
-        component="main"
-        sx={{
-          backgroundColor: (theme) =>
-            theme.palette.mode === "light"
-              ? theme.palette.grey[100]
-              : theme.palette.grey[900],
-          flexGrow: 1,
-          height: "100vh",
-          overflow: "auto",
-        }}
-      >
-        <Toolbar />
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          <Grid container spacing={3}>
-            {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper
-                sx={{
-                  p: 2,
-                  display: "flex",
-                  flexDirection: "column",
-                  height: 240,
-                }}
-              >
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  align="center"
+      {AppBar ? (
+        <>
+          <AppBarProjetos idUsuario={idUsuario} />
+        </>
+      ) : (
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: (theme) =>
+              theme.palette.mode === "light"
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: "100vh",
+            overflow: "auto",
+          }}
+        >
+          <Toolbar />
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "auto",
+                  }}
                 >
-                  {" "}
-                  TELA DE PROJETOS{" "}
-                </Typography>
-              </Paper>
+                  {!telaDetalhe ? (
+                    <ListaProjetos idUsuario={idUsuario} />
+                  ) : (
+                    <ManterProjetos idUsuario={idUsuario} />
+                  )}
+                </Paper>
+              </Grid>
             </Grid>
-          </Grid>
-        </Container>
-      </Box>
+          </Container>
+        </Box>
+      )}
     </>
   );
 };
 
-export default Projetos;
+export default Clientes;

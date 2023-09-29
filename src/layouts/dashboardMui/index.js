@@ -31,6 +31,7 @@ import Projetos from "../../sections/@dashboard/Projetos";
 import VisualizarRelatorios from "../../sections/@dashboard/VisualizarRelatorios";
 import Configuracao from "../../sections/@dashboard/Configuracao";
 import Organizacao from "../../sections/@dashboard/Organizacao";
+import Usuarios from "../../sections/@dashboard/Usuarios";
 import Carregando from "../../sections/@dashboard/Carregando";
 
 import AppBarTarefas from "../../sections/@dashboard/Tarefas/AppBarTarefas.js";
@@ -44,7 +45,7 @@ import AppBarExportarDados from "../../sections/@dashboard/ExportarDados/AppBarE
 import AppBarOrganizacao from "../../sections/@dashboard/Organizacao/AppBarOrganizacao.js";
 import AppBarProjetos from "../../sections/@dashboard/Projetos/AppBarProjetos.js";
 import AppBarVisualizarRelatorios from "../../sections/@dashboard/VisualizarRelatorios/AppBarVisualizarRelatorios.js";
-import AppBarUsuario from "../../sections/@dashboard/Tarefas/AppBarTarefas.js";
+import AppBarUsuario from "../../sections/@dashboard/Usuarios/AppBarUsuarios.js";
 
 import { authService } from "../../../pages/api/autenticacaoService/auth.js";
 
@@ -133,11 +134,12 @@ export default function Dashboard(props) {
     setTelaDetalhe,
     setDadosAppBar,
     setTelaEdicao,
+    setUsuarioLogado,
   } = React.useContext(AppContext);
 
   const router = useRouter();
   const [nome, setNome] = React.useState("null");
-  const [perfi, setPerfil] = React.useState("null");
+  const [perfil, setPerfil] = React.useState("null");
   const [sobrenome, setSobrenome] = React.useState("null");
   const [foto, setFoto] = React.useState("null");
   const [idUsuario, setIdUsuario] = React.useState(
@@ -153,6 +155,7 @@ export default function Dashboard(props) {
 
   const usuarios = props.dados.usuario;
   const carregaDados = React.useCallback(() => {
+    setUsuarioLogado(usuarios)
     const cod_perfil = usuarios.cod_perfil;
     if (cod_perfil == 4) {
       setPerfil("Adm. Sistema");
@@ -179,7 +182,8 @@ export default function Dashboard(props) {
     carregaDados();
   }, [carregaDados]);
 
-  const ClickItem = (itemText) => {
+  const ClickItem = (itemText, e) => {
+    e && e.preventDefault();
     setMenuDescricao(itemText);
     setAppBarAtual(itemText);
     setDadosAppBar(null);
@@ -235,13 +239,15 @@ export default function Dashboard(props) {
               ) : appBarAtual === "Exportar Dados" ? (
                 <AppBarExportarDados idUsuario={idUsuario} />
               ) : appBarAtual === "Organização" ? (
-                <Organizacao AppBar={true} idUsuario={idUsuario} />
+                <AppBarOrganizacao AppBar={true} idUsuario={idUsuario} />
               ) : appBarAtual === "Projetos" ? (
                 <AppBarProjetos idUsuario={idUsuario} />
               ) : appBarAtual === "Visualizar Relatorios" ? (
                 <AppBarVisualizarRelatorios idUsuario={idUsuario} />
               ) : appBarAtual === "Ponto" ? (
                 <AppBarPonto idUsuario={idUsuario} />
+              ) : appBarAtual === "Usuarios" ? (
+                <AppBarUsuario idUsuario={idUsuario} perfil={perfil} />
               ) : appBarAtual === "Carregando" ? (
                 <AppBarCarregando />
               ) : (
@@ -260,7 +266,7 @@ export default function Dashboard(props) {
             }}
           >
             <Box>
-              <Link underline="none" href="PainelInterno">
+              <Link underline="none" href="" onClick={(e) => ClickItem("Usuarios", e)} >
                 <StyledAccount>
                   <Avatar src={foto} alt="photoURL" />
                   <Box sx={{ ml: 2 }}>
@@ -274,7 +280,7 @@ export default function Dashboard(props) {
                       variant="body2"
                       sx={{ color: "text.secondary" }}
                     >
-                      {perfi}
+                      {perfil}
                     </Typography>
                   </Box>
                 </StyledAccount>
@@ -284,8 +290,8 @@ export default function Dashboard(props) {
               <ChevronLeftIcon />
             </IconButton>
           </Toolbar>
-          <List component="nav">
-            <MeusItems ClickItem={ClickItem} />
+          <List component="nav" dense>
+            <MeusItems ClickItem={ClickItem} perfil={perfil} />
           </List>
         </Drawer>
         <Box
@@ -320,6 +326,8 @@ export default function Dashboard(props) {
             <VisualizarRelatorios idUsuario={idUsuario} />
           ) : menuDescricao === "Ponto" ? (
             <Pontos idUsuario={idUsuario} />
+          ) : menuDescricao === "Usuarios" ? (
+            <Usuarios idUsuario={idUsuario} perfil={perfil} />
           ) : menuDescricao === "Carregando" ? (
             <Carregando />
           ) : (

@@ -4,12 +4,12 @@ import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import ListaConfiguracao from "./ListaConfiguracao";
-import ManterConfiguracao from "./ManterConfiguracao";
-import AppBarConfiguracao from "./AppBarConfiguracao";
+import ListaUsuarios from "./ListaUsuarios";
+import ManterUsuarios from "./ManterUsuarios";
+import AppBarUsuarios from "./AppBarUsuarios";
 import AppContext from "@/hooks/AppContext";
 
-const Clientes = ({ AppBar, idUsuario }) => {
+const Usuarios = ({ AppBar, idUsuario, perfil }) => {
   const { recarrega, setRecarrega, telaDetalhe } = React.useContext(AppContext);
   React.useEffect(() => {}, [recarrega]);
 
@@ -17,7 +17,7 @@ const Clientes = ({ AppBar, idUsuario }) => {
     <>
       {AppBar ? (
         <>
-          <AppBarConfiguracao idUsuario={idUsuario} />
+          <AppBarUsuarios idUsuario={idUsuario} perfil={perfil} />
         </>
       ) : (
         <Box
@@ -45,9 +45,9 @@ const Clientes = ({ AppBar, idUsuario }) => {
                   }}
                 >
                   {!telaDetalhe ? (
-                    <ListaConfiguracao idUsuario={idUsuario} />
+                    <ListaUsuarios idUsuario={idUsuario} perfil={perfil} />
                   ) : (
-                    <ManterConfiguracao idUsuario={idUsuario} />
+                    <ManterUsuarios idUsuario={idUsuario} perfil={perfil} />
                   )}
                 </Paper>
               </Grid>
@@ -59,4 +59,4 @@ const Clientes = ({ AppBar, idUsuario }) => {
   );
 };
 
-export default Clientes;
+export default Usuarios;

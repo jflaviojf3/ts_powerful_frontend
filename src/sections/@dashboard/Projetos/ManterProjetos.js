@@ -218,7 +218,7 @@ export default function ManterClientes({ idUsuario }) {
   return (
     <React.Fragment>
       <Title align="center" variant="h5">
-        {telaEdicao.editando ? "Atualiza Cliente" : "Novo Cliente"}
+        {telaEdicao.editando ? "Atualiza Projetos" : "Novo Projeto"}
       </Title>
       <Divider sx={{ my: 3 }}></Divider>
       <Stack spacing={3}>
@@ -226,7 +226,7 @@ export default function ManterClientes({ idUsuario }) {
           <Stack direction="row" spacing={4}>
             <TextField
               name="nome"
-              label="Nome do Cliente"
+              label="Nome do Projeto"
               value={formData.nome}
               onChange={handleChange}
               sx={{ width: "40%" }}
@@ -261,6 +261,7 @@ export default function ManterClientes({ idUsuario }) {
               id="outlined-multiline-static"
               multiline
               rows={5}
+              defaultValue="Default Value"
               name="descricao"
               label="Descrição do Cargo"
               value={formData.descricao}
@@ -284,7 +285,6 @@ export default function ManterClientes({ idUsuario }) {
                 </MenuItem>
                 {parCategoria.map((row, index) => (
                   <MenuItem key={index} value={row.cod_propriedade}>
-                    {console.log(index)}
                     {row.descricao_codigo}
                   </MenuItem>
                 ))}
