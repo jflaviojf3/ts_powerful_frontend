@@ -1,68 +1,49 @@
 import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
-import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer, CartesianGrid } from 'recharts';
 import Title from '../../../layouts/dashboardMui/Title';
 
-// Generate Sales Data
-function createData(time, amount) {
-  return { time, amount };
-}
-
-const data = [
-  createData('00:00', 0),
-  createData('03:00', 300),
-  createData('06:00', 600),
-  createData('09:00', 800),
-  createData('12:00', 1500),
-  createData('15:00', 2000),
-  createData('18:00', 2400),
-  createData('21:00', 2400),
-  createData('24:00', undefined),
-];
-
-export default function Chart() {
+export default function Chart({ dados }) {
   const theme = useTheme();
 
   return (
     <React.Fragment>
-      <Title>Today</Title>
+      <Title>Total de Tarefas no Mês</Title>
       <ResponsiveContainer>
-        <LineChart
-          data={data}
+
+      <LineChart
+          width={500}
+          height={300}
+          data={dados}
           margin={{
-            top: 16,
-            right: 16,
-            bottom: 0,
-            left: 24,
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
           }}
         >
+         
+         <CartesianGrid strokeDasharray="3 2" />
+
           <XAxis
-            dataKey="time"
+            dataKey="dia"
             stroke={theme.palette.text.secondary}
-            style={theme.typography.body2}
-          />
+            label={{ value: "Dias do Mês", position: "insideBottomCenter", dy: 15, fontSize: ".9rem"}}
+          >
+            </XAxis>
           <YAxis
             stroke={theme.palette.text.secondary}
             style={theme.typography.body2}
+            label={{ value: "Quantidade de Tarefas", position: "insideLeftCenter", dx: -20, fontSize: ".9rem", angle: 270}}
           >
-            <Label
-              angle={270}
-              position="left"
-              style={{
-                textAnchor: 'middle',
-                fill: theme.palette.text.primary,
-                ...theme.typography.body1,
-              }}
-            >
-              Sales ($)
-            </Label>
+            
           </YAxis>
           <Line
             isAnimationActive={false}
             type="monotone"
-            dataKey="amount"
+            dataKey="quantidade"
             stroke={theme.palette.primary.main}
-            dot={false}
+            activeDot={{ r: 8 }}
           />
         </LineChart>
       </ResponsiveContainer>
