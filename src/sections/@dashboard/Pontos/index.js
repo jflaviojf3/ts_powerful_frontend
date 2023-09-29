@@ -23,7 +23,7 @@ const Pontos = ({ idUsuario }) => {
               ? theme.palette.grey[100]
               : theme.palette.grey[900],
           flexGrow: 1,
-          height: "90vh",
+          height: "100vh",
           overflow: "auto",
         }}
       >
@@ -36,7 +36,7 @@ const Pontos = ({ idUsuario }) => {
                   p: 2,
                   display: "flex",
                   flexDirection: "column",
-                  height: 410,
+                  height: 480,
                 }}
               >
                 <Ponto idUsuario={idUsuario} />
@@ -55,9 +55,9 @@ const Pontos = ({ idUsuario }) => {
                     display: "flex",
                     flexDirection: "column",
                     height: 100,
-                    width: "100%", // Use 100% para preencher o espaço disponível horizontalmente
-                    maxWidth: "33vh", // Adicione uma largura máxima
-                    margin: "auto", // Centralize horizontalmente
+                    width: "100%", 
+                    maxWidth: "33vh",
+                    margin: "auto", 
                   }}
                 >
                   <TrabalhoDia />
@@ -70,9 +70,9 @@ const Pontos = ({ idUsuario }) => {
                     display: "flex",
                     flexDirection: "column",
                     height: 100,
-                    width: "100%", // Use 100% para preencher o espaço disponível horizontalmente
-                    maxWidth: "33vh", // Adicione uma largura máxima
-                    margin: "auto", // Centralize horizontalmente
+                    width: "100%", 
+                    maxWidth: "33vh", 
+                    margin: "auto", 
                   }}
                 >
                   <SaldoDia />
@@ -85,9 +85,9 @@ const Pontos = ({ idUsuario }) => {
                     display: "flex",
                     flexDirection: "column",
                     height: 100,
-                    width: "100%", // Use 100% para preencher o espaço disponível horizontalmente
-                    maxWidth: "33vh", // Adicione uma largura máxima
-                    margin: "auto", // Centralize horizontalmente
+                    width: "100%", 
+                    maxWidth: "33vh", 
+                    margin: "auto", 
                   }}
                 >
                   <SaldoTotal />

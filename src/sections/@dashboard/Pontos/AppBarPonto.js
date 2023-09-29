@@ -51,7 +51,6 @@ export default function AppBarPonto({ idUsuario }) {
       fDate(getCurrentDateTime(), 'yyyyMMdd')
     );
     atualizaCampo(resultado);    
-    //await setTarefaAtiva(resultado);
   };
 
   React.useEffect(() => {

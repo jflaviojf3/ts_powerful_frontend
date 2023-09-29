@@ -42,6 +42,52 @@ export function fDifMinutos(date1, date2) {
   return `${String(hours).padStart(2, '0')}:${String(Math.floor(remainingMinutes)).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
 
+export function fDifMinutosSomado(date1, date2, date3) {
+  const data1 = new Date(date1);
+  const data2 = new Date(date2);
+  const data3 = new Date(date3);
+  const data4 = new Date(getCurrentDateTime());
+
+  const diffInMilliseconds1 = data2 - data1;
+  const diffInMilliseconds2 = data4 - data3 ;
+  const diffInMilliseconds = diffInMilliseconds1 + diffInMilliseconds2;
+
+  const diffInMinutes = diffInMilliseconds / (1000 * 60);
+  const hours = Math.floor(diffInMinutes / 60);
+  const remainingMinutes = diffInMinutes % 60;
+  const seconds = Math.floor((remainingMinutes - Math.floor(remainingMinutes)) * 60);
+  return `${String(hours).padStart(2, '0')}:${String(Math.floor(remainingMinutes)).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
+export function fDifMinutosPonto(date1, date2) {
+  const data1 = new Date(date1);
+  const data2 = new Date(date2);
+  const diffInMilliseconds = data2 - data1;
+  const diffInMinutes = diffInMilliseconds / (1000 * 60);
+  const hours = Math.floor(diffInMinutes / 60);
+  const remainingMinutes = diffInMinutes % 60;
+  const seconds = Math.floor((remainingMinutes - Math.floor(remainingMinutes)) * 60);
+  return `${String(hours).padStart(2, '0')}h ${String(Math.floor(remainingMinutes)).padStart(2, '0')}m`;
+}
+
+export function fDifMinutosPontoTotal(date1, date2, date3, date4) {
+  const data1 = new Date(date1);
+  const data2 = new Date(date2);
+  const data3 = new Date(date3);
+  const data4 = new Date(date4);
+
+  const diffInMilliseconds1 = data2 - data1;
+  const diffInMilliseconds2 = data4 - data3;
+
+  const diffInMilliseconds = diffInMilliseconds1 + diffInMilliseconds2
+
+  const diffInMinutes = diffInMilliseconds / (1000 * 60);
+  const hours = Math.floor(diffInMinutes / 60);
+  const remainingMinutes = diffInMinutes % 60;
+  const seconds = Math.floor((remainingMinutes - Math.floor(remainingMinutes)) * 60);
+  return `${String(hours).padStart(2, '0')}h ${String(Math.floor(remainingMinutes)).padStart(2, '0')}m`;
+}
+
 function getDataFuturaPorDataEspecifica(data, dias) {
   data.setDate(data.getDate() + dias);
   return data;
@@ -113,4 +159,43 @@ export function formatarDataBR(dataNoFormatoBrasileiro) {
     return `${ano}-${mes}-${dia}`;
   }
   return null; // Retornar null em caso de entrada inválida
+}
+
+
+export function subtrairDuracao(duracao1, duracao2) {
+  // Função para converter duração no formato "hh 'h' mm 'm'" em minutos
+  function converterParaMinutos(duracao) {
+    const partes = duracao.split(' ');
+    let minutos = 0;
+
+    for (let i = 0; i < partes.length; i++) {
+      if (partes[i].includes('h')) {
+        minutos += parseInt(partes[i]) * 60;
+      } else if (partes[i].includes('m')) {
+        minutos += parseInt(partes[i]);
+      }
+    }
+
+    return minutos;
+  }
+
+  // Converter ambas as durações em minutos
+  const minutosDuracao1 = converterParaMinutos(duracao1);
+  const minutosDuracao2 = converterParaMinutos(duracao2);
+
+  // Realizar a subtração
+  const diferencaMinutos = minutosDuracao1 - minutosDuracao2;
+
+  // Função para formatar minutos em "hh 'h' mm 'm'"
+  function formatarParaDuracao(minutos) {
+    const horas = Math.floor(minutos / 60);
+    const minutosRestantes = minutos % 60;
+
+    return `${horas+1}h ${minutosRestantes.toString().replace("-", "")}m`;
+  }
+
+  // Formatar o resultado de volta para o formato "hh 'h' mm 'm'"
+  const resultadoFormatado = formatarParaDuracao(diferencaMinutos);
+
+  return resultadoFormatado;
 }

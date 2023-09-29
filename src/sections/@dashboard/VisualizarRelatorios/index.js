@@ -153,9 +153,9 @@ const VisualizarRelatorios = () => {
                           display: "flex",
                           flexDirection: "column",
                           height: 300,
-                          width: "100%", // Use 100% para preencher o espaço disponível horizontalmente
-                          maxWidth: "33vh", // Adicione uma largura máxima
-                          margin: "auto", // Centralize horizontalmente
+                          width: "100%",
+                          maxWidth: "33vh",
+                          margin: "auto",
                           alignItems: "center"
                         }}
                       >

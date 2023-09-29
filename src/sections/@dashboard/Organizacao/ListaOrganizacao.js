@@ -4,10 +4,9 @@ import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
+import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-
-import Tooltip from "@mui/material/Tooltip";
 import { IconButton } from "@mui/material";
 
 import Title from "@/layouts/dashboardMui/Title";
