@@ -8,7 +8,7 @@ export default function Chart({ dados }) {
 
   return (
     <React.Fragment>
-      <Title>Total de Tarefas no Mês</Title>
+      <Title align="center" variant="h5">Total de Tarefas no Mês</Title>
       <ResponsiveContainer>
 
       <LineChart

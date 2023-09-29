@@ -26,7 +26,7 @@ export default function ChartTotalTarefasPorProjeto({ dados }) {
 
   return (
     <React.Fragment>
-      <Title>Total de Tarefas por Projetos</Title>
+      <Title align="center" variant="h5">Total de Tarefas por Projetos</Title>
       <ResponsiveContainer>
         <BarChart width={730} height={250} data={dados}>
           <CartesianGrid strokeDasharray="3 3" />

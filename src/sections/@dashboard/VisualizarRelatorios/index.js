@@ -1,12 +1,12 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
+import Title from "@/layouts/dashboardMui/Title";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Chart from "./Chart";
-import Deposits from "./Deposits";
-import Orders from "./Orders";
+import TotaisUsuario from "./TotaisUsuario";
 import { TabContext, TabList } from "@mui/lab";
 import { Tab } from "@mui/material";
 import ChartTotalTarefasPorProjeto from "./ChartTotalTarefaMes";
@@ -16,7 +16,8 @@ const VisualizarRelatorios = () => {
 
   const [value, setValue] = React.useState("1");
 
-  const [listaTotalTarefasPorProjeto, setListaTotalTarefasPorProjeto] = React.useState([]);
+  const [listaTotalTarefasPorProjeto, setListaTotalTarefasPorProjeto] =
+    React.useState([]);
 
   const [listaTarefaMes, setListaTarefaMes] = React.useState([]);
 
@@ -80,71 +81,89 @@ const VisualizarRelatorios = () => {
       >
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          <TabContext value={value}>
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <TabList
-                onChange={handleChange}
-                aria-label="lab API tabs example"
-              >
-                {usuarios.map((usuario, index) => (
-                  <Tab
-                    label={usuario.nome}
-                    value={index}
-                    key={index}
-                    onClick={() => buscarDadosUsuarioSelecionado(usuario.id)}
-                  />
-                ))}
-              </TabList>
-            </Box>
-          </TabContext>
-
-          <Box sx={{ m: 2 }}></Box>
-
           <Grid container spacing={3}>
-            {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper
-                sx={{
-                  p: 2,
-                  display: "flex",
-                  flexDirection: "column",
-                  height: 350,
-                }}
-              >
-                <Chart dados={listaTarefaMes} />
-              </Paper>
-            </Grid>
-            {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper
-                sx={{
-                  p: 2,
-                  display: "flex",
-                  flexDirection: "column",
-                  height: 240,
-                }}
-              >
-                <Deposits />
-              </Paper>
-            </Grid>
-
             <Grid item xs={12}>
               <Paper
                 sx={{
                   p: 2,
                   display: "flex",
                   flexDirection: "column",
-                  height: 350,
+                  height: "auto",
                 }}
               >
-                <ChartTotalTarefasPorProjeto dados={listaTotalTarefasPorProjeto} />
-              </Paper>
-            </Grid>
+                <Title align="center" variant="h5">
+                  Visualizar Relatorios
+                </Title>
+                <Box sx={{ width: "100%", typography: "body1" }}>
+                  <TabContext value={value}>
+                    <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                      <TabList
+                        onChange={handleChange}
+                        aria-label="lab API tabs example"
+                        centered
+                      >
+                        {usuarios.map((usuario, index) => (
+                          <Tab
+                            label={usuario.nome}
+                            value={index}
+                            key={index}
+                            onClick={() =>
+                              buscarDadosUsuarioSelecionado(usuario.id)
+                            }
+                          />
+                        ))}
+                      </TabList>
+                    </Box>
+                  </TabContext>
 
-            {/* Recent Orders */}
-            <Grid item xs={12}>
-              <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                <Orders />
+                  <Box sx={{ m: 2 }}></Box>
+                  <Grid container spacing={3}>
+                    {/* Chart */}
+                    <Grid item xs={12}>
+                      <Paper
+                        sx={{
+                          p: 2,
+                          display: "flex",
+                          flexDirection: "column",
+                          height: 350,
+                        }}
+                      >
+                        <Chart dados={listaTarefaMes} />
+                      </Paper>
+                    </Grid>
+
+                    <Grid item xs={12} md={8} lg={9}>
+                      <Paper
+                        sx={{
+                          p: 2,
+                          display: "flex",
+                          flexDirection: "column",
+                          height: 350,
+                        }}
+                      >
+                        <ChartTotalTarefasPorProjeto
+                          dados={listaTotalTarefasPorProjeto}
+                        />
+                      </Paper>
+                    </Grid>
+                    <Grid item xs={12} md={4} lg={3}>
+                      <Paper
+                        sx={{
+                          p: 2,
+                          display: "flex",
+                          flexDirection: "column",
+                          height: 300,
+                          width: "100%", // Use 100% para preencher o espaço disponível horizontalmente
+                          maxWidth: "33vh", // Adicione uma largura máxima
+                          margin: "auto", // Centralize horizontalmente
+                          alignItems: "center"
+                        }}
+                      >
+                        <TotaisUsuario />
+                      </Paper>
+                    </Grid>
+                  </Grid>
+                </Box>
               </Paper>
             </Grid>
           </Grid>
