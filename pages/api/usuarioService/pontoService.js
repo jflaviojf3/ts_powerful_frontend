@@ -72,6 +72,19 @@ export const pontoService = {
       });
   },
 
+  async pegaPontosPeriodoTotalBanco(token, usuarioId, dataInicio, dataFim) {
+    return api
+      .get(`/v1/usuarios/${usuarioId}/pontoInicio/${dataInicio}/pontoFim/${dataFim}/BancoHora`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(function (response) {
+        return response.data;
+      })
+      .catch(function (error) {
+        throw error.data;
+      });
+  },
+
   async inserePontoUsuario(token, usuarioId, body) {
     return api
       .post(`/v1/usuarios/${usuarioId}/pontos`, body, {

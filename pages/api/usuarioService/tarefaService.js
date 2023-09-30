@@ -32,6 +32,32 @@ export const tarefaService = {
       });
   },
 
+  async pegaTotalTarefaUsuario(token, usuarioId) {
+    return api
+      .get(`/v1/usuarios/${usuarioId}/totalTarefasUsuario`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(function (response) {
+        return response.data;
+      })
+      .catch(function (error) {
+        throw error.data;
+      });
+  },
+
+  async pegaTarefasPorProjetoUsuario(token, usuarioId) {
+    return api
+      .get(`/v1/usuarios/${usuarioId}/tarefasProjeto`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(function (response) {
+        return response.data;
+      })
+      .catch(function (error) {
+        throw error.data;
+      });
+  },
+
   async pegaTarefaAtiva(token, usuarioId) {
     return api
       .get(`/v1/usuarios/${usuarioId}/tarefaAtiva`, {

@@ -47,7 +47,6 @@ export default function ManterUsuario({ idUsuarioProp, PerfilProp }) {
   };
 
   const handleChangeSeletedOrg = (event) => {
-    console.log(idOrganizacao);
     setChaveOrg(event.target.value);
   };
 
@@ -134,27 +133,6 @@ export default function ManterUsuario({ idUsuarioProp, PerfilProp }) {
   const EditSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    console.log(telaEdicao.dados.id_usuarios);
-    console.log("formData.nome", formData.nome);
-    console.log("formData.sobrenome", formData.sobrenome);
-    console.log("dataNasc", dataNasc);
-    console.log("formData.email", formData.email);
-    console.log("formData.ativo", formData.ativo === " Sim " ? 1 : 0);
-    console.log("formData.ddd", formData.ddd);
-    console.log("formData.telefone", formData.telefone);
-    console.log("formData.cpf", formData.cpf);
-    console.log("formData.descricao", formData.descricao);
-    console.log("formData.cod_sexo", chaveSexo == "" ? null : chaveSexo);
-    console.log("formData.cod_perfil", chavePerfil == "" ? null : chavePerfil);
-    console.log(
-      "formData.id_cargos",
-      chaveCargo == "" ? null : retornaIdCargo(chaveCargo, idCargo)
-    );
-    console.log(
-      "formData.id_organizacoes",
-      chaveOrg == "" ? null : retornaIdOrg(chaveOrg, idOrganizacao)
-    );
-
     try {
       if (
         !formData.nome ||
@@ -186,7 +164,7 @@ export default function ManterUsuario({ idUsuarioProp, PerfilProp }) {
         id_organizacoes:
           chaveOrg == "" ? null : retornaIdOrg(chaveOrg, idOrganizacao),
       };
-      console.log("Edit", body);
+
       const cookies = nookies.get();
       const UsuarioAtualizado = await usuarioService.atualizaUsuario(
         cookies.ACCESS_TOKEN,
@@ -337,7 +315,6 @@ export default function ManterUsuario({ idUsuarioProp, PerfilProp }) {
   };
 
   React.useEffect(() => {
-    console.log("Passa Parametros:", idUsuarioProp, PerfilProp);
     retornaParametro(1);
     retornaParametroPerfil(2);
     retornaOrganizacao(formData.id_organizacoes);

@@ -45,9 +45,21 @@ export const usuarioService = {
       });
   },
 
-  async pegaTodosUsuarios(token, ) {
+  async pegaTodosUsuarios(token ) {
     return api
       .get(`/v1/usuarios`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(function (response) {
+        return response.data;
+      })
+      .catch(function (error) {
+        throw error.data.menssage;
+      });
+  },
+  async pegaTodosUsuariosOrganizacao(token, idOrganizacao ) {
+    return api
+      .get(`/v1/usuarios/organizacao/${idOrganizacao}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(function (response) {

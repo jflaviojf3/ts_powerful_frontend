@@ -35,17 +35,15 @@ export default function SaldoDia() {
         ), "8h 45m")
       );
       setCarregaHora(true);
-      console.log("saida4", telaDetalhe[3].hora_ponto);
     }
   }
 
   const carregaResultados = async (cod_prioridade) => {
-    console.log("antes deCarrega ", cod_prioridade);
+
     if (cod_prioridade === false) {
       //setRecarrega(recarrega + 1)
-      console.log(recarrega);
     } else {
-      console.log("telaDetalhe", cod_prioridade);
+
     }
   };
 
@@ -64,7 +62,6 @@ export default function SaldoDia() {
         Saldo do Dia
       </Title>
       <Typography component="p"  color={ Negativo(horasDoDia) ? "#F00" : "#008000"} variant="h4">
-        {console.log("final", horasDoDia)}
         {carregaHora ? horasDoDia : "00h 00m"}
       </Typography>
     </React.Fragment>

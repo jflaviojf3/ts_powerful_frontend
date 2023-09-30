@@ -39,7 +39,6 @@ const AppBarUsuarios = ({ idUsuario }) => {
         cookies.ACCESS_TOKEN,
         body
       );
-      console.log("Resultado", resultado)
       resultado
         ? setDadosAppBar(resultado)
         : (setDadosAppBar(null),

@@ -48,7 +48,6 @@ const Ponto = ({ idUsuario }) => {
       pontos.length == 0 ? setRecarrega(recarrega + 1) : "";
     } else {
       //!telaDetalhe ? setRecarrega(recarrega + 1) : setTelaDetalhe(pontos)
-      console.log(pontos)
       setTelaDetalhe(pontos)
     }
   };

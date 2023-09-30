@@ -48,7 +48,7 @@ const Pontos = ({ idUsuario }) => {
               align="center"
               sx={{ p: 2, display: "flex", flexDirection: "row" }}
             >
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={6}>
                 <Paper
                   sx={{
                     p: 2,
@@ -63,7 +63,7 @@ const Pontos = ({ idUsuario }) => {
                   <TrabalhoDia />
                 </Paper>
               </Grid>
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={6}>
                 <Paper
                   sx={{
                     p: 2,
@@ -78,7 +78,7 @@ const Pontos = ({ idUsuario }) => {
                   <SaldoDia />
                 </Paper>
               </Grid>
-              <Grid item xs={12} md={4}>
+              {/* <Grid item xs={12} md={4}>
                 <Paper
                   sx={{
                     p: 2,
@@ -90,9 +90,9 @@ const Pontos = ({ idUsuario }) => {
                     margin: "auto", 
                   }}
                 >
-                  <SaldoTotal />
+                  <SaldoTotal idUsuario={idUsuario} />
                 </Paper>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Grid>
         </Container>

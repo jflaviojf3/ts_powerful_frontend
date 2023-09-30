@@ -157,7 +157,7 @@ export default function ManterClientes({ idUsuario }) {
         email: formData.email,
         data_fim: valueFim ? formatarDataBR(valueFim): null,
       };
-      console.log("Edit", body)
+
       const cookies = nookies.get();
       const ListaClientes = await clientesService.atualizaClientes(
         cookies.ACCESS_TOKEN,
@@ -196,7 +196,6 @@ export default function ManterClientes({ idUsuario }) {
         const descricaoCodigo = await consultaParam.find(
           (item) => item.cod_propriedade === cod_prioridade
         );
-        console.log(descricaoCodigo)
         await setChave(descricaoCodigo.cod_propriedade);
       } else {
         setRecarrega(recarrega + 1);

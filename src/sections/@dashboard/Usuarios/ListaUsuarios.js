@@ -8,17 +8,12 @@ import TableRow from "@mui/material/TableRow";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import Avatar from "@mui/material/Avatar";
-
 import Tooltip from "@mui/material/Tooltip";
 import { IconButton } from "@mui/material";
-
 import Title from "@/layouts/dashboardMui/Title";
 
 import nookies from "nookies";
 import { usuarioService } from "@/../pages/api/usuarioService/usuarioService";
-import { cargosService } from "@/../pages/api/cargosService/cargosService";
-import { organizacaoService } from "@/../pages/api/organizacaoService/organizacaoService";
-import { fDateTime } from "@/utils/formatTime";
 import AppContext from "@/hooks/AppContext";
 
 export default function ListaOrganizacao({ idUsuario, perfil }) {
@@ -32,10 +27,9 @@ export default function ListaOrganizacao({ idUsuario, perfil }) {
   } = React.useContext(AppContext);
 
   const [usuarios, setUsuarios] = React.useState([]);
+  
   async function retornaUsuarios() {
-    console.log("Entrou no retornarUsuarios:")
     if (!telaDetalhe && (perfil === "Adm. Sistema" || perfil === "Gerente")) {
-      console.log("Entrou na logica de detalhar")
       if (dadosAppBar) {
         setUsuarios(dadosAppBar);
       } else {
@@ -46,13 +40,11 @@ export default function ListaOrganizacao({ idUsuario, perfil }) {
         setUsuarios(ListaUsuarios);
       }
     } else {
-      console.log("Entrou no else:")
       const cookies = nookies.get();
       const Usuario = await usuarioService.pegaUmUsuario(
         cookies.ACCESS_TOKEN,
         idUsuario
       );
-      console.log("Usuario:", Usuario)
       await setTelaEdicao({
         editando: true,
         dados: {

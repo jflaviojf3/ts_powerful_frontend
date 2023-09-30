@@ -27,7 +27,7 @@ export default function AppBarTarefas({ idUsuario, setRecarrega, recarrega }) {
         sx={{ gap: 1, margin: 1 }}
         alignItems="center"
       >
-        <TextField
+        {/* <TextField
           label="Registro de Tarefa"
           id="filled-size-normal"
           variant="filled"
@@ -46,7 +46,7 @@ export default function AppBarTarefas({ idUsuario, setRecarrega, recarrega }) {
           ) : (
             <StopCircleIcon sx={{ fontSize: 50, color: "#FFFFFFBF" }} />
           )}
-        </IconButton>
+        </IconButton> */}
       </Stack>
     </>
   );

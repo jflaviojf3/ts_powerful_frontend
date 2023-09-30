@@ -11,54 +11,82 @@ import { TabContext, TabList } from "@mui/lab";
 import { Tab } from "@mui/material";
 import ChartTotalTarefasPorProjeto from "./ChartTotalTarefaMes";
 
+import nookies from "nookies";
+import { usuarioService } from "@/../pages/api/usuarioService/usuarioService";
+import { tarefaService } from "@/../pages/api/usuarioService/tarefaService";
+import AppContext from "@/hooks/AppContext";
+
 const VisualizarRelatorios = () => {
+  const { recarrega, usuarioLogado } = React.useContext(AppContext);
+
   const [usuarios, setUsuarios] = React.useState([]);
-
   const [value, setValue] = React.useState("1");
-
   const [listaTotalTarefasPorProjeto, setListaTotalTarefasPorProjeto] =
     React.useState([]);
-
   const [listaTarefaMes, setListaTarefaMes] = React.useState([]);
+  const [totalTarefaUse, setTotalTarefaUse] = React.useState([]);
 
   React.useEffect(() => {
     buscarDadosUsuarioSelecionado();
     buscarUsuarios();
   }, []);
 
-  const buscarUsuarios = () => {
-    setUsuarios([
-      { id: 1, nome: "Manoel" },
-      { id: 2, nome: "Jessé" },
-    ]);
+  const buscarUsuarios = async () => {
+    const cookies = nookies.get();
+    const ListaUsuarios = await usuarioService.pegaTodosUsuariosOrganizacao(
+      cookies.ACCESS_TOKEN,
+      usuarioLogado.id_organizacoes
+    );
+    setUsuarios(ListaUsuarios[0]);
   };
 
   const buscarDadosUsuarioSelecionado = (idUsuario) => {
     buscarTotalTarefasPorProjeto(idUsuario);
     buscarTarefasMes(idUsuario);
+    buscarTotalTarefas(idUsuario);
   };
 
-  const buscarTotalTarefasPorProjeto = (idUsuario) => {
+  const buscarTotalTarefasPorProjeto = async (idUsuario) => {
     const dados = [];
 
-    for (let i = 0; i <= 20; i++) {
+    const cookies = nookies.get();
+    const ListaUsuarios = await tarefaService.pegaTarefasPorProjetoUsuario(
+      cookies.ACCESS_TOKEN,
+      idUsuario
+    );
+
+    for (const item of ListaUsuarios[0]) {
       dados.push({
-        projeto: "P" + i,
-        quantidade: Math.floor(Math.random() * 50),
+        projeto: item.projeto ? item.projeto : "Projetos Gerais",
+        quantidade: item.quantidade,
       });
     }
-
     setListaTotalTarefasPorProjeto(dados);
   };
 
-  const buscarTarefasMes = (idUsuario) => {
+  const buscarTarefasMes = async (idUsuario) => {
     const dados = [];
-
-    for (let i = 0; i <= 30; i++) {
-      dados.push({ dia: i, quantidade: i * Math.ceil(Math.random(1) * 25) });
+    const cookies = nookies.get();
+    const ListaUsuarios = await tarefaService.pegaTarefasPorDiaUsuario(
+      cookies.ACCESS_TOKEN,
+      idUsuario
+    );
+    for (const item of ListaUsuarios) {
+      dados.push({
+        dia: item.data_dia.split("-")[2],
+        quantidade: item.total_tarefas,
+      });
     }
-
     setListaTarefaMes(dados);
+  };
+
+  const buscarTotalTarefas = async (idUsuario) => {
+    const cookies = nookies.get();
+    const ListaUsuarios = await tarefaService.pegaTotalTarefaUsuario(
+      cookies.ACCESS_TOKEN,
+      idUsuario
+    );
+    await setTotalTarefaUse(ListaUsuarios);
   };
 
   const handleChange = (event, newValue) => {
@@ -104,11 +132,11 @@ const VisualizarRelatorios = () => {
                       >
                         {usuarios.map((usuario, index) => (
                           <Tab
-                            label={usuario.nome}
+                            label={usuario.nome_completo}
                             value={index}
                             key={index}
                             onClick={() =>
-                              buscarDadosUsuarioSelecionado(usuario.id)
+                              buscarDadosUsuarioSelecionado(usuario.id_usuarios)
                             }
                           />
                         ))}
@@ -118,7 +146,6 @@ const VisualizarRelatorios = () => {
 
                   <Box sx={{ m: 2 }}></Box>
                   <Grid container spacing={3}>
-                    {/* Chart */}
                     <Grid item xs={12}>
                       <Paper
                         sx={{
@@ -156,10 +183,10 @@ const VisualizarRelatorios = () => {
                           width: "100%",
                           maxWidth: "33vh",
                           margin: "auto",
-                          alignItems: "center"
+                          alignItems: "center",
                         }}
                       >
-                        <TotaisUsuario />
+                        <TotaisUsuario dados={totalTarefaUse} />
                       </Paper>
                     </Grid>
                   </Grid>

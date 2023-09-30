@@ -3,6 +3,18 @@ import { TextField, IconButton } from "@mui/material";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import Stack from "@mui/material/Stack";
 import StopCircleIcon from "@mui/icons-material/StopCircle";
+import AccountTreeIcon from "@mui/icons-material/AccountTree";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 import Relogio from "../../../components/Relogio";
 import { tarefaService } from "../../../../pages/api/usuarioService/tarefaService";
@@ -15,14 +27,31 @@ import nookies from "nookies";
 import AppContext from "@/hooks/AppContext";
 
 export default function AppBarTarefas({ idUsuario }) {
-
-  const {recarrega, setRecarrega, buscarTarefaPorId} = React.useContext(AppContext);
+  const { recarrega, setRecarrega, buscarTarefaPorId } =
+    React.useContext(AppContext);
   const [trocaIcone, setTrocaIcone] = React.useState(true);
   const [running, setRunning] = React.useState(false);
 
   const [descricao, setDescricao] = React.useState();
   const [minRelogio, setMinRelogio] = React.useState(null);
   const [tarefaAtiva, setTarefaAtiva] = React.useState(null);
+
+  const [open, setOpen] = React.useState(false);
+  const [projeto, setProjeto] = React.useState("");
+
+  const handleChangeButton = (event) => {
+    setProjeto(Number(event.target.value) || "");
+  };
+
+  const handleClickOpenButton = () => {
+    setOpen(true);
+  };
+
+  const handleCloseButton = (event, reason) => {
+    if (reason !== "backdropClick") {
+      setOpen(false);
+    }
+  };
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -52,7 +81,7 @@ export default function AppBarTarefas({ idUsuario }) {
         setRunning(true);
         setDescricao(descricao);
         setRecarrega(recarrega + 1);
-        } catch (error) {
+      } catch (error) {
         alert(error);
         console.error("Erro na solicitação POST:", error);
       }
@@ -91,7 +120,6 @@ export default function AppBarTarefas({ idUsuario }) {
   };
 
   React.useEffect(() => {
-
     retornaTarefaAtiva();
     atualizaCampo();
     buscaTarefaPorId();
@@ -100,7 +128,7 @@ export default function AppBarTarefas({ idUsuario }) {
   const buscaTarefaPorId = async () => {
     const response = await buscarTarefaPorId(idUsuario);
 
-    if(response) {
+    if (response) {
       setDescricao(response.descricao);
 
       setMinRelogio(
@@ -109,19 +137,19 @@ export default function AppBarTarefas({ idUsuario }) {
         )
       );
 
-     setRunning(true);
+      setRunning(true);
     }
-  }
+  };
 
   const atualizaCampo = async () => {
     (await tarefaAtiva)
       ? (setTrocaIcone(false),
-          setMinRelogio(
+        setMinRelogio(
           minutosParaSegundos(
             fDifMinutos(tarefaAtiva.createdAt, getCurrentDateTime())
           )
         ))
-        : (setTrocaIcone(true), setMinRelogio(null));
+      : (setTrocaIcone(true), setMinRelogio(null));
   };
 
   return (
@@ -154,6 +182,35 @@ export default function AppBarTarefas({ idUsuario }) {
             <StopCircleIcon sx={{ fontSize: 50, color: "#FFFFFFBF" }} />
           )}
         </IconButton>
+
+        <Button onClick={handleClickOpenButton} sx={{ color: "#FFFFFFBF" }}>
+        <AccountTreeIcon sx={{ fontSize: 50, color: "#FFFFFFBF" }} />
+        </Button>
+        <Dialog disableEscapeKeyDown open={open} onClose={handleCloseButton}>
+          <DialogTitle>Selecione Projeto</DialogTitle>
+          <DialogContent>
+            <Box component="form" sx={{ display: "flex", flexWrap: "wrap" }}>
+              <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel htmlFor="demo-dialog-native">Projeto</InputLabel>
+                <Select
+                  native
+                  value={projeto}
+                  onChange={handleChangeButton}
+                  input={<OutlinedInput label="Projeto" id="demo-dialog-native" />}
+                >
+                  <option aria-label="None" value="" />
+                  <option value={10}>Ten</option>
+                  <option value={20}>Twenty</option>
+                  <option value={30}>Thirty</option>
+                </Select>
+              </FormControl>
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseButton}>Cancel</Button>
+            <Button onClick={handleCloseButton}>Ok</Button>
+          </DialogActions>
+        </Dialog>
       </Stack>
     </>
   );

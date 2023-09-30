@@ -153,7 +153,7 @@ export default function ManterCargo({ idUsuario }) {
         cod_categoria: age,
         data_fim: valueFim ? formatarDataBR(valueFim): null,
       };
-      console.log("Edit", body)
+
       const cookies = nookies.get();
       const ListaCargos = await cargosService.atualizaCargos(
         cookies.ACCESS_TOKEN,
