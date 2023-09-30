@@ -18,6 +18,7 @@ import Select from "@mui/material/Select";
 
 import Relogio from "../../../components/Relogio";
 import { tarefaService } from "../../../../pages/api/usuarioService/tarefaService";
+import { projetosService } from "../../../../pages/api/organizacaoService/projetosService";
 import {
   getCurrentDateTime,
   fDifMinutos,
@@ -27,7 +28,7 @@ import nookies from "nookies";
 import AppContext from "@/hooks/AppContext";
 
 export default function AppBarTarefas({ idUsuario }) {
-  const { recarrega, setRecarrega, buscarTarefaPorId } =
+  const { recarrega, setRecarrega, buscarTarefaPorId, usuarioLogado } =
     React.useContext(AppContext);
   const [trocaIcone, setTrocaIcone] = React.useState(true);
   const [running, setRunning] = React.useState(false);
@@ -37,10 +38,12 @@ export default function AppBarTarefas({ idUsuario }) {
   const [tarefaAtiva, setTarefaAtiva] = React.useState(null);
 
   const [open, setOpen] = React.useState(false);
+  const [listaProjeto, setListaProjeto] = React.useState([]);
   const [projeto, setProjeto] = React.useState("");
+  const [idProjeto, setIdProjeto] = React.useState([]);
 
   const handleChangeButton = (event) => {
-    setProjeto(Number(event.target.value) || "");
+    setProjeto(event.target.value);
   };
 
   const handleClickOpenButton = () => {
@@ -71,6 +74,7 @@ export default function AppBarTarefas({ idUsuario }) {
           entrada: 1,
           descricao: descricao,
           data_inicio: getCurrentDateTime(),
+          id_projetos: retornaIdOrg(projeto, idProjeto)
         };
         await tarefaService.insereTarefaUsuario(
           cookies.ACCESS_TOKEN,
@@ -119,10 +123,38 @@ export default function AppBarTarefas({ idUsuario }) {
     await setTarefaAtiva(resultado);
   };
 
+  const retornaProjetos = async () => {
+    try {
+      const cookies = nookies.get();
+      const listaprojeto = await projetosService.pegaTodosProjetos(
+        cookies.ACCESS_TOKEN,
+        usuarioLogado.id_organizacoes
+      );
+      await setIdProjeto(listaprojeto);
+      listaprojeto ? "" : await setRecarrega(recarrega + 1);
+  
+      await setListaProjeto(listaprojeto);
+    } catch (error) {
+      alert(error);
+      console.error("Erro na solicitação POST:", error);
+    }
+
+  };
+
+  const retornaIdOrg = (descProjeto, dados) => {
+    //if (telaEdicao.editando) {
+      if (dados.length > 0 && descProjeto) {
+        const descricaoCodigo = dados.find((item) => item.nome === descProjeto);
+        return descricaoCodigo.id_projetos;
+      }
+    //}
+  };
+
   React.useEffect(() => {
     retornaTarefaAtiva();
     atualizaCampo();
     buscaTarefaPorId();
+    retornaProjetos();
   }, [recarrega]);
 
   const buscaTarefaPorId = async () => {
@@ -130,13 +162,11 @@ export default function AppBarTarefas({ idUsuario }) {
 
     if (response) {
       setDescricao(response.descricao);
-
       setMinRelogio(
         minutosParaSegundos(
           fDifMinutos(response.createdAt, getCurrentDateTime())
         )
       );
-
       setRunning(true);
     }
   };
@@ -184,7 +214,7 @@ export default function AppBarTarefas({ idUsuario }) {
         </IconButton>
 
         <Button onClick={handleClickOpenButton} sx={{ color: "#FFFFFFBF" }}>
-        <AccountTreeIcon sx={{ fontSize: 50, color: "#FFFFFFBF" }} />
+          <AccountTreeIcon sx={{ fontSize: 50, color: "#FFFFFFBF" }} />
         </Button>
         <Dialog disableEscapeKeyDown open={open} onClose={handleCloseButton}>
           <DialogTitle>Selecione Projeto</DialogTitle>
@@ -196,12 +226,16 @@ export default function AppBarTarefas({ idUsuario }) {
                   native
                   value={projeto}
                   onChange={handleChangeButton}
-                  input={<OutlinedInput label="Projeto" id="demo-dialog-native" />}
+                  input={
+                    <OutlinedInput label="Projeto" id="demo-dialog-native" />
+                  }
                 >
                   <option aria-label="None" value="" />
-                  <option value={10}>Ten</option>
-                  <option value={20}>Twenty</option>
-                  <option value={30}>Thirty</option>
+                  {listaProjeto.map((row, index) => (
+                    <option key={index} value={row.nome}>
+                      {row.nome}
+                    </option>
+                  ))}
                 </Select>
               </FormControl>
             </Box>

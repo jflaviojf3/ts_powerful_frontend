@@ -1,5 +1,10 @@
 import * as React from "react";
 import { Stack, Divider } from "@mui/material";
+import Box from "@mui/material/Box";
+import Tab from "@mui/material/Tab";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,12 +13,13 @@ import TableRow from "@mui/material/TableRow";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { IconButton } from "@mui/material";
+import Tooltip from "@mui/material";
 
 import Title from "@/layouts/dashboardMui/Title";
 
 import nookies from "nookies";
 import { clientesService } from "@/../pages/api/clientesService/clientesService";
-import { fDateTime } from "@/utils/formatTime";
+import { fDateTime, fDifMinutos } from "@/utils/formatTime";
 import AppContext from "@/hooks/AppContext";
 
 export default function ListaClientes({ idUsuario }) {
@@ -26,6 +32,7 @@ export default function ListaClientes({ idUsuario }) {
   } = React.useContext(AppContext);
 
   const [clientes, setClientes] = React.useState([]);
+  const [value, setValue] = React.useState("1");
 
   async function retornaClientes() {
     if (dadosAppBar) {
@@ -75,91 +82,47 @@ export default function ListaClientes({ idUsuario }) {
     retornaClientes();
   }, [recarrega]);
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    //setRecarrega(recarrega + 1);
+  };
+
   return (
     <React.Fragment>
       <Title align="center" variant="h5">
-        Lista de Clientes
+        Configurações
       </Title>
       <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
-        <Table size="small">
-          <TableHead>
-            <TableRow>
-              <TableCell
-                sx={{ width: "8%", color: "primary.main" }}
-                padding="none"
-              ></TableCell>
-              <TableCell
-                sx={{ width: "60%", color: "primary.main" }}
-                padding="none"
+        <Box sx={{ width: "100%", typography: "body1" }}>
+          <TabContext value={value}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <TabList
+                onChange={handleChange}
+                aria-label="lab API tabs example"
+                centered
               >
-                Nome do Clientes
-              </TableCell>
-              <TableCell
-                sx={{ width: "17%", color: "primary.main" }}
-                padding="none"
-              >
-                Inicio do Contrato
-              </TableCell>
-              <TableCell
-                sx={{ width: "13%", color: "primary.main" }}
-                padding="none"
-              ></TableCell>
-              <TableCell
-                sx={{ width: "2%", color: "primary.main" }}
-                padding="none"
-              ></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {clientes.map((row, index) => (
-              <TableRow key={index}>
-                <TableCell sx={{ width: "8%" }} size="small" padding="none">
-                  {index <= 9 ? "0" + (index + 1) : index + 1}
-                </TableCell>
-                <TableCell sx={{ width: "60%" }} size="small" padding="none">
-                  {row.nome}
-                </TableCell>
-                <TableCell sx={{ width: "17%" }} size="small" padding="none">
-                  {fDateTime(row.data_inicio, "dd MMM yyyy")}
-                </TableCell>
-                <TableCell sx={{ width: "13%" }} size="small" padding="none">
-                  {row.data_fim
-                    ? fDateTime(row.data_fim, "dd MMM yyyy")
-                    : "Ativo"}
-                </TableCell>
-                <TableCell sx={{ width: "2%" }} size="small" padding="none">
-                  <IconButton
-                    padding="none"
-                    aria-label="delete"
-                    size="small"
-                    onClick={(e) =>
-                      handleEdit(
-                        e,
-                        row.id_clientes,
-                        row.nome,
-                        row.descricao,
-                        row.data_inicio,
-                        row.data_fim,
-                        row.email,
-                        row.cod_prioridade
-                      )
-                    }
-                  >
-                    <ModeEditIcon fontSize="inherit" />
-                  </IconButton>
-                  <IconButton
-                    padding="none"
-                    aria-label="delete"
-                    size="small"
-                    onClick={(e) => handleExcluir(e, row.id_clientes)}
-                  >
-                    <DeleteIcon fontSize="inherit" />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+                <Tab label="Parametros" value="1" />
+                <Tab label="Objetivos" value="2" />
+                <Tab label="Pontos" value="3" />
+              </TabList>
+            </Box>
+            <TabPanel value="1">
+              <Table size="small">
+
+              </Table>
+            </TabPanel>
+            <TabPanel value="2">
+              <Table size="small">
+
+              </Table>
+            </TabPanel>
+            <TabPanel value="3">
+              <Table size="small">
+
+              </Table>
+            </TabPanel>
+          </TabContext>
+        </Box>
       </Stack>
     </React.Fragment>
   );

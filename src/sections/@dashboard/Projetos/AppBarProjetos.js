@@ -2,12 +2,9 @@ import * as React from "react";
 import { TextField, Button, Stack } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
-import RecentActorsIcon from '@mui/icons-material/RecentActors';
-import Alert from "@mui/material/Alert";
+import AccountTreeIcon from "@mui/icons-material/AccountTree";
 
-import Relogio from "../../../components/Relogio";
-import { clientesService } from "@/../pages/api/clientesService/clientesService";
-import { getCurrentDateTime, fDifMinutos } from "../../../utils/formatTime";
+import { projetosService } from "@/../pages/api/organizacaoService/projetosService";
 import nookies from "nookies";
 import AppContext from "@/hooks/AppContext";
 
@@ -18,6 +15,7 @@ const AppBarClientes = ({ idUsuario }) => {
     telaDetalhe,
     setTelaDetalhe,
     setDadosAppBar,
+    usuarioLogado
   } = React.useContext(AppContext);
   const [descricao, setDescricao] = React.useState("");
   const [alertado, setAlertado] = React.useState(false);
@@ -33,8 +31,9 @@ const AppBarClientes = ({ idUsuario }) => {
       const body = {
         nome: descricao,
       };
-      const resultado = await clientesService.pegaClienteNome(
+      const resultado = await projetosService.pegaNomeProjeto(
         cookies.ACCESS_TOKEN,
+        usuarioLogado.id_organizacoes,
         body
       );
 
@@ -65,7 +64,7 @@ const AppBarClientes = ({ idUsuario }) => {
         alignItems="center"
       >
         <TextField
-          label={"Buscar Cliente"}
+          label={"Buscar Projeto"}
           id="filled-size-normal"
           variant="filled"
           value={descricao}
@@ -94,7 +93,7 @@ const AppBarClientes = ({ idUsuario }) => {
         />
         <Button
           variant="contained"
-          endIcon={<RecentActorsIcon />}
+          endIcon={<AccountTreeIcon />}
           onClick={handleCreate}
           disabled={telaDetalhe}
           sx={{
@@ -102,7 +101,7 @@ const AppBarClientes = ({ idUsuario }) => {
             color: "#111",
           }}
         >
-          Novo Cliente
+          Novo Projeto
         </Button>
       </Stack>
     </>

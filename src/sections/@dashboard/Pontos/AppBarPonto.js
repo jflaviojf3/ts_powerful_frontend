@@ -50,7 +50,7 @@ export default function AppBarPonto({ idUsuario }) {
       idUsuario,
       fDate(getCurrentDateTime(), 'yyyyMMdd')
     );
-    atualizaCampo(resultado);    
+    atualizaCampo(resultado);
   };
 
   React.useEffect(() => {
@@ -70,6 +70,7 @@ export default function AppBarPonto({ idUsuario }) {
         setSituacao("Saida Expediente")
       }
     } catch (error) {
+      
     }
   };
 

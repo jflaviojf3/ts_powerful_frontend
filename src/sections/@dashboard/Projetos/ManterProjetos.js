@@ -5,7 +5,7 @@ import { LoadingButton } from "@mui/lab";
 import Title from "@/layouts/dashboardMui/Title";
 
 import nookies from "nookies";
-import { clientesService } from "@/../pages/api/clientesService/clientesService";
+import { projetosService } from "@/../pages/api/organizacaoService/projetosService";
 import { tabGenericaService } from "@/../pages/api/tabGenericaService/tabGenericaService";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";

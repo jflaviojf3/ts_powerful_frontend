@@ -64,7 +64,7 @@ const AppBarClientes = ({ idUsuario }) => {
         sx={{ gap: 1, margin: 1 }}
         alignItems="center"
       >
-        <TextField
+        {/* <TextField
           label={"Buscar Cliente"}
           id="filled-size-normal"
           variant="filled"
@@ -103,7 +103,7 @@ const AppBarClientes = ({ idUsuario }) => {
           }}
         >
           Novo Cliente
-        </Button>
+        </Button> */}
       </Stack>
     </>
   );

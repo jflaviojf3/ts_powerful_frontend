@@ -17,7 +17,7 @@ export default function SaldoDia() {
   const [horasDoDia, setHorasDoDia] = React.useState(false);
 
   function carregaTempo() {
-    if (telaDetalhe.length === 0) {
+    if (telaDetalhe.length ==  0 || telaDetalhe.situacao == false) {
       setCarregaHora(false);
     } else if (telaDetalhe.length === 2) {
       setHorasDoDia(

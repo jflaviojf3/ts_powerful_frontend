@@ -234,7 +234,7 @@ export default function ManterClientes({ idUsuario }) {
               <ButtonDatePicker
                 label={`Data Inicio: ${
                   valueInicio == null
-                    ? "27/09/2023"//fDate(formData.data_inicio, "dd/MM/yyyy")
+                    ? fDate(formData.data_inicio, "dd/MM/yyyy")
                     : valueInicio
                 }`}
                 value={"27/09/2023"}//fDate(formData.data_inicio, "dd/MM/yyyy")}

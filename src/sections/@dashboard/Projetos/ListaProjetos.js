@@ -12,67 +12,72 @@ import { IconButton } from "@mui/material";
 import Title from "@/layouts/dashboardMui/Title";
 
 import nookies from "nookies";
-import { clientesService } from "@/../pages/api/clientesService/clientesService";
+import { projetosService } from "@/../pages/api/organizacaoService/projetosService";
 import { fDateTime } from "@/utils/formatTime";
 import AppContext from "@/hooks/AppContext";
+import { organizacaoService } from "../../../../pages/api/organizacaoService/organizacaoService";
 
-export default function ListaClientes({ idUsuario }) {
+export default function ListaProjetos({ idUsuario }) {
   const {
     recarrega,
     setRecarrega,
     dadosAppBar,
     setTelaDetalhe,
     setTelaEdicao,
+    usuarioLogado,
   } = React.useContext(AppContext);
 
-  const [clientes, setClientes] = React.useState([]);
+  const [projetos, setProjetos] = React.useState([]);
 
-  async function retornaClientes() {
+  async function retornaProjetos() {
     if (dadosAppBar) {
-      setClientes(dadosAppBar);
+      setProjetos(dadosAppBar);
     } else {
       const cookies = nookies.get();
-      const ListaClientes = await clientesService.pegaTodosClientes(
-        cookies.ACCESS_TOKEN
+      const ListaProjetos = await projetosService.pegaTodosProjetos(
+        cookies.ACCESS_TOKEN,
+        usuarioLogado.id_organizacoes
       );
-      setClientes(ListaClientes);
+      setProjetos(ListaProjetos);
     }
   }
 
   async function handleEdit(
     e,
-    id_clientes,
+    id_projetos,
     nome,
-    descricao,
+    duracao_prevista,
     data_inicio,
     data_fim,
-    email,
-    cod_prioridade
+    id_clientes,
+    id_equipes,
+    id_organizacoes
   ) {
     e.preventDefault();
     setTelaDetalhe(true);
     setTelaEdicao({
       editando: true,
       dados: {
-        id_clientes: id_clientes,
+        id_projetos: id_projetos,
         nome: nome,
-        descricao: descricao,
+        duracao_prevista: duracao_prevista,
         data_inicio: data_inicio,
         data_fim: data_fim,
-        email: email,
-        cod_prioridade: cod_prioridade,
+        id_clientes: id_clientes,
+        id_equipes: id_equipes,
+        id_organizacoes: id_organizacoes,
       },
     });
   }
 
-  async function handleExcluir(e, id_clientes) {
+  async function handleExcluir(e, id_organizacoes, id_projetos) {
     const cookies = nookies.get();
-    await clientesService.deletaClientes(cookies.ACCESS_TOKEN, id_clientes);
+    await projetosService.deletaProjeto(cookies.ACCESS_TOKEN, id_organizacoes, id_projetos);
     setRecarrega(recarrega + 1);
   }
 
   React.useEffect(() => {
-    retornaClientes();
+    retornaProjetos();
   }, [recarrega]);
 
   return (
@@ -111,7 +116,7 @@ export default function ListaClientes({ idUsuario }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {clientes.map((row, index) => (
+            {projetos.map((row, index) => (
               <TableRow key={index}>
                 <TableCell sx={{ width: "8%" }} size="small" padding="none">
                   {index <= 9 ? "0" + (index + 1) : index + 1}
@@ -135,13 +140,14 @@ export default function ListaClientes({ idUsuario }) {
                     onClick={(e) =>
                       handleEdit(
                         e,
-                        row.id_clientes,
+                        row.id_projetos,
                         row.nome,
-                        row.descricao,
+                        row.duracao_prevista,
                         row.data_inicio,
                         row.data_fim,
-                        row.email,
-                        row.cod_prioridade
+                        row.id_clientes,
+                        row.id_equipes,
+                        row.id_organizacoes
                       )
                     }
                   >
@@ -151,7 +157,7 @@ export default function ListaClientes({ idUsuario }) {
                     padding="none"
                     aria-label="delete"
                     size="small"
-                    onClick={(e) => handleExcluir(e, row.id_clientes)}
+                    onClick={(e) => handleExcluir(e, row.id_projetos)}
                   >
                     <DeleteIcon fontSize="inherit" />
                   </IconButton>

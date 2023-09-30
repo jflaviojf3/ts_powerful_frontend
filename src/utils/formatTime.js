@@ -137,7 +137,7 @@ export function minutosParaSegundos(tempo) {
   const segundos = parseInt(partes[2], 10);
 
   if (isNaN(horas) || isNaN(minutos) || isNaN(segundos)) {
-    throw new Error('Os valores devem ser números inteiros');
+    return 0; 
   }
 
   const totalSegundos = horas * 3600000  + minutos * 60 + segundos;

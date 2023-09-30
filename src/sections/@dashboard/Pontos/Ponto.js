@@ -40,15 +40,17 @@ const Ponto = ({ idUsuario }) => {
       idUsuario,
       fDate(getCurrentDateTime(), "yyyyMMdd")
     );
-    await setPontos(pontoDia);
+
+    await setPontos(pontoDia.length == 0 ? [{situacao:false}] : pontoDia);
   }
 
   const carregaResultados = async (cod_prioridade) => {
-    if (cod_prioridade.length == 0) {
-      pontos.length == 0 ? setRecarrega(recarrega + 1) : "";
+    if (pontos.situacao == false ) {
+
+      cod_prioridade.length == 0 ? setRecarrega(recarrega + 1) : "";
     } else {
-      //!telaDetalhe ? setRecarrega(recarrega + 1) : setTelaDetalhe(pontos)
-      setTelaDetalhe(pontos)
+
+      setTelaDetalhe(cod_prioridade)
     }
   };
 
@@ -84,15 +86,15 @@ const Ponto = ({ idUsuario }) => {
           >
             <Stack spacing={2} direction="row" alignItems="center">
               <Avatar>
-                {row.situacao.split(" ", 1) == "Entrada" ? (
+                {row.situacao === false ? <></> : (row.situacao.split(" ", 1) == "Entrada" ? (
                   <ArrowCircleRightTwoToneIcon sx={{ color: "#008000" }} />
                 ) : (
                   <ArrowCircleLeftTwoToneIcon sx={{ color: "#F00" }} />
-                )}
+                ))}
               </Avatar>
               <Stack spacing={0.1} alignItems="flex-start">
                 <Typography variant="h6" noWrap>
-                  {row.situacao.split(" ", 1)}{" "}
+                  {row.situacao === false ? <></> : (row.situacao.split(" ", 1))}{" "}
                   {fDateTime(row.hora_ponto, "HH:mm")}
                 </Typography>
                 <Typography variant="p" Wrap>

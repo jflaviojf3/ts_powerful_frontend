@@ -2,22 +2,20 @@ import * as React from "react";
 import { TextField, Button, Stack } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
-import RecentActorsIcon from '@mui/icons-material/RecentActors';
-import Alert from "@mui/material/Alert";
+import Groups2Icon from "@mui/icons-material/Groups2";
 
-import Relogio from "../../../components/Relogio";
-import { clientesService } from "@/../pages/api/clientesService/clientesService";
-import { getCurrentDateTime, fDifMinutos } from "../../../utils/formatTime";
+import { equipesService } from "@/../pages/api/organizacaoService/equipesService";
 import nookies from "nookies";
 import AppContext from "@/hooks/AppContext";
 
-const AppBarClientes = ({ idUsuario }) => {
+const AppBarEquipe = ({ idUsuario }) => {
   const {
     recarrega,
     setRecarrega,
     telaDetalhe,
     setTelaDetalhe,
     setDadosAppBar,
+    usuarioLogado
   } = React.useContext(AppContext);
   const [descricao, setDescricao] = React.useState("");
   const [alertado, setAlertado] = React.useState(false);
@@ -33,8 +31,9 @@ const AppBarClientes = ({ idUsuario }) => {
       const body = {
         nome: descricao,
       };
-      const resultado = await clientesService.pegaClienteNome(
+      const resultado = await equipesService.pegaNomeEquipe(
         cookies.ACCESS_TOKEN,
+        usuarioLogado.id_organizacoes,
         body
       );
 
@@ -65,7 +64,7 @@ const AppBarClientes = ({ idUsuario }) => {
         alignItems="center"
       >
         <TextField
-          label={"Buscar Cliente"}
+          label={"Buscar Equipe"}
           id="filled-size-normal"
           variant="filled"
           value={descricao}
@@ -94,7 +93,7 @@ const AppBarClientes = ({ idUsuario }) => {
         />
         <Button
           variant="contained"
-          endIcon={<RecentActorsIcon />}
+          endIcon={<Groups2Icon />}
           onClick={handleCreate}
           disabled={telaDetalhe}
           sx={{
@@ -102,11 +101,11 @@ const AppBarClientes = ({ idUsuario }) => {
             color: "#111",
           }}
         >
-          Novo Cliente
+          Nova Equipe
         </Button>
       </Stack>
     </>
   );
 };
 
-export default AppBarClientes;
+export default AppBarEquipe;

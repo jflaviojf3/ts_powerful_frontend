@@ -37,7 +37,7 @@ function Clock({ isRunning, minutos} ) {
 
   return (
     <>
-      <Typography variant="h5" >
+      <Typography variant="h4" >
         {formatTime(time)}
       </Typography>
     </>
