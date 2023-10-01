@@ -135,7 +135,6 @@ export default function AppBarTarefas({ idUsuario }) {
   
       await setListaProjeto(listaprojeto);
     } catch (error) {
-      alert(error);
       console.error("Erro na solicitação POST:", error);
     }
 
