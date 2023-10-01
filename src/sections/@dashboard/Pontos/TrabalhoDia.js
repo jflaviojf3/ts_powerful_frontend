@@ -6,7 +6,7 @@ import {
   fDifMinutos,
   fDifMinutosPonto,
   getCurrentDateTime,
-  minutosParaSegundos,
+  minutosParaSegundosPonto,
   fDifMinutosSomado,
   fDifMinutosPontoTotal,
 } from "../../../utils/formatTime";
@@ -27,7 +27,7 @@ export default function TrabalhoDia() {
       setCarregaHora(false);
     } else if (telaDetalhe.length === 1) {
       setMinRelogio(
-        minutosParaSegundos(
+        minutosParaSegundosPonto(
           fDifMinutos(telaDetalhe[0].hora_ponto, getCurrentDateTime())
         )
       );
@@ -41,7 +41,7 @@ export default function TrabalhoDia() {
       setCarregaHora(true);
     } else if (telaDetalhe.length === 3) {
       setMinRelogio(
-        minutosParaSegundos(
+        minutosParaSegundosPonto(
           fDifMinutosSomado(
             telaDetalhe[0].hora_ponto,
             telaDetalhe[1].hora_ponto,
