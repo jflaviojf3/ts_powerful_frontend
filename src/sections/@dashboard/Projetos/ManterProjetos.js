@@ -136,20 +136,17 @@ export default function ManterClientes({ idUsuario }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //setLoading(true);
+    setLoading(true);
     try {
-      // if (
-      //   !formData.nome ||
-      //   !formData.id_organizacoes ||
-      //   !formData.data_inicio
-      // ) {
-      //   setLoading(false);
-      //   console.log(        !formData.nome,
-      //     !formData.id_organizacoes,
-      //     !formData.data_inicio)
-      //   alert(`Por favor, preencha os campos nome, organização e data inicio.`);
-      //   return;
-      // }
+      if (
+        !formData.nome ||
+        !chaveOrg ||
+        !valueInicio
+      ) {
+        setLoading(false);
+        alert(`Por favor, preencha os campos nome, organização e data inicio.`);
+        return;
+      }
       const body = {
         nome: formData.nome,
         duracao_prevista: formData.duracao_prevista,
@@ -164,20 +161,17 @@ export default function ManterClientes({ idUsuario }) {
         id_organizacoes:
           chaveOrg == "" ? null : retornaIdOrg(chaveOrg, idOrganizacao),
       };
-console.log(idOrganizacao )
-console.log(chaveOrg)
-console.log(body)
-      // const cookies = nookies.get();
-      // const ListaClientes = await projetosService.insereProjeto(
-      //   cookies.ACCESS_TOKEN,
-      //   telaEdicao.dados.id_organizacoes,
-      //   body
-      // );
+      const cookies = nookies.get();
+      const ListaClientes = await projetosService.insereProjeto(
+        cookies.ACCESS_TOKEN,
+        usuarioLogado.id_organizacoes,
+        body
+      );
 
-      // alert("Cadastro realizado com sucesso!");
-      // setTimeout(() => {
-      //   setTelaDetalhe(false);
-      // }, 1000);
+      alert("Cadastro realizado com sucesso!");
+      setTimeout(() => {
+        setTelaDetalhe(false);
+      }, 1000);
     } catch (error) {
       setLoading(false);
       alert(error);
@@ -262,12 +256,10 @@ console.log(body)
   };
 
   const retornaIdOrg = (descOrg, dados) => {
-    if (telaEdicao.editando) {
       if (dados.length > 0 && descOrg) {
-        const descricaoCodigo = dados.find((item) => item.nome == descOrg);
+        const descricaoCodigo = dados.find((item) => item.nome === descOrg);
         return descricaoCodigo.id_organizacoes;
       }
-    }
   };
 
   const retornaEquipes = async () => {
@@ -299,12 +291,10 @@ console.log(body)
   };
 
   const retornaIdEquipes = (descEquipes, dados) => {
-    if (telaEdicao.editando) {
       if (dados.length > 0 && descEquipes) {
         const descricaoCodigo = dados.find((item) => item.nome === descEquipes);
         return descricaoCodigo.id_equipes;
       }
-    }
   };
 
   const retornaClientes = async () => {
@@ -335,14 +325,12 @@ console.log(body)
   };
 
   const retornaIdClientes = (descClientes, dados) => {
-    if (telaEdicao.editando) {
       if (dados.length > 0 && descClientes) {
         const descricaoCodigo = dados.find(
           (item) => item.nome === descClientes
         );
         return descricaoCodigo.id_clientes;
       }
-    }
   };
 
   const carregaDataInicio = (dataInicio) => {

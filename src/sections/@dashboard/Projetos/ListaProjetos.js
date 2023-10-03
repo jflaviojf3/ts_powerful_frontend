@@ -157,7 +157,7 @@ export default function ListaProjetos({ idUsuario }) {
                     padding="none"
                     aria-label="delete"
                     size="small"
-                    onClick={(e) => handleExcluir(e, row.id_projetos)}
+                    onClick={(e) => handleExcluir(e, usuarioLogado.id_organizacoes ,row.id_projetos)}
                   >
                     <DeleteIcon fontSize="inherit" />
                   </IconButton>
