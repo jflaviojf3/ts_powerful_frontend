@@ -76,7 +76,7 @@ function ButtonDatePicker(props) {
   );
 }
 
-export default function ManterClientes({ idUsuario }) {
+export default function ManterProjetos({ idUsuario }) {
   const [valueInicio, setValueInicio] = React.useState(null);
   const [valueFim, setValueFim] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
